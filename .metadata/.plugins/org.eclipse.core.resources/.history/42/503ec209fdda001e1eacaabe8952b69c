@@ -251,6 +251,7 @@ public class BoardController {
 									@RequestBody List<BoardVo> boardList) throws Exception{
 		
 		// [{boardType=a01}, {boardType=a02}, {boardType=a03}, {boardType=a04}]
+		boardList = new ArrayList<BoardVo>();
 		
 		int page = 1;
 		int totalCnt = 0;
@@ -259,8 +260,10 @@ public class BoardController {
 			pageVo.setPageNo(page);;
 		}
 		
-		
-		
+		ObjectMapper mapper = new ObjectMapper(); 
+		String jsonBoardList =	mapper.writeValueAsString(boardList);
+		List<BoardVo> boardVoList = mapper.readValue(jsonBoardList, 
+													new TypeReference<List<BoardVo>>() {});
 		
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);

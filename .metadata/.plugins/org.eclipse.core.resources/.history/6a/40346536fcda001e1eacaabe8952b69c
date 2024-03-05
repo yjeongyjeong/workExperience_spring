@@ -9,9 +9,46 @@
 </head>
 <script type="text/javascript">
 
-	$j(document).ready(function(){
-		
-	});
+	 $j(document).ready(function(){
+		 $j("#search").on("click", function(e){
+			
+			 var boardList = [];
+			 var boardTypes = $j("input:checkbox[name='menu']:checked");
+			 
+			 boardTypes.each(function(){
+				 var type = $j(this).attr('id');
+				 console.log(type);
+				 
+				 const boardVo = {
+					 "boardType": type
+				 };
+				 
+				 boardList.push(boardVo);
+			 });
+			 
+			 var param = boardList;
+			 
+ 			$j.ajax({
+			    url : "/board/boardSearchAction.do",
+			    dataType: "json",
+			    type: "POST",
+			    contentType: "application/json; charset=utf-8",
+			    data : JSON.stringify(param),
+			    success: function(data, textStatus, jqXHR)
+			    {
+					console.log("조회완료");
+					
+					console.log("메세지:"+data.success);
+					
+					location.href = "/board/boardSearch.do";
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert("실패");
+			    }
+			});
+		});
+	}); 
 	
 	//전체선택
 	function selectAll(selectAll){
@@ -35,8 +72,23 @@
 		} else {
 			selectAll.checked = false;
 		}
-	}
-
+	};
+	
+	
+/* 	 var boardList = [];
+	 var boardTypes = $j("input:checkbox[name='menu']:checked");
+	 
+	 boardTypes.each(function(){
+		 var type = $j(this).attr('id');
+		 alert(type);
+		 
+		 const boardVo = {
+			 "boardType": type
+		 };
+		 
+		 boardList.push(boardVo);
+	 }); */
+	
 </script>
 <body>
 <table  align="center">
@@ -89,7 +141,8 @@
 			<input type="checkbox" id="a03" name="menu" onclick="return checkSelectAll()" value="selectall">익명
 			<input type="checkbox" id="a04" name="menu" onclick="return checkSelectAll()" value="selectall">자유
 			
-			<input id="deleteColumn" type="button" value="조회">
+			<input id="search" type="button" value="조회"  >
+			<input id="search2" type="button" value="조회" onclick="location.href='/board/boardSearch.do?pageNo=${pageNo}'" >
 		</td>
 	</tr>
 	

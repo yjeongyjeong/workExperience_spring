@@ -247,10 +247,9 @@ public class BoardController {
 	
 //	List에서 조회하는 경우
 	@RequestMapping(value = "/board/boardSearch.do", method = RequestMethod.GET)
-	public String boardSearchAction(Locale locale, Model model, PageVo pageVo,
-									@RequestBody List<BoardVo> boardList) throws Exception{
+	public String boardSearchAction(Locale locale, Model model, PageVo pageVo) throws Exception{
 		
-		// [{boardType=a01}, {boardType=a02}, {boardType=a03}, {boardType=a04}]
+		List<BoardVo> boardList = new ArrayList<BoardVo>();
 		
 		int page = 1;
 		int totalCnt = 0;
@@ -259,51 +258,49 @@ public class BoardController {
 			pageVo.setPageNo(page);;
 		}
 		
-		
-		
-		
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);
 		model.addAttribute("list", "search");
 		return "board/boardSearch";
 	}
 	
-	/*
-	 * @RequestMapping(value = "/board/boardSearchAction.do", method =
-	 * RequestMethod.POST)
-	 * 
-	 * @ResponseBody public String boardSearchAction( @RequestBody List<BoardVo>
-	 * boardList, Locale locale) throws Exception{
-	 * 
-	 * System.out.println("현재 게시글 board >>>>>>>>>>>>>>>>> " + boardList.toString());
-	 * // [{boardType=a01}, {boardType=a02}, {boardType=a03}, {boardType=a04}] 근데 굳이
-	 * 이렇게 안받아도 됨..
-	 * 
-	 * HashMap<String, String> result = new HashMap<String, String>(); CommonUtil
-	 * commonUtil = new CommonUtil(); int resultCnt = -1;
-	 * 
-	 * ObjectMapper mapper = new ObjectMapper(); String jsonBoardList =
-	 * mapper.writeValueAsString(boardList);
-	 * 
-	 * List<BoardVo> boardVoList = mapper.readValue(jsonBoardList, new
-	 * TypeReference<List<BoardVo>>() {}); // 여기서는 검색메소드.. %같은 애들 나와야할듯?
-	 * 
-	 * int page = 1; int totalCnt = 0;
-	 * 
-	 * PageVo pageVo = new PageVo();
-	 * 
-	 * if(pageVo.getPageNo() == 0){ pageVo.setPageNo(page);; }
-	 * 
-	 * //boardVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑) // for (BoardVo boardVo : boardVoList) {
-	 * // System.out.println("게시글 정보: " + boardVo);
-	 * //com.spring.board.vo.BoardVo@4c547402이렇게 나오네... // resultCnt =
-	 * boardService.searchBoardList(pageVo); // System.out.println("resultCnt >> " +
-	 * resultCnt); // }
-	 * 
-	 * result.put("success", (resultCnt > 0)?"Y":"N"); String callbackMsg =
-	 * commonUtil.getJsonCallBackString(" ",result);
-	 * System.out.println("callbackMsg::"+callbackMsg);
-	 * 
-	 * return callbackMsg; }
-	 */
+	@RequestMapping(value = "/board/boardSearchAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String boardSearchAction( @RequestBody List<BoardVo> boardList, Locale locale) throws Exception{
+		
+		System.out.println("현재 게시글 board >>>>>>>>>>>>>>>>> " + boardList.toString());
+//		[{boardType=a01}, {boardType=a02}, {boardType=a03}, {boardType=a04}] 근데 굳이 이렇게 안받아도 됨..
+
+		HashMap<String, String> result = new HashMap<String, String>();
+		CommonUtil commonUtil = new CommonUtil();		
+		int resultCnt = -1;
+
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonBoardList = mapper.writeValueAsString(boardList);
+		
+		List<BoardVo> boardVoList = mapper.readValue(jsonBoardList, new TypeReference<List<BoardVo>>() {});
+//		여기서는 검색메소드.. %같은 애들 나와야할듯?
+
+		int page = 1;
+		int totalCnt = 0;
+		
+		PageVo pageVo = new PageVo();
+		
+		if(pageVo.getPageNo() == 0){
+			pageVo.setPageNo(page);;
+		}
+		
+		//boardVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
+//	    for (BoardVo boardVo : boardVoList) {
+//	        System.out.println("게시글 정보: " + boardVo); //com.spring.board.vo.BoardVo@4c547402이렇게 나오네...
+//	        resultCnt = boardService.searchBoardList(pageVo); 
+//	        System.out.println("resultCnt >> " + resultCnt);
+//	    }
+
+		result.put("success", (resultCnt > 0)?"Y":"N");		
+		String callbackMsg = commonUtil.getJsonCallBackString(" ",result);
+		System.out.println("callbackMsg::"+callbackMsg);
+		
+		return callbackMsg;
+	}	
 }

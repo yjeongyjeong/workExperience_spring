@@ -26,7 +26,7 @@
 				 boardList.push(boardVo);
 			 });
 			 
-			 var param = boardList;
+/* 			 var param = boardList;
 			 
  			$j.ajax({
 			    url : "/board/boardSearchAction.do",
@@ -46,7 +46,7 @@
 			    {
 			    	alert("실패");
 			    }
-			});
+			}); */
 		});
 	}); 
 	
@@ -142,7 +142,7 @@
 			<input type="checkbox" id="a04" name="menu" onclick="return checkSelectAll()" value="selectall">자유
 			
 			<input id="search" type="button" value="조회"  >
-			<input id="search2" type="button" value="조회" onclick="location.href='/board/boardSearch.do?pageNo=${pageNo}'" >
+			<input id="search2" type="button" value="조회" onclick="location.href='/board/boardSearch.do?'" >
 		</td>
 	</tr>
 	
