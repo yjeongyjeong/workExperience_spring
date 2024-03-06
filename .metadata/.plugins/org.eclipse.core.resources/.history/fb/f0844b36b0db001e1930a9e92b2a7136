@@ -1,0 +1,10 @@
+package com.spring.board.vo;
+
+
+public class Com_CodeVo {
+	private String codeType;
+	private String codeId;
+	private String codeName;
+	private String 	creator;
+	private String	modifier;
+}

@@ -1,0 +1,13 @@
+127.0.0.1 - - [07/Mar/2024:00:00:18 +0900] "GET / HTTP/1.1" 404 807
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:02:21 +0900] "GET /board/boardList.do HTTP/1.1" 200 5741
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:02:24 +0900] "POST /board/boardSearchAction.do HTTP/1.1" 200 17
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:03:48 +0900] "GET /board/boardList.do HTTP/1.1" 200 5740
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:03:51 +0900] "POST /board/boardSearchAction.do HTTP/1.1" 200 17
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:04:41 +0900] "GET /board/boardList.do HTTP/1.1" 200 5741
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:04:44 +0900] "POST /board/boardSearchAction.do HTTP/1.1" 200 17
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:06:04 +0900] "GET /board/boardList.do HTTP/1.1" 200 5741
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:06:07 +0900] "POST /board/boardSearchAction.do HTTP/1.1" 200 15
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:06:44 +0900] "GET /board/boardList.do HTTP/1.1" 200 5721
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:06:46 +0900] "POST /board/boardSearchAction.do HTTP/1.1" 200 15
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:07:07 +0900] "GET /board/boardList.do HTTP/1.1" 200 5740
+0:0:0:0:0:0:0:1 - - [07/Mar/2024:00:07:11 +0900] "POST /board/boardSearchAction.do HTTP/1.1" 200 15

@@ -3,6 +3,7 @@ package com.spring.board.service;
 import java.util.List;
 
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
 
 public interface boardService {
@@ -22,6 +23,7 @@ public interface boardService {
 	public int boardDelete(BoardVo boardVo) throws Exception;
 	//==============================================================
 	public List<BoardVo> searchBoardList(PageVo pageVo) throws Exception;
+	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception;
 
 
 }

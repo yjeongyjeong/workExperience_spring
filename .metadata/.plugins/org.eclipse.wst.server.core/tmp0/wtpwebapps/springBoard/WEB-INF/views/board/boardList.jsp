@@ -12,41 +12,61 @@
 	 $j(document).ready(function(){
 		 $j("#search").on("click", function(e){
 			
-			 var boardList = [];
 			 var boardTypes = $j("input:checkbox[name='menu']:checked");
-			 
+			 var boardList = [];
+
 			 boardTypes.each(function(){
-				 var type = $j(this).attr('id');
-				 console.log(type);
+				 var type = $j(this).val();
 				 
-				 const boardVo = {
-					 "boardType": type
-				 };
-				 
-				 boardList.push(boardVo);
-			 });
+                 const pageVo = {
+	   					 "boardType": type
+	   				 };
+	   				 
+                 boardList.push(type);
+				 console.log(boardList);
+					 
+	            });
 			 
 			 var param = boardList;
 			 
- 			$j.ajax({
-			    url : "/board/boardSearchAction.do",
-			    dataType: "json",
-			    type: "POST",
-			    contentType: "application/json; charset=utf-8",
-			    data : JSON.stringify(param),
-			    success: function(data, textStatus, jqXHR)
-			    {
-					console.log("조회완료");
-					
-					console.log("메세지:"+data.success);
-					
-					location.href = "/board/boardSearch.do";
-			    },
-			    error: function (jqXHR, textStatus, errorThrown)
-			    {
-			    	alert("실패");
-			    }
-			});
+			 $j.ajax({
+				    url : "/board/boardSearchAction.do",
+				    dataType: "json",
+				    type: "POST",
+				    contentType: "application/json; charset=utf-8",
+				    data : JSON.stringify(param),
+				    success: function(data, textStatus, jqXHR)
+				    {
+						console.log("조회완료");
+						
+						console.log("메세지:"+data.success);
+						
+						//location.href = "/board/boardSearch.do";
+				    },
+				    error: function (jqXHR, textStatus, errorThrown)
+				    {
+				    	alert("실패");
+				    }
+				});
+
+		       /*  // 폼 생성
+		        var formData = $j("<form>")
+		            .attr("method", "GET")  // GET 요청으로 변경
+		            .attr("action", "/board/boardSearch.do");
+
+		        // boardList의 각 요소에 대해 숨겨진 입력 요소 생성 및 설정
+		        boardList.forEach(function(boardVo, index) {
+		            $j("<input>")
+		                .attr("type", "hidden")
+		                .attr("name", "boardTypes")
+		                .val(boardVo)
+		                .appendTo(formData);
+		        });
+
+		        // 생성된 폼을 body에 추가하고 제출
+		        formData.appendTo("body").submit(); */	        
+	        
+	        
 		});
 	}); 
 	
@@ -75,22 +95,10 @@
 	};
 	
 	
-/* 	 var boardList = [];
-	 var boardTypes = $j("input:checkbox[name='menu']:checked");
-	 
-	 boardTypes.each(function(){
-		 var type = $j(this).attr('id');
-		 alert(type);
-		 
-		 const boardVo = {
-			 "boardType": type
-		 };
-		 
-		 boardList.push(boardVo);
-	 }); */
 	
 </script>
 <body>
+
 <table  align="center">
 	<tr>
 		<td align="left">
@@ -132,17 +140,13 @@
 		</td>
 	</tr>
 	
-	
 	<tr>
 		<td align="center">
 			<input type="checkbox" id="select_all" name="selectall" onclick="selectAll(this)" >전체
-			<input type="checkbox" id="a01" name="menu" onclick="return checkSelectAll()" value="selectall">일반
-			<input type="checkbox" id="a02" name="menu" onclick="return checkSelectAll()" value="selectall">Q&A
-			<input type="checkbox" id="a03" name="menu" onclick="return checkSelectAll()" value="selectall">익명
-			<input type="checkbox" id="a04" name="menu" onclick="return checkSelectAll()" value="selectall">자유
-			
+	<c:forEach items="${codeList}" var="codeList">
+			<input type="checkbox" id="${codeList}.codeId" name="menu" onclick="return checkSelectAll()" value="${codeList.codeName }">${codeList.codeName }
+	</c:forEach>
 			<input id="search" type="button" value="조회"  >
-			<input id="search2" type="button" value="조회" onclick="location.href='/board/boardSearch.do?pageNo=${pageNo}'" >
 		</td>
 	</tr>
 	
@@ -151,7 +155,8 @@
 			<a href ="/board/boardWrite.do">글쓰기</a>
 		</td>
 	</tr>
-</table>	
+</table>
+
 <input type="hidden" name="msg" id="msg" value="${msg}">
 </body>
 </html>

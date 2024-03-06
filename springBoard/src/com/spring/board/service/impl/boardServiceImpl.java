@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.spring.board.dao.BoardDao;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
 
 @Service
@@ -65,6 +66,11 @@ public class boardServiceImpl implements boardService{
 	@Override
 	public List<BoardVo> searchBoardList(PageVo pageVo) throws Exception {
 		return boardDao.searchBoardList(pageVo);
+	}
+
+	@Override
+	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception {
+		return boardDao.selectCodeList(codeVo);
 	}
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.board.dao.BoardDao;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
 
 @Repository
@@ -59,10 +60,16 @@ public class BoardDaoImpl implements BoardDao{
 	public int boardDelete(BoardVo boardVo) throws Exception {
 		return sqlSession.delete("board.boardDelete", boardVo);
 	}
+
+//==============================================================
+
 	@Override
 	public List<BoardVo> searchBoardList(PageVo pageVo) throws Exception {
-		return sqlSession.selectList("board.boardSearchList", pageVo);
+		return sqlSession.selectList("board.boardSearchList",pageVo);	
 	}
-	
+	@Override
+	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception {
+		return sqlSession.selectList("board.codeList", codeVo);
+	}
 	
 }

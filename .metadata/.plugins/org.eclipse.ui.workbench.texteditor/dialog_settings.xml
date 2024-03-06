@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="View"/>
+		<item key="selection" value="Com_CodeVo"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="Com_CodeVo"/>
+			<item value="as"/>
+			<item value="searchBoardList"/>
+			<item value="search"/>
 			<item value="view"/>
 			<item value="criteria"/>
 			<item value="searchForm"/>
@@ -19,10 +23,6 @@
 			<item value="selectList"/>
 			<item value="BOARDLIST"/>
 			<item value="BOARDVIEW"/>
-			<item value="deleteColumn"/>
-			<item value="&apos;"/>
-			<item value="resultCnt"/>
-			<item value="push"/>
 		</list>
 		<list key="replacehistory">
 		</list>
