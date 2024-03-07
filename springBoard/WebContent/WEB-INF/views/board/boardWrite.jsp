@@ -204,12 +204,11 @@
 						Type
 						</td>
 						<td width="400">
-						<select name="boardType" id="boardType">
-							<option value="a01">일반</option>						
-							<option value="a02">Q&A</option>						
-							<option value="a03">익명</option>						
-							<option value="a04">자유</option>						
-						</select>
+							<select name="boardType" id="boardType">
+								<c:forEach items="${codeList}" var="codeList">
+									<option value="${codeList.codeId}">${codeList.codeName}</option>						
+								</c:forEach>
+							</select>
 						</td>
 					</tr>
 
