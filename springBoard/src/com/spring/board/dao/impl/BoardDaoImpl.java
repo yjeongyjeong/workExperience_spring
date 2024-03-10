@@ -62,11 +62,6 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 //==============================================================
-
-	@Override
-	public List<BoardVo> searchBoardList(PageVo pageVo) throws Exception {
-		return sqlSession.selectList("board.boardSearchList",pageVo);	
-	}
 	@Override
 	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception {
 		return sqlSession.selectList("board.codeList", codeVo);

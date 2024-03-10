@@ -115,15 +115,15 @@
 	    numCell.textContent = item.boardNum;
 	    row.appendChild(numCell);
 
-	    console.log(item);
+//	    console.log(item);
 
 		// boardTitle 추가하기
 	    const titleCell = document.createElement('td');
 	    const link = document.createElement('a');
 
 	    const hrefLink = '/board/'+item.boardType + '/' + item.boardNum + '/boardView.do?pageNo=' + item.pageNo;
-	    console.log(hrefLink);
-//	    값이 안들어옴...
+	    //console.log(hrefLink);
+//	    아래대로 하면 값이 안들어옴...
 //	    link.href = `/board/${item.boardType}/${item.boardNum}/boardView.do?pageNo=${item.pageNo}`;
 	    link.href = hrefLink;
 	    link.textContent = item.boardTitle;
@@ -134,17 +134,29 @@
 	    tbody.appendChild(row); 
 	  }); //end forEach
 	  
-	 //table전체 행의 개수를 세야하므로 forEach보다 아래에 있어야 함
- 	  if (data) {
+	 //table전체 행의 개수를 세야하므로 forEach보다 아래에 있어야 함 => 테이블에 표시되는 행을 무조건 10으로 해놔서 최대값이 고정되어버림
+ 	  if (data != "") {
 		  $j('#totalCnt').remove();
-		    const totalCnt = (table.rows.length)-1; //맨 윗줄 제외! 
+			const totalCnt = data[0].totalCnt; 
 		    console.log(totalCnt);
+		    
 		    const totalrow = document.createElement('td');
 		    totalrow.id = "totalCnt"
 		    totalrow.textContent = 'total : ' + totalCnt;
 		    totalrow.align = "right";
 		    informTr.appendChild(totalrow);
-		}//end if
+		}else{ // data가 없는 경우
+			$j('#totalCnt').remove();
+			const totalCnt = 0; 
+		    console.log(totalCnt);
+		    
+		    const totalrow = document.createElement('td');
+		    totalrow.id = "totalCnt"
+		    totalrow.textContent = 'total : ' + totalCnt;
+		    totalrow.align = "right";
+		    informTr.appendChild(totalrow);
+		}
+	 //end if
 		
 	}; // end changeList
 	
@@ -197,7 +209,7 @@
 		<td align="center">
 			<input type="checkbox" id="select_all" name="selectall" onclick="selectAll(this)" >전체
 	<c:forEach items="${codeList}" var="codeList">
-			<input type="checkbox" id="${codeList}.codeId" name="menu" onclick="return checkSelectAll()" value="${codeList.codeName }">${codeList.codeName }
+			<input type="checkbox" id="${codeList}.codeId" name="menu" onclick="return checkSelectAll()" value="${codeList.codeId }">${codeList.codeName }
 	</c:forEach>
 			<input id="search" type="button" value="조회"  >
 		</td>

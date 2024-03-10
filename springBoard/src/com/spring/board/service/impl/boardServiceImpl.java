@@ -64,11 +64,6 @@ public class boardServiceImpl implements boardService{
 	}
 
 	@Override
-	public List<BoardVo> searchBoardList(PageVo pageVo) throws Exception {
-		return boardDao.searchBoardList(pageVo);
-	}
-
-	@Override
 	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception {
 		return boardDao.selectCodeList(codeVo);
 	}

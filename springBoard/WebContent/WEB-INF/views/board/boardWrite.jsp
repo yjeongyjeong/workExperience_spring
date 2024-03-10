@@ -24,6 +24,42 @@
 		$j("#addColumn").on("click",function(){
 			console.log("행추가함수"); //보인다!
 
+ 			$j.ajax({
+			    url : "/board/boardTypesAction.do",
+			    dataType: "json",
+			    type: "GET",
+			    contentType: "application/json; charset=utf-8",
+//			    data : JSON.stringify(param),
+			    success: function(data, textStatus, jqXHR)
+			    {
+			    	//javascript에서 ${codeList}를 변수로 받고 데이터를 처리하고 싶은데 변수로 받는 순간 json형태에서 벗어나게 되어서 전부 문자열(변수)로 인식됨..
+			    	//따라서 ajax로 호출하여 성공시 행추가 로직을 실행함
+			    	codeNames = data.map(function(item) {
+			    		    return item.codeName;
+			    	});
+			    	//alert(codeNames);
+			    	
+			    	// select 요소 생성 및 옵션 추가
+		            var addedSelect = document.createElement('select');
+		            addedSelect.name = "boardType";
+		            codeNames.forEach(function(codeName) {
+		                var option = document.createElement('option');
+		                option.value = codeName;
+		                option.textContent = codeName;
+		                addedSelect.appendChild(option);
+		            });
+
+		            // 추가된 select 요소를 셀에 추가
+		            var newCell6 = newType.insertCell(1);
+		            newCell6.appendChild(addedSelect);
+			    	
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert("실패");
+			    }
+			}); 
+			
 			count++;
 			console.log("count >> " + count);
 			
@@ -32,28 +68,36 @@
 			const boardWriter = document.getElementById('tableWriter');
 			const writerIndex = boardWriter.rowIndex;
 			console.log("insert될 위치 writerIndex >> " + writerIndex ); 
+			
 			const newComment = table.insertRow(writerIndex);
 			const newTitle = table.insertRow(writerIndex);
+			const newType = table.insertRow(writerIndex);
+			
 			
 			//새 행(orw)에 cell추가
 			const newCell1 = newTitle.insertCell(0);
 			const newCell2 = newTitle.insertCell(1);
 			const newCell3 = newComment.insertCell(0);
 			const newCell4 = newComment.insertCell(1);
+			const newCell5 = newType.insertCell(0);
+			const newCell6 = newType.insertCell(1);
 			
 			//cell에 텍스트 추가
 			newCell1.innerText = 'Title';
 			newCell3.innerText = 'Comment';
+			newCell5.innerText = 'Type';
 			
 			//추가된 애들 스타일 넣기
 			newCell1.align = "center";
 			newCell3.align = "center";
+			newCell5.align = "center";
 			
 			//input 박스로 변환... 이라기보단 추가
 			var addedTitle = document.createElement( 'input' );
 			addedTitle.size = 50;
 			addedTitle.name = "boardTitle";
 			newCell2.appendChild(addedTitle);
+			
 			var checkBox = document.createElement( 'input' );
 			checkBox.type = "checkbox";
 			checkBox.name = "deleteCheck";
@@ -64,6 +108,8 @@
 			addedComment.rows = 20;
 			addedComment.name = "boardComment";	
 			newCell4.appendChild(addedComment);
+
+
 
 		});
 		
@@ -84,12 +130,14 @@
 		    var tr = $j(this).closest('tr'); // 현재 체크박스가 속한 tr 요소를 찾음
 		    var titleTr = tr.prev(); // title tr 요소를 찾음
 		    var commentTr = tr; // comment tr 요소는 현재 체크박스가 속한 tr 요소
+		    var typeTr = titleTr.prev(); // type 요소를 찾음
 		    
 		    console.log("title의 index >> " + titleTr[0].rowIndex);
 		    console.log("comment의 index >> " + commentTr[0].rowIndex);
 		    
 		    table.deleteRow(titleTr[0].rowIndex); // title tr 요소 삭제
 		    table.deleteRow(commentTr[0].rowIndex); // comment tr 요소 삭제
+		    table.deleteRow(typeTr[0].rowIndex); // comment tr 요소 삭제
 
 			});
 			

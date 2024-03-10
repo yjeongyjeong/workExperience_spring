@@ -22,7 +22,6 @@ public interface boardService {
 	
 	public int boardDelete(BoardVo boardVo) throws Exception;
 	//==============================================================
-	public List<BoardVo> searchBoardList(PageVo pageVo) throws Exception;
 	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception;
 
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Spliterator;
+import java.util.stream.Collectors;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -42,7 +44,6 @@ public class BoardController {
 		
 		int page = 1;
 		int totalCnt = 0;
-		pageVo.setBoardType("menu");
 
 		if (pageVo.getPageNo() == 0) {
 			pageVo.setPageNo(page);
@@ -50,12 +51,25 @@ public class BoardController {
 		}
 		
 		ComCodeVo codeVo = new ComCodeVo();
-		codeVo.setCodeType("menu");
-
-		boardList = boardService.SelectBoardList(pageVo);
+		codeVo.setCodeType("menu"); 
+		
 		totalCnt = boardService.selectBoardCnt();
 		codeList = boardService.selectCodeList(codeVo);
-		
+//		System.out.println("codeList>>>>>>>>>>>" + codeList);
+		/*		codeList>>>>>>>>>>>
+		[ComCodeVo [codeType=menu, codeId=a01, codeName=일반, creator=null, modifier=null],
+		 ComCodeVo [codeType=menu, codeId=a02, codeName=Q&A, creator=null, modifier=null], 
+		 ComCodeVo [codeType=menu, codeId=a03, codeName=익명, creator=null, modifier=null], 
+		 ComCodeVo [codeType=menu, codeId=a04, codeName=자유, creator=null, modifier=null]]
+		 */
+
+		List<String> codeIdList = new ArrayList<>();
+		for (ComCodeVo comCode : codeList) {
+			codeIdList.add(comCode.getCodeId());
+		};
+		pageVo.setCodeId(codeIdList);
+		boardList = boardService.SelectBoardList(pageVo);
+
 		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("codeList", codeList);
@@ -163,6 +177,18 @@ public class BoardController {
 		System.out.println("callbackMsg::" + callbackMsg);
 
 		return callbackMsg;
+	}
+	
+	@RequestMapping(value = "/board/boardTypesAction.do", method = RequestMethod.GET)
+	@ResponseBody
+//	@Transactional //되나.?
+	public List<ComCodeVo> boardTypesAction(Locale locale) throws Exception {
+
+		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
+		ComCodeVo codeVo = new ComCodeVo();
+		codeVo.setCodeType("menu"); 
+		codeList = boardService.selectCodeList(codeVo);
+		return codeList;
 	}
 
 //requestMapping을 클래스 위에 써서 "/board"를 공통으로 갖게 만들고 @GetMapping이나 @PostMapping을 사용해줘도 괜찮다~
@@ -277,30 +303,22 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board/boardSearchAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public List<BoardVo> boardSearchAction(@RequestBody String[] boardList, 
+	public List<BoardVo> boardSearchAction(@RequestBody List<String> boardList, 
 									Model model, Locale locale) throws Exception {
-//		 [{boardType=com.spring.board.vo.ComCodeVo@70f897eb.codeId}]...
-
-		for(String type : boardList) {
-			System.out.println(type);
-		};
-		System.out.println("현재 게시글 board >>>>>>>>>>>>>>>>> " + boardList);
-		
 		PageVo pageVo = new PageVo();
 		
 		int page = 1;
 		int totalCnt = 0;
 		if (pageVo.getPageNo() == 0) {
 			pageVo.setPageNo(page);
-			System.out.println(pageVo.getPageNo());
 		}
-		
+
 		List<BoardVo> searchBoardList = new ArrayList<BoardVo>();
-		for(int i = 0; i< boardList.length; i++) {
-			pageVo.setBoardType(boardList[i]);
-			searchBoardList.addAll(boardService.searchBoardList(pageVo));
-		};
+		//codeId로 찾음
+		pageVo.setCodeId(boardList);
+		searchBoardList.addAll(boardService.SelectBoardList(pageVo));
 		
+		System.out.println(searchBoardList.toString());
 		return searchBoardList;
 	}
 }

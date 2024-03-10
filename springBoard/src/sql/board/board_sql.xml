@@ -7,13 +7,7 @@
 		<result property="boardNum" column="BOARD_NUM" />
 		<result property="boardTitle" column="BOARD_TITLE" />
 		<result property="boardComment" column="BOARD_COMMENT" />
-	</resultMap>
-
-	<resultMap type="com.spring.board.vo.BoardVo" id="boardAndPageVo">
-		<result property="boardType" column="BOARD_TYPE" />
-		<result property="boardNum" column="BOARD_NUM" />
-		<result property="boardTitle" column="BOARD_TITLE" />
-		<result property="boardComment" column="BOARD_COMMENT" />
+		<result property="totalCnt" column="TOTAL_CNT" />
 		<result property="pageNo" column="PAGE_NO" />
 	</resultMap>
 
@@ -56,8 +50,15 @@
 			left JOIN
 		         com_code code ON bd.BOARD_TYPE = code.code_id
 	        WHERE
-		         code.code_type = #{boardType}
-		)
+		    (     code.code_type = #{codeType}
+  			and
+  			     code.code_id
+		    in 
+		         <foreach collection="codeId" item="item" open="(" separator="," close=")">
+       				#{item}
+  				 </foreach>
+  			)
+		)	
 		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
 	</select>
 
@@ -142,36 +143,5 @@
 		AND BOARD_NUM = #{boardNum}
 	</delete>
 
-	<!-- ================================================================= -->
 
-	<select id="boardSearchList"
-		parameterType="com.spring.board.vo.PageVo" resultMap="boardAndPageVo">
-		SELECT
-		BOARD_TYPE
-		,BOARD_NUM
-		,BOARD_TITLE
-		,BOARD_COMMENT
-		,TOTAL_CNT
-		,PAGE_NO
-		FROM
-		(
-			SELECT
-			code.code_name as BOARD_TYPE
-			,bd.BOARD_NUM
-			,bd.BOARD_TITLE
-			,bd.BOARD_COMMENT
-			,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
-			,COUNT(*) OVER() AS TOTAL_CNT
-			,#{pageNo} as PAGE_NO
-			FROM
-				BOARD bd
-			INNER JOIN
-	        	com_code code 
-	        ON 
-	        	bd.BOARD_TYPE = code.code_id
-	        WHERE
-	         code.code_name = #{boardType}
-         )
-		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
-	</select>
 </mapper>

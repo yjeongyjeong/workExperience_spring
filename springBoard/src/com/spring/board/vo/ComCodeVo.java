@@ -11,6 +11,12 @@ public class ComCodeVo {
 	private String	modifier;
 	
 	
+	@Override
+	public String toString() {
+		return "ComCodeVo [codeType=" + codeType + ", codeId=" + codeId + ", codeName=" + codeName + ", creator="
+				+ creator + ", modifier=" + modifier + "]";
+	}
+	
 	public ComCodeVo() {
 		super();
 	}
