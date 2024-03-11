@@ -10,6 +10,7 @@ import com.spring.board.dao.BoardDao;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
+import com.spring.board.vo.UserInfoVo;
 
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -65,6 +66,12 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception {
 		return sqlSession.selectList("board.codeList", codeVo);
+	}
+	
+// com.user 패키지를 다시 만들어야 하나...?
+	@Override
+	public int userIdCheck(UserInfoVo userVo) throws Exception {
+		return sqlSession.selectOne("user.userIdChk", userVo);
 	}
 	
 }

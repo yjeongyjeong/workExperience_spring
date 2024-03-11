@@ -10,6 +10,7 @@ import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
+import com.spring.board.vo.UserInfoVo;
 
 @Service
 public class boardServiceImpl implements boardService{
@@ -66,6 +67,11 @@ public class boardServiceImpl implements boardService{
 	@Override
 	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception {
 		return boardDao.selectCodeList(codeVo);
+	}
+
+	@Override
+	public int userIdCheck(UserInfoVo userVo) throws Exception {
+		return boardDao.userIdCheck(userVo);
 	}
 	
 }

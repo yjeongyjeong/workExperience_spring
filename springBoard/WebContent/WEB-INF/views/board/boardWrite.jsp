@@ -37,22 +37,34 @@
 			    	codeNames = data.map(function(item) {
 			    		    return item.codeName;
 			    	});
+			    	codeIds = data.map(function(item){
+			    		return item.codeId;
+			    	});
 			    	//alert(codeNames);
 			    	
 			    	// select 요소 생성 및 옵션 추가
 		            var addedSelect = document.createElement('select');
 		            addedSelect.name = "boardType";
-		            codeNames.forEach(function(codeName) {
+		            addedSelect.id = "boardType";
+
+		            codeNames.forEach(function(codeName, index) {
 		                var option = document.createElement('option');
-		                option.value = codeName;
+		                option.value = codeIds[index]; // 각 option의 value에 codeId를 설정
 		                option.textContent = codeName;
 		                addedSelect.appendChild(option);
 		            });
+		            
+		            /* codeNames.forEach(function(codeName) {
+		                var option = document.createElement('option');
+		                //option.value = codeName; codeName으로 값이 들어가서 controller에서 읽어오지 못함!!
+		                option.textContent = codeName;
+		                addedSelect.appendChild(option);
+		            }); */
 
 		            // 추가된 select 요소를 셀에 추가
 		            var newCell6 = newType.insertCell(1);
 		            newCell6.appendChild(addedSelect);
-			    	
+		    
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
@@ -80,7 +92,7 @@
 			const newCell3 = newComment.insertCell(0);
 			const newCell4 = newComment.insertCell(1);
 			const newCell5 = newType.insertCell(0);
-			const newCell6 = newType.insertCell(1);
+			//const newCell6 = newType.insertCell(1); //ajax에서 처리함!
 			
 			//cell에 텍스트 추가
 			newCell1.innerText = 'Title';
@@ -108,8 +120,6 @@
 			addedComment.rows = 20;
 			addedComment.name = "boardComment";	
 			newCell4.appendChild(addedComment);
-
-
 
 		});
 		
@@ -154,7 +164,11 @@
 			const table = document.getElementById('boardTable');
 			var boardTitles = $j("input[name='boardTitle']");
 			var boardComments = $j("textarea[name='boardComment']");
-			var boardType = $j("select[name='boardType']").val();
+			var boardTypes = $j("select[name='boardType']");
+			
+			console.log(boardTitles);
+			console.log(boardComments);
+			console.log(boardTypes);
 			
 			//var boardMap = new Map(); -> 키값이 중복되므로 사용을 지양해야함 왜냐면 키값이 중복되면 마지막에 저장된값으로 저장되기 때문!
 			var boardData = [];
@@ -175,12 +189,13 @@
 			for(var i =0; i< boardTitles.length; i++){
 				var title = boardTitles.eq(i).val();
 				var comment = boardComments.eq(i).val();
+				var type = boardTypes.eq(i).val(); //에러 발생
 				
 				var deleteSpaceTitle = title.replace(/\s/gi, ""); // 정규식 => s : 공백 g : 글로벌 매칭.. 일치하는 모든 부분을 찾음 i : 대소문자 구별없이
 				var deleteSpaceComment = comment.replace(/\s/gi, "");
 				
 				const boardVo = { // BoardVo 객체 생성
-						"boardType": boardType,
+						"boardType": type,
 			            "boardTitle": title,
 			            "boardComment": comment
 			        };

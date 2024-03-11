@@ -143,5 +143,4 @@
 		AND BOARD_NUM = #{boardNum}
 	</delete>
 
-
 </mapper>

@@ -26,6 +26,7 @@ import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
+import com.spring.board.vo.UserInfoVo;
 import com.spring.common.CommonUtil;
 
 @Controller
@@ -147,7 +148,7 @@ public class BoardController {
 	@ResponseBody
 //	@Transactional //되나.?
 	public String boardWriteAction(@RequestBody List<BoardVo> boardList, Locale locale) throws Exception {
-
+//		[{boardType=a01, boardTitle=1212, boardComment=222}, {boardType=a01, boardTitle=4545, boardComment=444}]
 		System.out.println("현재 게시글 board >>>>>>>>>>>>>>>>> " + boardList.toString());
 
 		HashMap<String, String> result = new HashMap<String, String>();
@@ -164,10 +165,9 @@ public class BoardController {
 
 		List<BoardVo> boardVoList = mapper.readValue(jsonBoardList, new TypeReference<List<BoardVo>>() {
 		});
-
+		
 		// boardVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
 		for (BoardVo boardVo : boardVoList) {
-			System.out.println("게시글 정보: " + boardVo); // com.spring.board.vo.BoardVo@4c547402이렇게 나오네...
 			resultCnt = boardService.boardInsert(boardVo);
 			System.out.println("resultCnt >> " + resultCnt);
 		}
@@ -181,7 +181,6 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board/boardTypesAction.do", method = RequestMethod.GET)
 	@ResponseBody
-//	@Transactional //되나.?
 	public List<ComCodeVo> boardTypesAction(Locale locale) throws Exception {
 
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
@@ -264,42 +263,6 @@ public class BoardController {
 
 		return callbackMsg;
 	}
-
-//==========================================================================================	
-
-////	List에서 조회하는 경우
-//	@RequestMapping(value = "/board/boardSearch.do", method = RequestMethod.GET)
-//	public String boardSearch(Locale locale, Model model, PageVo pageVo,
-//			@RequestParam("boardTypes") String[] boardTypes
-//			) throws Exception {
-//
-//		List<BoardVo> boardList = new ArrayList<BoardVo>();
-//
-//		for(String types : boardTypes) {
-//			System.out.println(types);
-//			boardList.addAll(boardService.searchBoardList(types));
-//			System.out.println(boardList);
-//		}
-//		
-//		int page = 1;
-//		int totalCnt = 0;
-//		pageVo.setBoardList(boardList);
-//		
-//		if(pageVo.getPageNo() == 0){
-//			pageVo.setPageNo(page);;
-//		}
-//		
-//		//boardList = boardService.SelectBoardList(pageVo);
-//		
-//		totalCnt = boardService.selectBoardCnt();
-//		
-//		model.addAttribute("boardList", boardList);
-//		model.addAttribute("totalCnt", totalCnt);
-//		model.addAttribute("pageNo", page);
-//
-//		return "/board/boardSearch";
-//	}
-
 	
 	@RequestMapping(value = "/board/boardSearchAction.do", method = RequestMethod.POST)
 	@ResponseBody
@@ -321,4 +284,59 @@ public class BoardController {
 		System.out.println(searchBoardList.toString());
 		return searchBoardList;
 	}
+	
+	@RequestMapping(value = "/board/boardJoin.do", method = RequestMethod.GET)
+	public String boardjoin(Locale locale, Model model,  ComCodeVo codeVo) throws Exception {
+		
+		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
+		
+		codeVo.setCodeType("phone");
+		codeList = boardService.selectCodeList(codeVo);
+		model.addAttribute("codeList", codeList);
+		
+		return "board/boardJoin";
+		
+	}
+	
+	@RequestMapping(value = "/board/boardUserIdCheckAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public int boardUserIdCheckAction(@RequestBody UserInfoVo userVo, 
+									Model model, Locale locale) throws Exception {
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); //userId=212tt 이렇게 값이 들어옴!
+	
+		int userIdCnt = boardService.userIdCheck(userVo);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>" + userIdCnt);
+		
+		if(userIdCnt == 0) {
+			userIdCnt = 0;
+		}else {
+			userIdCnt = -1;
+		}
+		
+		return userIdCnt;
+	}
+	
+	@RequestMapping(value = "/board/boardUserPwCheckAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public int boardUserPwCheckAction(@RequestBody List<String> pwList, 
+			Model model, Locale locale) throws Exception {
+		//String으로 받는 경우 {"userPw":"1313","userPwChk":"1313"}
+		//List<String>으로 받는 경우[{userPw=111, userPwChk=111}]
+		//ajax에서 pwList에 각각 값을 담아줌 [123, 122]
+		
+		int userPwdCnt = -1;
+		
+		String userPw = pwList.get(0).toString();
+		String userPwChk = pwList.get(1).toString();
+
+		System.out.println("pwdcheck >> " + userPw + " " + userPwChk);
+		if(userPw.equals(userPwChk)) { //userPw == userPwChk 는 같은 값이여도 오류나는 걸로 봐서 주소값 비교
+			userPwdCnt = 1;
+		} else {
+			userPwdCnt = 0;
+		}
+		
+		return userPwdCnt;
+	}
+	
 }

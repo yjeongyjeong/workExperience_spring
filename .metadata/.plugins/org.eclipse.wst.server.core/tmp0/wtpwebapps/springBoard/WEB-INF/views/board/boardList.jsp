@@ -167,7 +167,7 @@
 	<tr id="inform">
 		<td align="left">
 			<a href=""> login</a> 
-			<a href="/board/boardJoin"> join</a> 
+			<a href="/board/boardJoin.do"> join</a> 
 		</td>
 		
 			<td align="right" id="totalCnt">

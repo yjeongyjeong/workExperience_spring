@@ -5,6 +5,7 @@ import java.util.List;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
+import com.spring.board.vo.UserInfoVo;
 
 public interface BoardDao {
 
@@ -27,4 +28,5 @@ public interface BoardDao {
 //	============================================
 	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception;
 
+	public int userIdCheck(UserInfoVo userVo) throws Exception;
 }
