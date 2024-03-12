@@ -29,4 +29,5 @@ public interface BoardDao {
 	public List<ComCodeVo> selectCodeList(ComCodeVo codeVo) throws Exception;
 
 	public int userIdCheck(UserInfoVo userVo) throws Exception;
+	public int userInsert(UserInfoVo userVo) throws Exception;
 }

@@ -330,7 +330,9 @@ public class BoardController {
 		String userPwChk = pwList.get(1).toString();
 
 		System.out.println("pwdcheck >> " + userPw + " " + userPwChk);
-		if(userPw.equals(userPwChk)) { //userPw == userPwChk 는 같은 값이여도 오류나는 걸로 봐서 주소값 비교
+		if(userPw.equals(userPwChk)) { 
+			//userPw == userPwChk는 같은 값이여도 오류나는 걸로 봐서 주소값 비교 
+			// ==> 직접 문자열 비교하도록 equals 사용 
 			userPwdCnt = 1;
 		} else {
 			userPwdCnt = 0;
@@ -338,5 +340,37 @@ public class BoardController {
 		
 		return userPwdCnt;
 	}
+	
+	@RequestMapping(value = "/board/boardUserjoinAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String boardUserjoinAction(@RequestBody List<UserInfoVo> userList, 
+									Model model, Locale locale) throws Exception {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonUserInfoList = mapper.writeValueAsString(userList);
+
+		List<UserInfoVo> userInfoList = mapper.readValue(jsonUserInfoList, new TypeReference<List<UserInfoVo>>() {
+		});
+		
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userInfoList.toString()); //주소값나옴... 
+
+		HashMap<String, String> result = new HashMap<String, String>();
+		CommonUtil commonUtil = new CommonUtil();
+
+		int resultCnt = boardService.userInsert(userInfoList.get(0));
+		//ORA-00947: not enough values 발생! 
+		//userAddr2랑 userCompany에 값을 입력하지 않으면 그대로 null이 되어서 들어가지 않음... 
+		//음.. 새로 userVo를 만들고 넣어야하는걸까?-> jsp에서 하려고했는데 if조건으로 하는
+		
+		System.out.println("resultCnt >>>>>>>>>>>>>>>>>> " + resultCnt);
+		result.put("success", (resultCnt > 0) ? "Y" : "N");
+
+		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
+
+		System.out.println("callbackMsg::" + callbackMsg);
+
+		return callbackMsg;
+	}
+	
 	
 }

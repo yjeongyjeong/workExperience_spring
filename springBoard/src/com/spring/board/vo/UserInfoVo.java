@@ -8,8 +8,8 @@ public class UserInfoVo {
 	private String userPhone2;
 	private String userPhone3;
 	private String userAddr1;
-	private String userAddr2;
-	private String userCompany;
+	private String userAddr2 = "none";
+	private String userCompany = "none";
 	private String 	creator;
 	private String	modifier;
 	

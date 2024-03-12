@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/common/common.jsp"%>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>boardView</title>
 </head>
 
@@ -23,15 +23,15 @@
 			    data : param,
 			    success: function(data, textStatus, jqXHR)
 			    {
-					alert("»èÁ¦¿Ï·á");
+					alert("ì‚­ì œì™„ë£Œ");
 					
-					alert("¸Þ¼¼Áö:"+data.success);
+					alert("ë©”ì„¸ì§€:"+data.success);
 					
 					location.href = "/board/boardList.do?pageNo=1";
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
-			    	alert("½ÇÆÐ");
+			    	alert("ì‹¤íŒ¨");
 			    }
 			});
 		});
@@ -76,9 +76,9 @@
 		</tr>
 		<tr>
 			<td align="right">
-			<input id="submit" type="button" value="»èÁ¦">
-			<input type="button" onclick="location.href='/board/${boardType}/${boardNum}/boardModify.do'" value="¼öÁ¤"></input>
-			<%-- <button onclick="location.href='/board/${boardType}/${boardNum}/boardModify.do'">¼öÁ¤</button> --%>
+			<input id="submit" type="button" value="ì‚­ì œ">
+			<input type="button" onclick="location.href='/board/${boardType}/${boardNum}/boardModify.do'" value="ìˆ˜ì •"></input>
+			<%-- <button onclick="location.href='/board/${boardType}/${boardNum}/boardModify.do'">ìˆ˜ì •</button> --%>
 			<input name="boardType" type="hidden" value="${board.boardType}">
 			<input name="boardNum" type="hidden" value="${board.boardNum}">
 				<a href="/board/boardList.do">List</a>

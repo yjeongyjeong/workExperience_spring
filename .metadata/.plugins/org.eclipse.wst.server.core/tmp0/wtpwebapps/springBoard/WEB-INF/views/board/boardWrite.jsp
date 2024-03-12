@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/common/common.jsp"%>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -13,16 +13,16 @@
 	var count = 0;
 	var excludeRowCnt = document.querySelectorAll("#tableWriter").length;
 	const table = document.getElementById('boardTable');
-	var beforeTotalRowCnt = table.rows.length; //trÀÇ °³¼ö
+	var beforeTotalRowCnt = table.rows.length; //trì˜ ê°œìˆ˜
 	
 	console.log("count >> " + count);
 	console.log("excludeRowCnt >> " + excludeRowCnt);
 	console.log("beforeTotalRowCnt >> " + beforeTotalRowCnt);
 	
 		
-//	ÇàÃß°¡ÇÔ¼ö
+//	í–‰ì¶”ê°€í•¨ìˆ˜
 		$j("#addColumn").on("click",function(){
-			console.log("ÇàÃß°¡ÇÔ¼ö"); //º¸ÀÎ´Ù!
+			console.log("í–‰ì¶”ê°€í•¨ìˆ˜"); //ë³´ì¸ë‹¤!
 
  			$j.ajax({
 			    url : "/board/boardTypesAction.do",
@@ -32,8 +32,8 @@
 //			    data : JSON.stringify(param),
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	//javascript¿¡¼­ ${codeList}¸¦ º¯¼ö·Î ¹Þ°í µ¥ÀÌÅÍ¸¦ Ã³¸®ÇÏ°í ½ÍÀºµ¥ º¯¼ö·Î ¹Þ´Â ¼ø°£ jsonÇüÅÂ¿¡¼­ ¹þ¾î³ª°Ô µÇ¾î¼­ ÀüºÎ ¹®ÀÚ¿­(º¯¼ö)·Î ÀÎ½ÄµÊ..
-			    	//µû¶ó¼­ ajax·Î È£ÃâÇÏ¿© ¼º°ø½Ã ÇàÃß°¡ ·ÎÁ÷À» ½ÇÇàÇÔ
+			    	//javascriptì—ì„œ ${codeList}ë¥¼ ë³€ìˆ˜ë¡œ ë°›ê³  ë°ì´í„°ë¥¼ ì²˜ë¦¬í•˜ê³  ì‹¶ì€ë° ë³€ìˆ˜ë¡œ ë°›ëŠ” ìˆœê°„ jsoní˜•íƒœì—ì„œ ë²—ì–´ë‚˜ê²Œ ë˜ì–´ì„œ ì „ë¶€ ë¬¸ìžì—´(ë³€ìˆ˜)ë¡œ ì¸ì‹ë¨..
+			    	//ë”°ë¼ì„œ ajaxë¡œ í˜¸ì¶œí•˜ì—¬ ì„±ê³µì‹œ í–‰ì¶”ê°€ ë¡œì§ì„ ì‹¤í–‰í•¨
 			    	codeNames = data.map(function(item) {
 			    		    return item.codeName;
 			    	});
@@ -42,69 +42,69 @@
 			    	});
 			    	//alert(codeNames);
 			    	
-			    	// select ¿ä¼Ò »ý¼º ¹× ¿É¼Ç Ãß°¡
+			    	// select ìš”ì†Œ ìƒì„± ë° ì˜µì…˜ ì¶”ê°€
 		            var addedSelect = document.createElement('select');
 		            addedSelect.name = "boardType";
 		            addedSelect.id = "boardType";
 
 		            codeNames.forEach(function(codeName, index) {
 		                var option = document.createElement('option');
-		                option.value = codeIds[index]; // °¢ optionÀÇ value¿¡ codeId¸¦ ¼³Á¤
+		                option.value = codeIds[index]; // ê° optionì˜ valueì— codeIdë¥¼ ì„¤ì •
 		                option.textContent = codeName;
 		                addedSelect.appendChild(option);
 		            });
 		            
 		            /* codeNames.forEach(function(codeName) {
 		                var option = document.createElement('option');
-		                //option.value = codeName; codeNameÀ¸·Î °ªÀÌ µé¾î°¡¼­ controller¿¡¼­ ÀÐ¾î¿ÀÁö ¸øÇÔ!!
+		                //option.value = codeName; codeNameìœ¼ë¡œ ê°’ì´ ë“¤ì–´ê°€ì„œ controllerì—ì„œ ì½ì–´ì˜¤ì§€ ëª»í•¨!!
 		                option.textContent = codeName;
 		                addedSelect.appendChild(option);
 		            }); */
 
-		            // Ãß°¡µÈ select ¿ä¼Ò¸¦ ¼¿¿¡ Ãß°¡
+		            // ì¶”ê°€ëœ select ìš”ì†Œë¥¼ ì…€ì— ì¶”ê°€
 		            var newCell6 = newType.insertCell(1);
 		            newCell6.appendChild(addedSelect);
 		    
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
-			    	alert("½ÇÆÐ");
+			    	alert("ì‹¤íŒ¨");
 			    }
 			}); 
 			
 			count++;
 			console.log("count >> " + count);
 			
-			//»õ Çà(row)Ãß°¡ ==> writerº¸´Ù ¾Õ¿¡.. -1·Î Àâ°í ÇØµµ µÉ °Í °°°í writer id³ª name°ªÀ¸·Î ÇØµµ µÉ °Í °°À½ 
-			//±×·¡¼­ ±×³É boardWriter ¼±ÅÃÇØ¼­ ÇÏ´Â°É·Î Çß´Ù..¤¾¤¾
+			//ìƒˆ í–‰(row)ì¶”ê°€ ==> writerë³´ë‹¤ ì•žì—.. -1ë¡œ ìž¡ê³  í•´ë„ ë  ê²ƒ ê°™ê³  writer idë‚˜ nameê°’ìœ¼ë¡œ í•´ë„ ë  ê²ƒ ê°™ìŒ 
+			//ê·¸ëž˜ì„œ ê·¸ëƒ¥ boardWriter ì„ íƒí•´ì„œ í•˜ëŠ”ê±¸ë¡œ í–ˆë‹¤..ã…Žã…Ž
 			const boardWriter = document.getElementById('tableWriter');
 			const writerIndex = boardWriter.rowIndex;
-			console.log("insertµÉ À§Ä¡ writerIndex >> " + writerIndex ); 
+			console.log("insertë  ìœ„ì¹˜ writerIndex >> " + writerIndex ); 
 			
 			const newComment = table.insertRow(writerIndex);
 			const newTitle = table.insertRow(writerIndex);
 			const newType = table.insertRow(writerIndex);
 			
 			
-			//»õ Çà(orw)¿¡ cellÃß°¡
+			//ìƒˆ í–‰(orw)ì— cellì¶”ê°€
 			const newCell1 = newTitle.insertCell(0);
 			const newCell2 = newTitle.insertCell(1);
 			const newCell3 = newComment.insertCell(0);
 			const newCell4 = newComment.insertCell(1);
 			const newCell5 = newType.insertCell(0);
-			//const newCell6 = newType.insertCell(1); //ajax¿¡¼­ Ã³¸®ÇÔ!
+			//const newCell6 = newType.insertCell(1); //ajaxì—ì„œ ì²˜ë¦¬í•¨!
 			
-			//cell¿¡ ÅØ½ºÆ® Ãß°¡
+			//cellì— í…ìŠ¤íŠ¸ ì¶”ê°€
 			newCell1.innerText = 'Title';
 			newCell3.innerText = 'Comment';
 			newCell5.innerText = 'Type';
 			
-			//Ãß°¡µÈ ¾Öµé ½ºÅ¸ÀÏ ³Ö±â
+			//ì¶”ê°€ëœ ì• ë“¤ ìŠ¤íƒ€ì¼ ë„£ê¸°
 			newCell1.align = "center";
 			newCell3.align = "center";
 			newCell5.align = "center";
 			
-			//input ¹Ú½º·Î º¯È¯... ÀÌ¶ó±âº¸´Ü Ãß°¡
+			//input ë°•ìŠ¤ë¡œ ë³€í™˜... ì´ë¼ê¸°ë³´ë‹¨ ì¶”ê°€
 			var addedTitle = document.createElement( 'input' );
 			addedTitle.size = 50;
 			addedTitle.name = "boardTitle";
@@ -124,41 +124,41 @@
 		});
 		
 		
-//	Çà»èÁ¦ÇÔ¼ö
+//	í–‰ì‚­ì œí•¨ìˆ˜
 		$j("#deleteColumn").on("click",function(){
-			console.log("Çà»èÁ¦ÇÔ¼ö"); 
+			console.log("í–‰ì‚­ì œí•¨ìˆ˜"); 
 			
 			count--;
 			console.log("count >> " + count);
 			
 			const table = document.getElementById('boardTable');
-			var checkbox = $j("input:checkbox[name=deleteCheck]:checked"); //jQuery °´Ã¼·Î µ¥ÀÌÅÍ°¡ ´ã°ÜÀÖ´Â »óÅÂ
+			var checkbox = $j("input:checkbox[name=deleteCheck]:checked"); //jQuery ê°ì²´ë¡œ ë°ì´í„°ê°€ ë‹´ê²¨ìžˆëŠ” ìƒíƒœ
 			
 			checkbox.each(function(){
-				//$j(this).parent() : checkboxÀÇ ºÎ¸ð´Â td
-				//$j(this).parent().parent() : tdÀÇ ºÎ¸ð´Â tr	
-		    var tr = $j(this).closest('tr'); // ÇöÀç Ã¼Å©¹Ú½º°¡ ¼ÓÇÑ tr ¿ä¼Ò¸¦ Ã£À½
-		    var titleTr = tr.prev(); // title tr ¿ä¼Ò¸¦ Ã£À½
-		    var commentTr = tr; // comment tr ¿ä¼Ò´Â ÇöÀç Ã¼Å©¹Ú½º°¡ ¼ÓÇÑ tr ¿ä¼Ò
-		    var typeTr = titleTr.prev(); // type ¿ä¼Ò¸¦ Ã£À½
+				//$j(this).parent() : checkboxì˜ ë¶€ëª¨ëŠ” td
+				//$j(this).parent().parent() : tdì˜ ë¶€ëª¨ëŠ” tr	
+		    var tr = $j(this).closest('tr'); // í˜„ìž¬ ì²´í¬ë°•ìŠ¤ê°€ ì†í•œ tr ìš”ì†Œë¥¼ ì°¾ìŒ
+		    var titleTr = tr.prev(); // title tr ìš”ì†Œë¥¼ ì°¾ìŒ
+		    var commentTr = tr; // comment tr ìš”ì†ŒëŠ” í˜„ìž¬ ì²´í¬ë°•ìŠ¤ê°€ ì†í•œ tr ìš”ì†Œ
+		    var typeTr = titleTr.prev(); // type ìš”ì†Œë¥¼ ì°¾ìŒ
 		    
-		    console.log("titleÀÇ index >> " + titleTr[0].rowIndex);
-		    console.log("commentÀÇ index >> " + commentTr[0].rowIndex);
+		    console.log("titleì˜ index >> " + titleTr[0].rowIndex);
+		    console.log("commentì˜ index >> " + commentTr[0].rowIndex);
 		    
-		    table.deleteRow(titleTr[0].rowIndex); // title tr ¿ä¼Ò »èÁ¦
-		    table.deleteRow(commentTr[0].rowIndex); // comment tr ¿ä¼Ò »èÁ¦
-		    table.deleteRow(typeTr[0].rowIndex); // comment tr ¿ä¼Ò »èÁ¦
+		    table.deleteRow(titleTr[0].rowIndex); // title tr ìš”ì†Œ ì‚­ì œ
+		    table.deleteRow(commentTr[0].rowIndex); // comment tr ìš”ì†Œ ì‚­ì œ
+		    table.deleteRow(typeTr[0].rowIndex); // comment tr ìš”ì†Œ ì‚­ì œ
 
 			});
 			
 			if(checkbox.length == 0){
-				alert("»èÁ¦ÇÒ ÇàÀÌ ¾ø½À´Ï´Ù.");
+				alert("ì‚­ì œí•  í–‰ì´ ì—†ìŠµë‹ˆë‹¤.");
 			}
 			
 		});
 		
 		
-//board Á¦Ãâ ÇÔ¼ö		
+//board ì œì¶œ í•¨ìˆ˜		
 	$j("#submit").on("click",function(e){
 			
 			const table = document.getElementById('boardTable');
@@ -170,13 +170,13 @@
 			console.log(boardComments);
 			console.log(boardTypes);
 			
-			//var boardMap = new Map(); -> Å°°ªÀÌ Áßº¹µÇ¹Ç·Î »ç¿ëÀ» Áö¾çÇØ¾ßÇÔ ¿Ö³Ä¸é Å°°ªÀÌ Áßº¹µÇ¸é ¸¶Áö¸·¿¡ ÀúÀåµÈ°ªÀ¸·Î ÀúÀåµÇ±â ¶§¹®!
+			//var boardMap = new Map(); -> í‚¤ê°’ì´ ì¤‘ë³µë˜ë¯€ë¡œ ì‚¬ìš©ì„ ì§€ì–‘í•´ì•¼í•¨ ì™œëƒë©´ í‚¤ê°’ì´ ì¤‘ë³µë˜ë©´ ë§ˆì§€ë§‰ì— ì €ìž¥ëœê°’ìœ¼ë¡œ ì €ìž¥ë˜ê¸° ë•Œë¬¸!
 			var boardData = [];
 			
 			var AfterTotalRowCnt = table.rows.length;
 			console.log("AfterTotalRowCnt >> " + AfterTotalRowCnt);
 
-			//count°¡ 0ÀÌ µÇ´Â °æ¿ì(¾Æ¹«·± º¯È­°¡ ¾ø´Â °æ¿ì) => NaN
+			//countê°€ 0ì´ ë˜ëŠ” ê²½ìš°(ì•„ë¬´ëŸ° ë³€í™”ê°€ ì—†ëŠ” ê²½ìš°) => NaN
 			if( count == 0 ){			
 				var divisionNum = (beforeTotalRowCnt-excludeRowCnt);
 				console.log("divisionNum >> "+ (beforeTotalRowCnt-excludeRowCnt) );
@@ -189,12 +189,12 @@
 			for(var i =0; i< boardTitles.length; i++){
 				var title = boardTitles.eq(i).val();
 				var comment = boardComments.eq(i).val();
-				var type = boardTypes.eq(i).val(); //¿¡·¯ ¹ß»ý
+				var type = boardTypes.eq(i).val(); //ì—ëŸ¬ ë°œìƒ
 				
-				var deleteSpaceTitle = title.replace(/\s/gi, ""); // Á¤±Ô½Ä => s : °ø¹é g : ±Û·Î¹ú ¸ÅÄª.. ÀÏÄ¡ÇÏ´Â ¸ðµç ºÎºÐÀ» Ã£À½ i : ´ë¼Ò¹®ÀÚ ±¸º°¾øÀÌ
+				var deleteSpaceTitle = title.replace(/\s/gi, ""); // ì •ê·œì‹ => s : ê³µë°± g : ê¸€ë¡œë²Œ ë§¤ì¹­.. ì¼ì¹˜í•˜ëŠ” ëª¨ë“  ë¶€ë¶„ì„ ì°¾ìŒ i : ëŒ€ì†Œë¬¸ìž êµ¬ë³„ì—†ì´
 				var deleteSpaceComment = comment.replace(/\s/gi, "");
 				
-				const boardVo = { // BoardVo °´Ã¼ »ý¼º
+				const boardVo = { // BoardVo ê°ì²´ ìƒì„±
 						"boardType": type,
 			            "boardTitle": title,
 			            "boardComment": comment
@@ -203,16 +203,16 @@
 				boardData.push(boardVo );
 			}
 			
-			// ¾Æ¹«°Íµµ ¾ø°Å³ª °ø¹é¸¸ ÀÔ·ÂÇÑ °æ¿ì Á¦¿Ü
+			// ì•„ë¬´ê²ƒë„ ì—†ê±°ë‚˜ ê³µë°±ë§Œ ìž…ë ¥í•œ ê²½ìš° ì œì™¸
 			if( boardTitles.val() == null || boardTitles.val() == "" || deleteSpaceTitle == ""  ){
 				//e.preventDefault();
-				alert("Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+				alert("ì œëª©ì„ ìž…ë ¥í•´ì£¼ì„¸ìš”.");
 				console.log("deleteSpaceTitle >>> " + deleteSpaceTitle);
 				return false;
 			} 
 			if( boardComments.val() == null || boardComments.val() == "" || deleteSpaceComment == ""   ){
 				//e.preventDefault();
-				alert("³»¿ëÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+				alert("ë‚´ìš©ì„ ìž…ë ¥í•´ì£¼ì„¸ìš”.");
 				console.log("deleteSpaceComment >>> " + deleteSpaceComment);
 				return false;
 			}
@@ -220,7 +220,7 @@
 //			var $frm = $j('.boardWrite :input');
 //			var param = $frm.serialize();
 
-			var param = boardData; //¹è¿­
+			var param = boardData; //ë°°ì—´
 	
  			$j.ajax({
 			    url : "/board/boardWriteAction.do",
@@ -230,15 +230,15 @@
 			    data : JSON.stringify(param),
 			    success: function(data, textStatus, jqXHR)
 			    {
-					alert("ÀÛ¼º¿Ï·á");
+					alert("ìž‘ì„±ì™„ë£Œ");
 					
-					alert("¸Þ¼¼Áö:"+data.success);
+					alert("ë©”ì„¸ì§€:"+data.success);
 					
 					location.href = "/board/boardList.do?pageNo=1";
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
-			    	alert("½ÇÆÐ");
+			    	alert("ì‹¤íŒ¨");
 			    }
 			});  
 		});
@@ -253,9 +253,9 @@
 	<table align="center">
 		<tr>
 			<td align="right">
-			<input id="deleteColumn" type="button" value="Çà»èÁ¦(Title&Comment)">
-			<input id="addColumn" type="button" value="ÇàÃß°¡(Title&Comment)">
-			<input id="submit" type="button" value="ÀÛ¼º">
+			<input id="deleteColumn" type="button" value="í–‰ì‚­ì œ(Title&Comment)">
+			<input id="addColumn" type="button" value="í–‰ì¶”ê°€(Title&Comment)">
+			<input id="submit" type="button" value="ìž‘ì„±">
 			</td>
 		</tr>
 		<tr>

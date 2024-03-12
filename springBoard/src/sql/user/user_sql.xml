@@ -22,6 +22,40 @@
 		where
 			USER_ID = #{userId}
 	</select>
+	
+	<select id="userInsert" parameterType="com.spring.board.vo.UserInfoVo">
+		insert into
+		user_info
+			(
+			USER_ID 
+			,USER_PW 
+			,USER_NAME
+			,USER_PHONE1   
+			,USER_PHONE2
+			,USER_PHONE3 
+			,USER_ADDR1   
+			,USER_ADDR2
+			,USER_COMPANY 
+			,CREATOR
+			,CREATE_TIME
+			,MODIFIER
+			,MODIFIED_TIME
+			)
+		values(
+			#{userId}
+			,#{userPw}
+			,#{userPhone1}
+			,#{userPhone2}
+			,#{userPhone3}
+			,#{userAddr1}
+			,#{userAddr2}
+			,#{userCompany}
+			,'SYSTEM'
+			,TO_CHAR(SYSDATE)
+			,'SYSTEM'
+			,TO_CHAR(SYSDATE)
+			)
+	</select>
 
 
 </mapper>

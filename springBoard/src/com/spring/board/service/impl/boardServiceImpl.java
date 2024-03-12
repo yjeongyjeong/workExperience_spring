@@ -73,5 +73,10 @@ public class boardServiceImpl implements boardService{
 	public int userIdCheck(UserInfoVo userVo) throws Exception {
 		return boardDao.userIdCheck(userVo);
 	}
+
+	@Override
+	public int userInsert(UserInfoVo userVo) throws Exception {
+		return boardDao.userInsert(userVo);
+	}
 	
 }

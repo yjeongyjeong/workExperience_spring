@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/common/common.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>list</title>
 </head>
 <script type="text/javascript">
@@ -16,7 +16,7 @@
 			 var boardList = [];
 			 console.log(boardTypes);
 			 if(boardTypes.length == 0){
-				 alert("Á¶È¸ Å¸ÀÔÀ» ¼±ÅÃÇÏ¼¼¿ä.");
+				 alert("ì¡°íšŒ íƒ€ì…ì„ ì„ íƒí•˜ì„¸ìš”.");
 				 return false;
 			 }
 
@@ -47,14 +47,14 @@
 										    },
 				    error: function (jqXHR, textStatus, errorThrown)
 				    {
-				    	alert("½ÇÆĞ");
+				    	alert("ì‹¤íŒ¨");
 				    }
 				});
 
 		});
 	}); 
 	
-	//ÀüÃ¼¼±ÅÃ
+	//ì „ì²´ì„ íƒ
 	function selectAll(selectAll){
 		const checkboxes = document.getElementsByName('menu');
 		checkboxes.forEach((checkbox) => {
@@ -62,13 +62,13 @@
 		});
 	};
 	
-	//ÇÏ³ª¶óµµ Ã¼Å©µÇÁö ¾ÊÀ¸¸é ÀüÃ¼ ¼±ÅÃÀÌ ÇØÁ¦µÇ°í ÀüºÎ Ã¼Å©ÇÏ¸é ÀüÃ¼¼±ÅÃÀÌ Ã¼Å©
+	//í•˜ë‚˜ë¼ë„ ì²´í¬ë˜ì§€ ì•Šìœ¼ë©´ ì „ì²´ ì„ íƒì´ í•´ì œë˜ê³  ì „ë¶€ ì²´í¬í•˜ë©´ ì „ì²´ì„ íƒì´ ì²´í¬
 	function checkSelectAll(){
-		//ÀüÃ¼ Ã¼Å© ¹Ú½º
+		//ì „ì²´ ì²´í¬ ë°•ìŠ¤
 		const checkboxes = document.querySelectorAll("input[name='menu']");
 		const checked = $j("input:checkbox[name=menu]:checked");
 		
-		//select all Ã¼Å© ¹Ú½º
+		//select all ì²´í¬ ë°•ìŠ¤
 		const selectAll = document.querySelector("input[name='selectall']");
 		
 		if( (checkboxes.length === checked.length) ){
@@ -78,63 +78,63 @@
 		}
 	};
 	
-	//forEach Å×ÀÌºí µ¥ÀÌÅÍ ³Ö´Â ÇÔ¼ö
+	//forEach í…Œì´ë¸” ë°ì´í„° ë„£ëŠ” í•¨ìˆ˜
 	function changeList(data) {
-	  const table = document.getElementById('boardTable'); // Å×ÀÌºí ¿ä¼Ò °¡Á®¿À±â
-	  const boardListName = document.getElementById('boardListName'); // Å×ÀÌºí ¿ä¼Ò °¡Á®¿À±â
-	  const tbody = table.querySelector('tbody'); // tbody ¿ä¼Ò °¡Á®¿À±â
+	  const table = document.getElementById('boardTable'); // í…Œì´ë¸” ìš”ì†Œ ê°€ì ¸ì˜¤ê¸°
+	  const boardListName = document.getElementById('boardListName'); // í…Œì´ë¸” ìš”ì†Œ ê°€ì ¸ì˜¤ê¸°
+	  const tbody = table.querySelector('tbody'); // tbody ìš”ì†Œ ê°€ì ¸ì˜¤ê¸°
 
-	  const wrapTable = document.getElementById('wrapTable'); // Å×ÀÌºí ¿ä¼Ò °¡Á®¿À±â
+	  const wrapTable = document.getElementById('wrapTable'); // í…Œì´ë¸” ìš”ì†Œ ê°€ì ¸ì˜¤ê¸°
 	  const informTr = document.getElementById('inform');
 	  
 	  console.log(table);
 	  console.log(tbody);
 	  
-	  //À½ Å×ÀÌºí¿¡¼­ ¸ÇÃ³À½ tr»©°í ³ª¸ÓÁö ÇàÀº »èÁ¦ÇÏ°í µ¥ÀÌÅÍ ¸¸µé¾î¼­ ±× ¹Ø¿¡ ³¢¿ö³Ö¾îµµ µÉ °Í °°±âµÎ...
-      //var boardListTr = $('#boardTable tr:nth-child(2)'); //boardTableÀÇ trÁß¿¡ µÎ¹øÂ° trÀ» ¼±ÅÃ
-	  //tbody.innerHTML = ''; tbody³»ÀÇ ¸ğµç°É ÃÊ±âÈ­½ÃÅ°´Âµ¥ ½ºÅ¸ÀÏ±îÁö ³¯¾Æ¹Ç·Î.. Á¶±İ ±ÍÂúÀ½
- 		$j('#boardTable tr:not(:first-child)').remove(); //Ã¹¹øÂ° »©°í ÀüºÎ Á¦°Å
+	  //ìŒ í…Œì´ë¸”ì—ì„œ ë§¨ì²˜ìŒ trë¹¼ê³  ë‚˜ë¨¸ì§€ í–‰ì€ ì‚­ì œí•˜ê³  ë°ì´í„° ë§Œë“¤ì–´ì„œ ê·¸ ë°‘ì— ë¼ì›Œë„£ì–´ë„ ë  ê²ƒ ê°™ê¸°ë‘...
+      //var boardListTr = $('#boardTable tr:nth-child(2)'); //boardTableì˜ trì¤‘ì— ë‘ë²ˆì§¸ trì„ ì„ íƒ
+	  //tbody.innerHTML = ''; tbodyë‚´ì˜ ëª¨ë“ ê±¸ ì´ˆê¸°í™”ì‹œí‚¤ëŠ”ë° ìŠ¤íƒ€ì¼ê¹Œì§€ ë‚ ì•„ë¯€ë¡œ.. ì¡°ê¸ˆ ê·€ì°®ìŒ
+ 		$j('#boardTable tr:not(:first-child)').remove(); //ì²«ë²ˆì§¸ ë¹¼ê³  ì „ë¶€ ì œê±°
 
  		
  		
  		
- 		// µ¥ÀÌÅÍ¸¦ forEach·Î ¼øÈ¸ÇÏ¸ç Å×ÀÌºí¿¡ Ãß°¡
+ 		// ë°ì´í„°ë¥¼ forEachë¡œ ìˆœíšŒí•˜ë©° í…Œì´ë¸”ì— ì¶”ê°€
  	  data.forEach(function(item) {
-	    const row = document.createElement('tr'); // »õ·Î¿î Çà »ı¼º
+	    const row = document.createElement('tr'); // ìƒˆë¡œìš´ í–‰ ìƒì„±
 
-	    // boardType Ãß°¡ÇÏ±â
+	    // boardType ì¶”ê°€í•˜ê¸°
 	    const typeCell = document.createElement('td');
-	    //textContent : ³»ºÎ ÅØ½ºÆ® ³»¿ë boardType : ajax·Î ¹Ş¾Æ¿Â data¿¡¼­ boardType¿¡ ÇØ´çÇÏ´Â µ¥ÀÌÅÍ
-	    //Áï typeCellÀÌ¶ó´Â td ³»ºÎÀÇ ±ÛÀÚ¸¦ boardType¿¡ ÇØ´çÇÏ´Â ¹®ÀÚ·Î ¹Ù²Û´Ù´Â ÀÇ¹Ì
+	    //textContent : ë‚´ë¶€ í…ìŠ¤íŠ¸ ë‚´ìš© boardType : ajaxë¡œ ë°›ì•„ì˜¨ dataì—ì„œ boardTypeì— í•´ë‹¹í•˜ëŠ” ë°ì´í„°
+	    //ì¦‰ typeCellì´ë¼ëŠ” td ë‚´ë¶€ì˜ ê¸€ìë¥¼ boardTypeì— í•´ë‹¹í•˜ëŠ” ë¬¸ìë¡œ ë°”ê¾¼ë‹¤ëŠ” ì˜ë¯¸
 	    typeCell.textContent = item.boardType; 
 	    typeCell.align="center";
-	    row.appendChild(typeCell); // Çà¿¡´Ù°¡ Ãß°¡
+	    row.appendChild(typeCell); // í–‰ì—ë‹¤ê°€ ì¶”ê°€
 
-	    // boardNum Ãß°¡ÇÏ±â
+	    // boardNum ì¶”ê°€í•˜ê¸°
 	    const numCell = document.createElement('td');
 	    numCell.textContent = item.boardNum;
 	    row.appendChild(numCell);
 
 //	    console.log(item);
 
-		// boardTitle Ãß°¡ÇÏ±â
+		// boardTitle ì¶”ê°€í•˜ê¸°
 	    const titleCell = document.createElement('td');
 	    const link = document.createElement('a');
 
 	    const hrefLink = '/board/'+item.boardType + '/' + item.boardNum + '/boardView.do?pageNo=' + item.pageNo;
 	    //console.log(hrefLink);
-//	    ¾Æ·¡´ë·Î ÇÏ¸é °ªÀÌ ¾Èµé¾î¿È...
+//	    ì•„ë˜ëŒ€ë¡œ í•˜ë©´ ê°’ì´ ì•ˆë“¤ì–´ì˜´...
 //	    link.href = `/board/${item.boardType}/${item.boardNum}/boardView.do?pageNo=${item.pageNo}`;
 	    link.href = hrefLink;
 	    link.textContent = item.boardTitle;
 	    titleCell.appendChild(link);
 	    row.appendChild(titleCell);
  
-	    // Çà(tr ÀÌÇÏ ÀüºÎ)À» tbody(boardTable³»ÀÇ tbody¿¡ Ãß°¡)
+	    // í–‰(tr ì´í•˜ ì „ë¶€)ì„ tbody(boardTableë‚´ì˜ tbodyì— ì¶”ê°€)
 	    tbody.appendChild(row); 
 	  }); //end forEach
 	  
-	 //tableÀüÃ¼ ÇàÀÇ °³¼ö¸¦ ¼¼¾ßÇÏ¹Ç·Î forEachº¸´Ù ¾Æ·¡¿¡ ÀÖ¾î¾ß ÇÔ => Å×ÀÌºí¿¡ Ç¥½ÃµÇ´Â ÇàÀ» ¹«Á¶°Ç 10À¸·Î ÇØ³ö¼­ ÃÖ´ë°ªÀÌ °íÁ¤µÇ¾î¹ö¸²
+	 //tableì „ì²´ í–‰ì˜ ê°œìˆ˜ë¥¼ ì„¸ì•¼í•˜ë¯€ë¡œ forEachë³´ë‹¤ ì•„ë˜ì— ìˆì–´ì•¼ í•¨ => í…Œì´ë¸”ì— í‘œì‹œë˜ëŠ” í–‰ì„ ë¬´ì¡°ê±´ 10ìœ¼ë¡œ í•´ë†”ì„œ ìµœëŒ€ê°’ì´ ê³ ì •ë˜ì–´ë²„ë¦¼
  	  if (data != "") {
 		  $j('#totalCnt').remove();
 			const totalCnt = data[0].totalCnt; 
@@ -145,7 +145,7 @@
 		    totalrow.textContent = 'total : ' + totalCnt;
 		    totalrow.align = "right";
 		    informTr.appendChild(totalrow);
-		}else{ // data°¡ ¾ø´Â °æ¿ì
+		}else{ // dataê°€ ì—†ëŠ” ê²½ìš°
 			$j('#totalCnt').remove();
 			const totalCnt = 0; 
 		    console.log(totalCnt);
@@ -207,17 +207,17 @@
 	
 	<tr>
 		<td align="center">
-			<input type="checkbox" id="select_all" name="selectall" onclick="selectAll(this)" >ÀüÃ¼
+			<input type="checkbox" id="select_all" name="selectall" onclick="selectAll(this)" >ì „ì²´
 	<c:forEach items="${codeList}" var="codeList">
 			<input type="checkbox" id="${codeList}.codeId" name="menu" onclick="return checkSelectAll()" value="${codeList.codeId }">${codeList.codeName }
 	</c:forEach>
-			<input id="search" type="button" value="Á¶È¸"  >
+			<input id="search" type="button" value="ì¡°íšŒ"  >
 		</td>
 	</tr>
 	
 	<tr>
 		<td align="right">
-			<a href ="/board/boardWrite.do">±Û¾²±â</a>
+			<a href ="/board/boardWrite.do">ê¸€ì“°ê¸°</a>
 		</td>
 	</tr>
 </table>
