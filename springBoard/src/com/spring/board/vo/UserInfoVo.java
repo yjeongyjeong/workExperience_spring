@@ -14,6 +14,14 @@ public class UserInfoVo {
 	private String	modifier;
 	
 	
+	@Override
+	public String toString() {
+		return "UserInfoVo [userId=" + userId + ", userPw=" + userPw + ", userName=" + userName + ", userPhone1="
+				+ userPhone1 + ", userPhone2=" + userPhone2 + ", userPhone3=" + userPhone3 + ", userAddr1=" + userAddr1
+				+ ", userAddr2=" + userAddr2 + ", userCompany=" + userCompany + ", creator=" + creator + ", modifier="
+				+ modifier + "]";
+	}
+	
 	public String getUserId() {
 		return userId;
 	}

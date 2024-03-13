@@ -78,4 +78,9 @@ public class BoardDaoImpl implements BoardDao{
 		return sqlSession.insert("user.userInsert", userVo);
 	}
 	
+	@Override
+	public int userLoginCheck(UserInfoVo userVo) throws Exception {
+		return sqlSession.selectOne("user.userLoginCheck", userVo);
+	}
+	
 }

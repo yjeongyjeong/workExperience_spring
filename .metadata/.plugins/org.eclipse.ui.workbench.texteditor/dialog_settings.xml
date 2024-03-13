@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="List"/>
+		<item key="selection" value="logout"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="logOut"/>
+			<item value="changeList"/>
+			<item value="insert"/>
+			<item value="(UserInfoVo) "/>
+			<item value="loginUser"/>
+			<item value="boardTable"/>
+			<item value="Action"/>
+			<item value="login"/>
+			<item value="location"/>
+			<item value="userPhone1"/>
+			<item value="userphone"/>
+			<item value="userName"/>
+			<item value="userCompany"/>
 			<item value="list"/>
 			<item value="write"/>
-			<item value="keyup"/>
-			<item value="userPhone2"/>
-			<item value="phone1"/>
-			<item value="userId"/>
-			<item value="idChk"/>
-			<item value="boardWrite"/>
-			<item value=":input"/>
-			<item value="formSubmit"/>
-			<item value="for"/>
-			<item value="ajax"/>
-			<item value="input["/>
-			<item value="/form"/>
-			<item value="form"/>
 		</list>
 		<list key="replacehistory">
 			<item value="UTF-8"/>
@@ -30,8 +30,8 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="206"/>
-		<item key="DIALOG_Y_ORIGIN" value="202"/>
+		<item key="DIALOG_X_ORIGIN" value="63"/>
+		<item key="DIALOG_Y_ORIGIN" value="134"/>
 		<item key="DIALOG_WIDTH" value="340"/>
 		<item key="DIALOG_HEIGHT" value="454"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>

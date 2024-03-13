@@ -190,28 +190,29 @@
 				}
 		        
 		        
-		        //Invalid left-hand side in assignment 에러 발생..ㅎㅎ
+		        //userAddr2 혹은 company가 비어있는 경우 임의로 값을 지정..
+		        //근데 먼저 Addr2값이 지정되면 if에서 빠져나가기 때문에 ??
 				 else if ( $j('#userAddr2').val().length == 0 ) {
-					$j('#userAddr2').val() = "none";
+					$j('#userAddr2').val("none");
 				}
 				
-				 else if ( $j('#userCompany').val().length != 0 ) {
-					$j('#userAddr2').val() = "none";
+				 else if( $j('#userCompany').val().length == 0 ) {
+					$j('#userCompany').val("none");
 				}
 	
-				var frm = $j('.boardTable :input');
+				/* var frm = $j('.boardTable :input');
 				var param = frm.serialize(); 
 
 				console.log("*************************");
 				console.log(frm);
 				console.log(param);
-				
+ */				
 				var userData = [];
 				
 				var userId = $j('#userId').val();
 				var userPw = $j('#userPw').val();
 				var userName = $j('#userName').val();
-				var userPhone1 = $j('#userPhone1').val();
+				var userPhone1 = $j("select[name='userPhone1']").val();
 				var userPhone2 = $j('#userPhone2').val();
 				var userPhone3 = $j('#userPhone3').val();
 				var userAddr1 = $j('#userAddr1').val();
@@ -231,6 +232,7 @@
 				};
 				
 				userData.push(userVo);
+				console.log(userVo);
 				
 				$j.ajax({
 				    url : "/board/boardUserjoinAction.do",
@@ -241,6 +243,8 @@
 				    success: function(data, textStatus, jqXHR)
 				    {
 				    	console.log(data);
+				    	alert("회원가입이 완료되었습니다!");
+				    	location.href = "/board/boardList.do?pageNo=1";
 				    },
 				    error: function (jqXHR, textStatus, errorThrown)
 				    {
@@ -314,7 +318,7 @@
 					<td >
 					<select name="userPhone1" id="userPhone1">
 						<c:forEach items="${codeList}" var="codeList">
-							<option value="${codeList.codeId}">${codeList.codeName}</option>						
+							<option value="${codeList.codeName}">${codeList.codeName}</option>						
 						</c:forEach>
 					</select>
 					-

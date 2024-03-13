@@ -189,7 +189,7 @@
 			for(var i =0; i< boardTitles.length; i++){
 				var title = boardTitles.eq(i).val();
 				var comment = boardComments.eq(i).val();
-				var type = boardTypes.eq(i).val(); //에러 발생
+				var type = boardTypes.eq(i).val();
 				
 				var deleteSpaceTitle = title.replace(/\s/gi, ""); // 정규식 => s : 공백 g : 글로벌 매칭.. 일치하는 모든 부분을 찾음 i : 대소문자 구별없이
 				var deleteSpaceComment = comment.replace(/\s/gi, "");
@@ -197,7 +197,7 @@
 				const boardVo = { // BoardVo 객체 생성
 						"boardType": type,
 			            "boardTitle": title,
-			            "boardComment": comment
+			            "boardComment": comment,
 			        };
 				
 				boardData.push(boardVo );
@@ -297,6 +297,9 @@
 						Writer
 						</td>
 						<td>
+						<c:if test="${loginUser != null}">
+							<input id="creator" name="creator" value="${loginUser.userId}" readonly="readonly">
+						</c:if>
 						</td>
 					</tr>
 				</table>

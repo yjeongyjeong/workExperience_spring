@@ -23,7 +23,7 @@
 			USER_ID = #{userId}
 	</select>
 	
-	<select id="userInsert" parameterType="com.spring.board.vo.UserInfoVo">
+	<insert id="userInsert" parameterType="com.spring.board.vo.UserInfoVo">
 		insert into
 		user_info
 			(
@@ -44,6 +44,7 @@
 		values(
 			#{userId}
 			,#{userPw}
+			,#{userName}
 			,#{userPhone1}
 			,#{userPhone2}
 			,#{userPhone3}
@@ -55,7 +56,17 @@
 			,'SYSTEM'
 			,TO_CHAR(SYSDATE)
 			)
-	</select>
+	</insert>
 
+	<select id="userLoginCheck" parameterType="com.spring.board.vo.UserInfoVo" resultType="Integer">
+		select 
+			count(*)
+		from 
+			user_info
+		where
+			user_id = #{userId}
+		and
+			user_pw = #{userPw}
+	</select>
 
 </mapper>

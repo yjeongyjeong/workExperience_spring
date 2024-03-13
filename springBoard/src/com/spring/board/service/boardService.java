@@ -27,6 +27,7 @@ public interface boardService {
 
 	public int userIdCheck(UserInfoVo userVo) throws Exception;
 	public int userInsert(UserInfoVo userVo) throws Exception;
+	public int userLoginCheck(UserInfoVo userVo) throws Exception;
 
 
 }

@@ -160,16 +160,60 @@
 		
 	}; // end changeList
 	
+	
+	//로그아웃
+	 $j(document).ready(function(){
+		 $j("#logout").on("click", function(e){
+			 
+			 //var param = ${loginUser};
+			 //Uncaught SyntaxError: Unexpected token '!' 
+			 //var param = UserInfoVo [userId=whffu1, userPw=whffu1!, userName=null, userPhone1=null, userPhone2=null, userPhone3=null, userAddr1=null, userAddr2=none, userCompany=none, creator=null, modifier=null];
+
+			 var param = {
+					 "userId": ${loginUser.userId},
+					 "userPw": ${loginUser.userPw}
+			 }
+			 console.log("***");
+			 console.log(param);
+			 console.log("***");
+			
+			 $j.ajax({
+				    url : "/board/boardUserLogoutAction.do",
+				    dataType: "json",
+				    type: "POST",
+				    data : param,
+				    success: function(data, textStatus, jqXHR)
+				    {
+				    	console.log("로그아웃");
+						alert("로그아웃 되었습니다.");
+						location.href = "/board/boardList.do?pageNo=1";
+
+					},
+				    error: function (jqXHR, textStatus, errorThrown)
+				    {
+				    	alert("실패");
+				    }
+				});
+
+		});
+	}); 
+	
 </script>
 <body>
 
 <table  align="center" id="wrapTable">
 	<tr id="inform">
 		<td align="left">
-			<a href=""> login</a> 
+  <c:choose>
+  	<c:when test="${loginUser != null}">
+			<a> ${loginUser.userId} </a> 
+	</c:when>
+	<c:otherwise>
+			<a href="/board/boardLogin.do"> login</a> 
 			<a href="/board/boardJoin.do"> join</a> 
+	</c:otherwise>
+  </c:choose>
 		</td>
-		
 			<td align="right" id="totalCnt">
 				total : ${totalCnt}
 			</td>
@@ -218,8 +262,12 @@
 	<tr>
 		<td align="right">
 			<a href ="/board/boardWrite.do">글쓰기</a>
+		<c:if test="${loginUser != null}" var="loginUser" >
+			<a href="#" id="logout" name="logout">로그아웃 ajax로 보내서 세션끊어야쥥</a>
+		</c:if>
 		</td>
 	</tr>
+	
 </table>
 
 <input type="hidden" name="msg" id="msg" value="${msg}">

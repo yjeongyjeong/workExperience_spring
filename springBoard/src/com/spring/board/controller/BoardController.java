@@ -7,6 +7,9 @@ import java.util.Locale;
 import java.util.Spliterator;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
@@ -38,7 +41,7 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
-	public String boardList(Locale locale, Model model, PageVo pageVo) throws Exception {
+	public String boardList(Locale locale, Model model, PageVo pageVo, HttpSession session) throws Exception {
 
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
@@ -71,11 +74,14 @@ public class BoardController {
 		pageVo.setCodeId(codeIdList);
 		boardList = boardService.SelectBoardList(pageVo);
 
+		UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+		System.out.println("session에서 가져온 userVo >>> " + loginUser);
 		
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("codeList", codeList);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);
+		model.addAttribute("loginUser", loginUser);
 
 		return "board/boardList";
 	}
@@ -96,13 +102,17 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/boardWrite.do", method = RequestMethod.GET)
-	public String boardWrite(Locale locale, Model model, ComCodeVo codeVo) throws Exception {
+	public String boardWrite(Locale locale, Model model, ComCodeVo codeVo, HttpSession session) throws Exception {
 		
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
 
 		codeVo.setCodeType("menu");
 		codeList = boardService.selectCodeList(codeVo);
+		
+		UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+		
 		model.addAttribute("codeList", codeList);
+		model.addAttribute("loginUser", loginUser);
 		
 		return "board/boardWrite";
 	}
@@ -372,5 +382,57 @@ public class BoardController {
 		return callbackMsg;
 	}
 	
+	@RequestMapping(value = "/board/boardLogin.do", method = RequestMethod.GET)
+	public String boardLogin(Locale locale, Model model) throws Exception {
+		
+		return "board/boardLogin";
+	}
 	
+	
+	@RequestMapping(value = "/board/boardUserLoginAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public int boardUserLoginAction(UserInfoVo userVo, HttpServletRequest request,
+									Model model, Locale locale) throws Exception {
+		
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); //주소값나옴... 
+
+		int loginCheckNum = boardService.userLoginCheck(userVo);
+		
+		if(loginCheckNum > 0) {
+			HttpSession session = request.getSession();
+			session.setAttribute("loginUser", userVo); //user가 있으면 1 (count 쿼리)
+			System.out.println(session.toString());
+			System.out.println(session.getAttribute("loginUser"));
+			//UserInfoVo [userId=whffu1, userPw=whffu1!, userName=null, userPhone1=null, userPhone2=null, userPhone3=null, userAddr1=null, userAddr2=none, userCompany=none, creator=null, modifier=null]
+		} 
+		return loginCheckNum;
+	}
+	
+	
+	@RequestMapping(value = "/board/boardUserLogoutAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String boardUserLogoutAction(UserInfoVo userVo, HttpServletRequest request,
+			Model model, Locale locale) throws Exception {
+		
+		System.out.println(">>>>>>>>>boardUserLogoutAction>>>>>>>>>> " + userVo.toString());
+		
+		int loginCheckNum = boardService.userLoginCheck(userVo);
+		System.out.println("resultCnt >>>>>>>>>>>>>>>>>> " + loginCheckNum);
+		
+		HashMap<String, String> result = new HashMap<String, String>();
+		CommonUtil commonUtil = new CommonUtil();
+		
+		result.put("success", (loginCheckNum > 0) ? "Y" : "N");
+
+		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
+
+		System.out.println("callbackMsg::" + callbackMsg);
+
+		if(userVo.getUserId() != null) {
+			HttpSession session = request.getSession();
+			session.removeAttribute("loginUser");
+			System.out.println("세션만료");
+		} 
+		return callbackMsg;
+	}
 }
