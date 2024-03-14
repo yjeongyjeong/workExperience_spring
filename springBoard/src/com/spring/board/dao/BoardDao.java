@@ -31,4 +31,5 @@ public interface BoardDao {
 	public int userIdCheck(UserInfoVo userVo) throws Exception;
 	public int userInsert(UserInfoVo userVo) throws Exception;
 	public int userLoginCheck(UserInfoVo userVo) throws Exception;
+	public UserInfoVo selectUser(UserInfoVo userVo) throws Exception;
 }

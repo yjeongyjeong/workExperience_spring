@@ -69,6 +69,7 @@
 						Writer
 						</td>
 						<td>
+							${board.creator}
 						</td>
 					</tr>
 				</table>
@@ -76,8 +77,10 @@
 		</tr>
 		<tr>
 			<td align="right">
-			<input id="submit" type="button" value="삭제">
-			<input type="button" onclick="location.href='/board/${boardType}/${boardNum}/boardModify.do'" value="수정"></input>
+			<c:if test="${loginUser.userName == board.creator}">
+				<input id="submit" type="button" value="삭제">
+				<input type="button" onclick="location.href='/board/${boardType}/${boardNum}/boardModify.do'" value="수정"></input>
+			</c:if>
 			<%-- <button onclick="location.href='/board/${boardType}/${boardNum}/boardModify.do'">수정</button> --%>
 			<input name="boardType" type="hidden" value="${board.boardType}">
 			<input name="boardNum" type="hidden" value="${board.boardNum}">

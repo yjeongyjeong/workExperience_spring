@@ -69,4 +69,11 @@
 			user_pw = #{userPw}
 	</select>
 
+	<select id="selectUser" parameterType="com.spring.board.vo.UserInfoVo" resultMap="userInfoVo">
+		select * from user_info
+		where
+			user_id = #{userId}
+		and
+			user_pw = #{userPw}	
+	</select>
 </mapper>

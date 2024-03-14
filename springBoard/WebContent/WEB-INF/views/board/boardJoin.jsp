@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>boardView</title>
+<title>boardJoin</title>
 
 <style type="text/css">
 	.userPwd_ok {
@@ -30,6 +30,22 @@
 	function idChk(){
 		var userId = $j('#userId').val();
 		console.log(userId);
+		
+		var regId = /^[a-zA-Z0-9]{6,15}$/;
+        var frm = $j('#boardTable');  // jQuery로 선택된 문서 객체로 변경
+
+        //아이디 확인
+		if ($j('#userId').val().length == 0) {
+			alert("아이디를 입력해주세요.");
+			console.log(1);
+			$j('#userId').focus;
+			return false;
+		} else if (!regId.test($j('#userId').val())) { //아이디 영어 대소문자 확인
+			alert("6~15자 영문 대소문자를 입력해주세요.")
+			console.log(2);
+			$j('#userId').focus();
+			return false;
+		} 
 		
 		const userVo = { // BoardVo 객체 생성
 				"userId": userId
@@ -81,6 +97,10 @@
 		pwList.push(userPw);
 		pwList.push(userPwChk);
 		
+		if ($j('#userPw').val().length == 0) {
+			return false;
+		}
+		
 			$j.ajax({
 			    url : "/board/boardUserPwCheckAction.do",
 			    dataType: "json",
@@ -125,9 +145,10 @@
 		
 		$j(document).ready(function(){
 		    $j("#formSubmit").on("click",function(){
-		        var regId = /^[a-zA-Z0-9]{6,10}$/;
-		        var regIdPw = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,12}$/;
+		        var regId = /^[a-zA-Z0-9]{6,15}$/;
+		        var regIdPw = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/;
 		        var frm = $j('#boardTable');  // jQuery로 선택된 문서 객체로 변경
+/* 		        var regIdPw = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,12}$/; */
 
 		        //아이디 확인
 				if ($j('#userId').val().length == 0) {
@@ -136,13 +157,14 @@
 					$j('#userId').focus;
 					return false;
 				} else if (!regId.test($j('#userId').val())) { //아이디 영어 대소문자 확인
-					alert("6~10자 영문 대소문자, 숫자만 입력해주세요.")
+					alert("6~15자 영문 대소문자를 입력해주세요.")
 					console.log(2);
 					$j('#userId').focus();
 					return false;
 				} else if (!checkIdResult) {
 					console.log(3);
 					alert("아이디 중복확인이 되지않았습니다.");
+					$j('#userId').focus();
 					return false;
 				}
 				
@@ -152,7 +174,7 @@
 					$j('#userPw').focus();
 					return false;
 				} else if (!regIdPw.test($j('#userPw').val())) {
-					alert("6~10자 영문 대소문자, 숫자, 특수문자를 입력해주세요.")
+					alert("6~15자 영문 대소문자를 입력해주세요.")
 					$j('#userPw').focus();
 					return false;
 				} else if ($j('#userPw').val() == $j('#userId').val()) {
@@ -161,85 +183,48 @@
 					return false;
 				} else if (!checkPwResult) {
 					alert("비밀번호를 다시 확인해주세요.");
+					$j('#userPwChk').focus();
 					return false;
 				
 				// 이름 확인
 				}else if ($j('#userName').val().length == 0) {
-						alert("이름을 입력하세요.")
+						alert("이름을 입력해주세요.")
 						$j('#userName').focus();
 						return false;
 					
 				//휴대전화번호 확인
 				} else if ( ($j('#userPhone2').val().length == 0)
 						|| ($j('#userPhone2').val().length < 4) ) {
-					alert("휴대전화번호 가운데 자리를 다시 확인해주세요(4글자).")
+					alert("휴대전화번호를 확인해주세요(4자리).")
 					$j('#userPhone2').focus();
 					return false;
 				} else if ($j('#userPhone3').val().length == 0
 						|| $j('#userPhone3').val().length < 4) {
-					alert("휴대전화번호 마지막 자리를 다시 확인해주세요(4글자).")
+					alert("휴대전화번호를 확인해주세요(4자리).")
 					 $j('#userPhone3').focus();
 					return false;
 					
 				//우편번호 확인 postNo
 				} else if ( ($j('#userAddr1').val().length != 0 )
 						&& ($j('#userAddr1').val().length < 7 ) ) {
-					alert("우편번호를 다시 확인해주세요.")
+					alert("우편번호를 확인해주세요(6자리 입력). \n 예시) 000-000")
 					$j('#userAddr1').focus();
 					return false;
 				}
 		        
-		        
-		        //userAddr2 혹은 company가 비어있는 경우 임의로 값을 지정..
-		        //근데 먼저 Addr2값이 지정되면 if에서 빠져나가기 때문에 ??
-				 else if ( $j('#userAddr2').val().length == 0 ) {
-					$j('#userAddr2').val("none");
-				}
-				
-				 else if( $j('#userCompany').val().length == 0 ) {
-					$j('#userCompany').val("none");
-				}
-	
-				/* var frm = $j('.boardTable :input');
+				var frm = $j('.boardTable :input');
 				var param = frm.serialize(); 
 
 				console.log("*************************");
 				console.log(frm);
 				console.log(param);
- */				
-				var userData = [];
-				
-				var userId = $j('#userId').val();
-				var userPw = $j('#userPw').val();
-				var userName = $j('#userName').val();
-				var userPhone1 = $j("select[name='userPhone1']").val();
-				var userPhone2 = $j('#userPhone2').val();
-				var userPhone3 = $j('#userPhone3').val();
-				var userAddr1 = $j('#userAddr1').val();
-				var userAddr2 = $j('#userAddr2').val();
-				var userCompany = $j('#userCompany').val();
-				
-				const userVo = {
-						"userId": userId
-						,"userPw": userPw
-						,"userName": userName
-						,"userPhone1": userPhone1
-						,"userPhone2": userPhone2
-						,"userPhone3": userPhone3
-						,"userAddr1": userAddr1
-						,"userAddr2": userAddr2
-						,"userCompany": userCompany
-				};
-				
-				userData.push(userVo);
-				console.log(userVo);
 				
 				$j.ajax({
 				    url : "/board/boardUserjoinAction.do",
 				    dataType: "json",
 				    type: "POST",
-				    contentType: "application/json; charset=utf-8",
-				    data : JSON.stringify(userData),
+				    //contentType: "application/json; charset=utf-8",
+				    data : param,
 				    success: function(data, textStatus, jqXHR)
 				    {
 				    	console.log(data);
@@ -305,8 +290,8 @@
 						name
 					</td>
 					<td>
-					<input type="text" name="userName" id="userName" maxlength="5"
- 					oninput="this.value = this.value.replace(/[^가-힣]/ig, '')">
+					<input type="text" name="userName" id="userName" maxlength="4"
+ 					oninput="this.value = this.value.replace(/[^ㄱ-힣]/ig, '')">
 					<!-- oninput="handleOnInputKor(this)"> -->
 					</td>
 				</tr>
@@ -345,7 +330,7 @@
 						address
 					</td>
 					<td>
-					<input type="text" name="userAddr2" id="userAddr2" maxlength="50">
+					<input type="text" name="userAddr2" id="userAddr2" maxlength="30">
 					</td>
 				</tr>
 

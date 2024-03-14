@@ -164,14 +164,15 @@
 	//로그아웃
 	 $j(document).ready(function(){
 		 $j("#logout").on("click", function(e){
-			 
-			 //var param = ${loginUser};
-			 //Uncaught SyntaxError: Unexpected token '!' 
-			 //var param = UserInfoVo [userId=whffu1, userPw=whffu1!, userName=null, userPhone1=null, userPhone2=null, userPhone3=null, userAddr1=null, userAddr2=none, userCompany=none, creator=null, modifier=null];
 
+			 //그냥 ${loginUser.userId}를 사용하면 값이 아니라 변수로 인식해서
+			 //Uncaught ReferenceError: 변수명 is not defined라는 오류 발생 ==> 백틱으로 해결
+			 var userId = `${loginUser.userId}`;
+			 var userPw = `${loginUser.userPw}`;
+			 
 			 var param = {
-					 "userId": ${loginUser.userId},
-					 "userPw": ${loginUser.userPw}
+					 "userId": userId,
+					 "userPw": userPw
 			 }
 			 console.log("***");
 			 console.log(param);
@@ -206,7 +207,7 @@
 		<td align="left">
   <c:choose>
   	<c:when test="${loginUser != null}">
-			<a> ${loginUser.userId} </a> 
+			<a> ${loginUser.userName} </a> 
 	</c:when>
 	<c:otherwise>
 			<a href="/board/boardLogin.do"> login</a> 
@@ -263,7 +264,7 @@
 		<td align="right">
 			<a href ="/board/boardWrite.do">글쓰기</a>
 		<c:if test="${loginUser != null}" var="loginUser" >
-			<a href="#" id="logout" name="logout">로그아웃 ajax로 보내서 세션끊어야쥥</a>
+			<a href="#" id="logout" name="logout">로그아웃</a>
 		</c:if>
 		</td>
 	</tr>

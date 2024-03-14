@@ -72,9 +72,7 @@
 						Writer
 						</td>
 						<td>
-							<c:if test="${loginUser != null}" var="loginUser" >
-								<input id="creator" name="creator" value="${loginUser.userId}" readonly="readonly">
-							</c:if>
+							${board.creator}
 						</td>
 					</tr>
 				</table>

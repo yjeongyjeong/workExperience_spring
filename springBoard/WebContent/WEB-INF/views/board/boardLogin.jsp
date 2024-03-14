@@ -5,64 +5,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>boardView</title>
-
-<style type="text/css">
-	.userPwd_ok {
-		font-size: small;
-		color: #008000;
-		display: none;
-	}
-	
-	.userPwd_already {
-		font-size: small;
-		color: rgb(201, 0, 0);
-		display: none;
-	}
-</style>
-
+<title>boardLogin</title>
 </head>
 
 <script type="text/javascript">
-
-	function idChk(){
-		var userId = $j('#userId').val();
-		console.log(userId);
-		
-		const userVo = { // BoardVo 객체 생성
-				"userId": userId
-	        };
-		
-			$j.ajax({
-			    url : "/board/boardUserIdCheckAction.do",
-			    dataType: "json",
-			    type: "POST",
-			    contentType: "application/json; charset=utf-8",
-			    data : JSON.stringify(userVo),
-			    success: function(userIdCnt)
-			    {
-			    	console.log(userIdCnt);
-			    	//alert(userIdCnt);
-			    	
-			    	if(userIdCnt == 0){ //0이면 사용가능 1이면 중복
-						alert("사용할 수 있는 아이디입니다.");
-						checkIdResult = true;
-			    	} else{ //0이 아닌경우(중복일 때)
-				    	alert("중복된 아이디입니다.");
-				    	checkIdResult = false;
-			    	}
-					
-			    },
-			    error: function (jqXHR, textStatus, errorThrown)
-			    {
-			    	alert("fail");
-			    }
-			});
-			//ajax end
-			
-			return checkIdResult; //true 인지 false인지 반환 => 추후 if문에서 확인
-		};
-
 		
 		$j(document).ready(function(){
 		    $j("#formSubmit").on("click",function(){
@@ -89,20 +35,6 @@
 				console.log("*************************");
 				console.log(frm);
 				console.log(param);
-/*				
-				var userData = [];
-				
-				var userId = $j('#userId').val();
-				var userPw = $j('#userPw').val();
-				
-				const userVo = {
-						"userId": userId
-						,"userPw": userPw
-				};
-				
-				userData.push(userVo);
-				console.log(userVo);
- */				
 				$j.ajax({
 				    url : "/board/boardUserLoginAction.do",
 				    dataType: "json",
@@ -113,7 +45,7 @@
 				    {
 				    	console.log(data);
 
-				    	if(data == 0){ //select 검색 결과가 0인 경우
+				    	if(data == null){ //select 검색 결과가 0인 경우
 				    		console.log(data);
 				    		alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
 				    	}else{
@@ -148,7 +80,7 @@
 					</td>
 					<td width="300">
 					<input type="text" id="userId" name="userId" maxlength="15"
-					oninput="this.value = this.value.replace(/[^a-z0-9]/g, '')" >
+					oninput="this.value = this.value.replace(/[^a-z0-9A-Z]/g, '')" >
 					</td>
 				</tr>
 

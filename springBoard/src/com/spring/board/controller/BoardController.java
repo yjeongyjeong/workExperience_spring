@@ -87,16 +87,20 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardView.do", method = RequestMethod.GET)
-	public String boardView(Locale locale, Model model, @PathVariable("boardType") String boardType,
+	public String boardView(Locale locale, Model model, HttpSession session 
+			,@PathVariable("boardType") String boardType,
 			@PathVariable("boardNum") int boardNum) throws Exception {
 
 		BoardVo boardVo = new BoardVo();
 
 		boardVo = boardService.selectBoard(boardType, boardNum);
+		
+		UserInfoVo userVo = (UserInfoVo)session.getAttribute("loginUser");
 
 		model.addAttribute("boardType", boardType);
 		model.addAttribute("boardNum", boardNum);
 		model.addAttribute("board", boardVo);
+		model.addAttribute("loginUser", userVo);
 
 		return "board/boardView";
 	}
@@ -353,21 +357,21 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board/boardUserjoinAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardUserjoinAction(@RequestBody List<UserInfoVo> userList, 
+	public String boardUserjoinAction(UserInfoVo userVo, 
 									Model model, Locale locale) throws Exception {
 		
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonUserInfoList = mapper.writeValueAsString(userList);
-
-		List<UserInfoVo> userInfoList = mapper.readValue(jsonUserInfoList, new TypeReference<List<UserInfoVo>>() {
-		});
+//		ObjectMapper mapper = new ObjectMapper();
+//		String jsonUserInfoList = mapper.writeValueAsString(userList);
+//
+//		List<UserInfoVo> userInfoList = mapper.readValue(jsonUserInfoList, new TypeReference<List<UserInfoVo>>() {
+//		});
 		
-		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userInfoList.toString()); //주소값나옴... 
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo); //주소값나옴... 
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 
-		int resultCnt = boardService.userInsert(userInfoList.get(0));
+		int resultCnt = boardService.userInsert(userVo);
 		//ORA-00947: not enough values 발생! 
 		//userAddr2랑 userCompany에 값을 입력하지 않으면 그대로 null이 되어서 들어가지 않음... 
 		//음.. 새로 userVo를 만들고 넣어야하는걸까?-> jsp에서 하려고했는데 if조건으로 하는
@@ -391,21 +395,21 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board/boardUserLoginAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public int boardUserLoginAction(UserInfoVo userVo, HttpServletRequest request,
+	public UserInfoVo boardUserLoginAction(UserInfoVo userVo, HttpServletRequest request,
 									Model model, Locale locale) throws Exception {
 		
 		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); //주소값나옴... 
 
-		int loginCheckNum = boardService.userLoginCheck(userVo);
+		UserInfoVo loginUser = boardService.selectUser(userVo);
 		
-		if(loginCheckNum > 0) {
+		if(loginUser != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", userVo); //user가 있으면 1 (count 쿼리)
+			session.setAttribute("loginUser", loginUser); //user가 있으면 1 (count 쿼리)
 			System.out.println(session.toString());
 			System.out.println(session.getAttribute("loginUser"));
 			//UserInfoVo [userId=whffu1, userPw=whffu1!, userName=null, userPhone1=null, userPhone2=null, userPhone3=null, userAddr1=null, userAddr2=none, userCompany=none, creator=null, modifier=null]
 		} 
-		return loginCheckNum;
+		return loginUser;
 	}
 	
 	

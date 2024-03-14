@@ -36,6 +36,7 @@
 		,BOARD_TITLE
 		,BOARD_COMMENT
 		,TOTAL_CNT
+		,BOARD_CREATOR
 		FROM
 		(
 			SELECT
@@ -45,6 +46,7 @@
 				,bd.BOARD_COMMENT
 				,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
 				,COUNT(*) OVER() AS TOTAL_CNT
+				,bd.creator as BOARD_CREATOR
 			FROM
 				BOARD bd
 			left JOIN
@@ -77,6 +79,7 @@
 			,bd.BOARD_NUM
 			,bd.BOARD_TITLE
 			,bd.BOARD_COMMENT
+			,bd.CREATOR
 		FROM
 			BOARD bd
 		inner join
@@ -116,7 +119,7 @@
 			FROM DUAL )
 			,#{boardTitle}
 			,#{boardComment}
-			,'SYSTEM'
+			,#{creator}
 			,TO_CHAR(SYSDATE)
 			,'SYSTEM'
 			,TO_CHAR(SYSDATE)

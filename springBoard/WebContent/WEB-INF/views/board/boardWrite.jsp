@@ -165,10 +165,12 @@
 			var boardTitles = $j("input[name='boardTitle']");
 			var boardComments = $j("textarea[name='boardComment']");
 			var boardTypes = $j("select[name='boardType']");
+			var creator = $j('#creator').text().trim();
 			
 			console.log(boardTitles);
 			console.log(boardComments);
 			console.log(boardTypes);
+			console.log(creator);
 			
 			//var boardMap = new Map(); -> 키값이 중복되므로 사용을 지양해야함 왜냐면 키값이 중복되면 마지막에 저장된값으로 저장되기 때문!
 			var boardData = [];
@@ -198,7 +200,11 @@
 						"boardType": type,
 			            "boardTitle": title,
 			            "boardComment": comment,
+			            "creator": creator
 			        };
+				
+				console.log("######################");
+				console.log(boardVo);
 				
 				boardData.push(boardVo );
 			}
@@ -296,10 +302,19 @@
 						<td align="center">
 						Writer
 						</td>
-						<td>
-						<c:if test="${loginUser != null}">
-							<input id="creator" name="creator" value="${loginUser.userId}" readonly="readonly">
-						</c:if>
+						
+						<td id="creator">
+						
+							<c:choose>
+								<c:when test="${loginUser != null}">
+									${loginUser.userName}
+								</c:when>
+								<c:otherwise>
+								SYSTEM
+									<!-- <input type="hidden" value="SYSTEM" readonly="readonly"> -->
+								</c:otherwise>
+							</c:choose>
+						
 						</td>
 					</tr>
 				</table>
