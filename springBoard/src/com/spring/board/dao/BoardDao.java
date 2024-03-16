@@ -32,4 +32,7 @@ public interface BoardDao {
 	public int userInsert(UserInfoVo userVo) throws Exception;
 	public int userLoginCheck(UserInfoVo userVo) throws Exception;
 	public UserInfoVo selectUser(UserInfoVo userVo) throws Exception;
+//	============================================
+	public List<BoardVo> selectMbtiList(PageVo pageVo) throws Exception;
+	
 }

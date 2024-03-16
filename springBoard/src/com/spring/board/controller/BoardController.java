@@ -110,7 +110,7 @@ public class BoardController {
 		
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
 
-		codeVo.setCodeType("menu");
+		codeVo.setCodeType("mbti");
 		codeList = boardService.selectCodeList(codeVo);
 		
 		UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
@@ -438,5 +438,41 @@ public class BoardController {
 			System.out.println("세션만료");
 		} 
 		return callbackMsg;
+	}
+	
+	@RequestMapping(value = "/mbti/mbtiTest.do", method = RequestMethod.GET)
+	public String mbtiTest(Locale locale, Model model, PageVo pageVo) throws Exception {
+	
+		List<BoardVo> mbtiList = new ArrayList<BoardVo>();
+		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
+		
+		int page = 1;
+		
+		if (pageVo.getPageNo() == 0) {
+			pageVo.setPageNo(page);
+			;
+		}
+		
+		ComCodeVo codeVo = new ComCodeVo();
+		codeVo.setCodeType("mbti"); 
+		
+		codeList = boardService.selectCodeList(codeVo);
+
+		System.out.println("codeList >>> " + codeList);
+		
+		List<String> codeIdList = new ArrayList<>();
+		for (ComCodeVo comCode : codeList) {
+			codeIdList.add(comCode.getCodeId());
+		};
+		
+		pageVo.setCodeId(codeIdList);
+		pageVo.setCodeType("mbti");
+		mbtiList = boardService.SelectMbtiList(pageVo);
+
+		model.addAttribute("mbtiList", mbtiList);
+		model.addAttribute("codeList", codeList);
+		model.addAttribute("pageNo", page);
+
+		return "mbti/mbtiTest";
 	}
 }

@@ -30,5 +30,7 @@ public interface boardService {
 	public int userLoginCheck(UserInfoVo userVo) throws Exception;
 	public UserInfoVo selectUser(UserInfoVo userVo) throws Exception;
 
+	//==============================================================
+	public List<BoardVo> SelectMbtiList(PageVo pageVo) throws Exception;
 
 }

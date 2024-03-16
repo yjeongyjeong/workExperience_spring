@@ -9,9 +9,10 @@ public class BoardVo {
 	private String 	creator;
 	private String	modifier;
 	private int totalCnt;
-
 	
 	private int pageNo;
+	
+	
 	
 	public int getPageNo() {
 		return pageNo;

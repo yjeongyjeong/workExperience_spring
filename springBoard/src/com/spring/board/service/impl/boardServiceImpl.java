@@ -88,5 +88,10 @@ public class boardServiceImpl implements boardService{
 	public UserInfoVo selectUser(UserInfoVo userVo) throws Exception {
 		return boardDao.selectUser(userVo);
 	}
+
+	@Override
+	public List<BoardVo> SelectMbtiList(PageVo pageVo) throws Exception {
+		return boardDao.selectMbtiList(pageVo);
+	}
 	
 }
