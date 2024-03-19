@@ -9,16 +9,11 @@
 </head>
 
 <script type="text/javascript">
-//	var count = 1;
-
+	
 	$j(document).ready(function(){
 	 $j("#next").on("click", function(e){
 		 
-//		 count++;
-//		 console.log("count(pageNo) >> " + count);
-		 
 		 var mbtiTypes = $j("input:radio:checked");
-		 //console.log(mbtiTypes);
 		 
 		 var resultList = [];
 		 
@@ -30,14 +25,9 @@
 		 
 		console.log("resultList >> " + resultList);
        
-/* 		if(count <= 4){
-            location.href='http://localhost:8081/mbti/mbtiTest.do?pageNo=' + count;
-        }
- */		
- //	if(count === 4){
 		  $j.ajax({
 			    url : "/mbti/mbtiResultAction.do",
-			    dataType: "json",
+			    dataType: "text",
 			    type: "POST",
 			    contentType: "application/json; charset=utf-8",
 			    data : JSON.stringify(resultList),
@@ -45,9 +35,23 @@
 			    success: function(data)
 			    {
 			    	console.log(data);
-					location.href = 'http://localhost:8081/mbti/mbtiTest.do?pageNo='+data;
 					
-				},
+			    	if(data <= 4){ //pageNo=4까지
+			    		location.href = 'http://localhost:8081/mbti/mbtiTest.do?pageNo='+data;
+					}
+			    	else { //pageNo=5 되는 순간
+                        console.log(data);		
+			    	
+                        var mbtiArray = ["J", "P", "E", "T", "F", "N", "S", "I"];
+                        for (var i = 0; i < mbtiArray.length; i++) {
+                            var pattern = new RegExp(mbtiArray[i], "gi");
+                            var matches = data.match(pattern);
+                            var count = matches ? matches.length : 0;
+                            console.log("Count of '" + mbtiArray[i] + "': " + count);
+                        }
+
+					}
+			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
 			    	alert("실패");

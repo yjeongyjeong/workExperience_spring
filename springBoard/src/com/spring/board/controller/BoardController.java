@@ -479,47 +479,61 @@ public class BoardController {
 	
 	@RequestMapping(value = "/mbti/mbtiResultAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public int mbtiResultAction(@RequestBody List<String> resultList, 
+	public String mbtiResultAction(@RequestBody List<String> resultList, 
 			Model model, Locale locale, HttpSession session) throws Exception {
 		
 		List<String> mbtiResultList = new ArrayList<String>();
+		List<String> myList= new ArrayList<String>();
+		String mbtiCollection = "";
 		int pageNumber = 0;
 		
 		System.out.println(">>>>>>>>>mbtiResultAction>>>>>>>>>> " + resultList.toString());
 //		>>>>>>>>>mbtiResultAction>>>>>>>>>> [JP_5_-2, FT_5_0, EI_4_+2]
 		for (int i = 0; i < resultList.size(); i++) {
 			String[] splitList = resultList.get(i).split("_");
-			//map을 만들어야 할까..?
-			int selectNum = Integer.parseInt(splitList[2]);
+			//selectNum : 마지막 숫자(+-)
+			int selectNum =  Integer.parseInt(splitList[2]) ;
+			//JP_5_-2 => J와 P가 저장되도록 문자열을 자름 [0]에 첫번째 알파벳 [1]에 두번째 알파벳
 			String[] splitType =  splitList[0].split("");
 			
-			//TF 이런식으로 나왔을때 비동의하는 경우
+			//TF 이런식으로 나왔을때 비동의하는 경우(음수값)
 			if(selectNum < 0 ) {
-				mbtiResultList.add(splitType[0] + selectNum); //T+3을 넣어줌 => T3 
-//				사실 t3이면 ttt를 하고 싶은데 어케해야할지 조금 복잡하다 아니면 t3이면 t를 3번세도록... 컴퓨터에서 계산을 어케하지..?
 				
-			} else { //비동의 하는 경우
-				mbtiResultList.add(splitType[1] + selectNum); 
+				for(int j = 0; j < Math.abs(selectNum); j++) {
+					mbtiCollection += splitType[1];
+				}
+				System.out.println("mbtiCollection >>>> " + mbtiCollection);
+				
+			} else { //동의 하는 경우(양수값)
+				for(int j = 0; j < Math.abs(selectNum); j++) {
+					mbtiCollection += splitType[0];
+				}
+				System.out.println("mbtiCollection >>>> " + mbtiCollection);
 			}
 		}
+		
+		//결과값 저장...
+		mbtiResultList.add(mbtiCollection);
 		System.out.println("mbtiResultList >>>> " + mbtiResultList);
-//		mbtiResultList >>>> [P2, T0, E-2, P2, T0]
 		
 		if(session.getAttribute("mbtiResultSession") == null) {
 			session.setAttribute("mbtiResultSession", mbtiResultList);
 			pageNumber = 1;
 		} else {
-			List<String> myList = (List<String>) session.getAttribute("mbtiResultSession");
-			myList.add(mbtiResultList.toString());
+			myList = (List<String>) session.getAttribute("mbtiResultSession");
+			myList.addAll(mbtiResultList);
 			System.out.println(myList.toString());
-//			[P2, F-2, I0, J-2, T2, [P1, F-2, E-2, P1, F-1]] ..이렇게 들어오네...
 			pageNumber = myList.size();
 			session.setAttribute("mbtiResultSession", myList);
 		}
 
-		//
 		System.out.println("pageNumberpageNumber >>>> " + pageNumber);
 		
-		return pageNumber+1;
+		//컨트롤러가 이렇게 길고 복잡해도 되는걸까?
+		if(pageNumber < 4) {
+			return String.valueOf(pageNumber+1);
+		} else {// 5문항씩 4페이지 테스트가 다 끝난경우
+			return myList.toString();
+		}
 	}
 }
