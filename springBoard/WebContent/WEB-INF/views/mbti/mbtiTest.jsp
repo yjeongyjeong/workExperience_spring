@@ -9,56 +9,83 @@
 </head>
 
 <script type="text/javascript">
+//	var count = 1;
+
+	$j(document).ready(function(){
+	 $j("#next").on("click", function(e){
+		 
+//		 count++;
+//		 console.log("count(pageNo) >> " + count);
+		 
+		 var mbtiTypes = $j("input:radio:checked");
+		 //console.log(mbtiTypes);
+		 
+		 var resultList = [];
+		 
+		 mbtiTypes.each(function() {
+	            var name = $j(this).attr('name');
+	            var value = $j(this).val();
+	            resultList.push(name+'_'+value);
+		 });
+		 
+		console.log("resultList >> " + resultList);
+       
+/* 		if(count <= 4){
+            location.href='http://localhost:8081/mbti/mbtiTest.do?pageNo=' + count;
+        }
+ */		
+ //	if(count === 4){
+		  $j.ajax({
+			    url : "/mbti/mbtiResultAction.do",
+			    dataType: "json",
+			    type: "POST",
+			    contentType: "application/json; charset=utf-8",
+			    data : JSON.stringify(resultList),
+//			    data : resultList,
+			    success: function(data)
+			    {
+			    	console.log(data);
+					location.href = 'http://localhost:8081/mbti/mbtiTest.do?pageNo='+data;
+					
+				},
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert("실패");
+			    }
+			});
+//		  }
 		
-		function radioList(){
-
-		    	var frm = $j('#wrapTable');  // jQuery로 선택된 문서 객체로 변경
-
-		    	
-			
-		};
+		});
+	}); 
 		
 </script>
 
 <body>
 <table  align="center" id="wrapTable">
-	<tr id="inform">
-		<td align="left">
-			<a href="/board/boardList.do">Board</a> 
+	
+	<c:forEach items="${mbtiList}" var="list">
+		<tr id="mbtiList">
+			<td align="center">
+			 <fieldset style="text-align: center;" id="mbtiField">
+				${list.boardComment}
+				<br><br>
+					 <span>동의 <input type="radio" value="+3" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="+2" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="+1" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="0" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="-1" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="-2" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="-3" name="${list.boardType}_${list.boardNum}"> 비동의</span>
+			</fieldset>
+			</td>
+		</tr>	
+	</c:forEach>
+	
+	<tr>
+		<td align="center">
+			<button type="button" id="next" name="next">다음 →</button>
 		</td>
 	</tr>
-	<tr>
-	
-		<c:forEach items="${mbtiList}" var="list">
-			<tr id="boardList">
-				<td align="center">
-					${list.boardType}
-				</td>
-				<td>
-					${list.boardNum}
-				</td>
-				<td>
-					<a href = "/board/${list.boardType}/${list.boardNum}/boardView.do?pageNo=${pageNo}">${list.boardTitle}</a>
-				</td>
-			</tr>	
-		</c:forEach>
-				
-				
-		<!--<td>
-			 <fieldset style="text-align: center;">
-			<div>주기적으로 새로운 친구를 만든다.</div>
-			<br>
-			<span>동의 <input type="radio"> </span>
-			<span><input type="radio" name="mbti_01"> </span>
-			<span><input type="radio" name="mbti_01"> </span>
-			<span><input type="radio" name="mbti_01"> </span>
-			<span><input type="radio" name="mbti_01"> </span>
-			<span><input type="radio" name="mbti_01"> </span>
-			<span><input type="radio" name="mbti_01"> 비동의</span>
-			</fieldset>
-		</td> -->
-	</tr>
-	
 </table>
 </body>
 </html>

@@ -475,4 +475,51 @@ public class BoardController {
 
 		return "mbti/mbtiTest";
 	}
+	
+	
+	@RequestMapping(value = "/mbti/mbtiResultAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public int mbtiResultAction(@RequestBody List<String> resultList, 
+			Model model, Locale locale, HttpSession session) throws Exception {
+		
+		List<String> mbtiResultList = new ArrayList<String>();
+		int pageNumber = 0;
+		
+		System.out.println(">>>>>>>>>mbtiResultAction>>>>>>>>>> " + resultList.toString());
+//		>>>>>>>>>mbtiResultAction>>>>>>>>>> [JP_5_-2, FT_5_0, EI_4_+2]
+		for (int i = 0; i < resultList.size(); i++) {
+			String[] splitList = resultList.get(i).split("_");
+			//map을 만들어야 할까..?
+			int selectNum = Integer.parseInt(splitList[2]);
+			String[] splitType =  splitList[0].split("");
+			
+			//TF 이런식으로 나왔을때 비동의하는 경우
+			if(selectNum < 0 ) {
+				mbtiResultList.add(splitType[0] + selectNum); //T+3을 넣어줌 => T3 
+//				사실 t3이면 ttt를 하고 싶은데 어케해야할지 조금 복잡하다 아니면 t3이면 t를 3번세도록... 컴퓨터에서 계산을 어케하지..?
+				
+			} else { //비동의 하는 경우
+				mbtiResultList.add(splitType[1] + selectNum); 
+			}
+		}
+		System.out.println("mbtiResultList >>>> " + mbtiResultList);
+//		mbtiResultList >>>> [P2, T0, E-2, P2, T0]
+		
+		if(session.getAttribute("mbtiResultSession") == null) {
+			session.setAttribute("mbtiResultSession", mbtiResultList);
+			pageNumber = 1;
+		} else {
+			List<String> myList = (List<String>) session.getAttribute("mbtiResultSession");
+			myList.add(mbtiResultList.toString());
+			System.out.println(myList.toString());
+//			[P2, F-2, I0, J-2, T2, [P1, F-2, E-2, P1, F-1]] ..이렇게 들어오네...
+			pageNumber = myList.size();
+			session.setAttribute("mbtiResultSession", myList);
+		}
+
+		//
+		System.out.println("pageNumberpageNumber >>>> " + pageNumber);
+		
+		return pageNumber+1;
+	}
 }
