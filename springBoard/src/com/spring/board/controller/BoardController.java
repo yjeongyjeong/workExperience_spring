@@ -534,6 +534,17 @@ public class BoardController {
 			return String.valueOf(pageNumber+1);
 		} else {// 5문항씩 4페이지 테스트가 다 끝난경우
 			return myList.toString();
+			//session.removeAttribute("mbtiResultSession"); 세션을 어디서 끊을 수 있을까..?
+			//아예 다른페이지로 보내버려야할까,,,
 		}
 	}
+	
+	@RequestMapping(value = "/mbti/mbtiResult.do", method = RequestMethod.GET)
+	public String mbtiResult(Locale locale, Model model, HttpSession session) throws Exception {
+	
+		session.removeAttribute("mbtiResultSession");
+
+		return "mbti/mbtiResult";
+	}
+
 }

@@ -15,6 +15,12 @@
 		 
 		 var mbtiTypes = $j("input:radio:checked");
 		 
+		 if(mbtiTypes.length != 5){
+			 console.log(mbtiTypes.length);
+			 alert("문항에 대한 답을 선택해주세요.");
+			 return false;
+		 }
+		 
 		 var resultList = [];
 		 
 		 mbtiTypes.each(function() {
@@ -42,14 +48,34 @@
 			    	else { //pageNo=5 되는 순간
                         console.log(data);		
 			    	
-                        var mbtiArray = ["J", "P", "E", "T", "F", "N", "S", "I"];
+                        /* var mbtiArray = ["J", "P", "E", "T", "F", "N", "S", "I"];
                         for (var i = 0; i < mbtiArray.length; i++) {
-                            var pattern = new RegExp(mbtiArray[i], "gi");
+                            var pattern = new RegExp(mbtiArray[i], "gi"); //정규식 돌릴 변수
                             var matches = data.match(pattern);
                             var count = matches ? matches.length : 0;
                             console.log("Count of '" + mbtiArray[i] + "': " + count);
-                        }
-
+                        } */
+                        
+                        const typeE = data.match(/E/gi)?.length;
+                        const typeI = data.match(/I/gi)?.length;
+                        const typeN = data.match(/N/gi)?.length;
+                        const typeS = data.match(/S/gi)?.length;
+                        const typeF = data.match(/F/gi)?.length;
+                        const typeT = data.match(/T/gi)?.length;
+                        const typeP = data.match(/P/gi)?.length;
+                        const typeJ = data.match(/J/gi)?.length;
+                        
+                        var mbtiResult = '';
+                        
+                        mbtiResult += typeE >= typeI ? 'E' : 'I';
+                        mbtiResult += typeN >= typeS ? 'N' : 'S';
+                        mbtiResult += typeF >= typeT ? 'F' : 'T';
+                        mbtiResult += typeJ >= typeP ? 'J' : 'P';
+                        
+                        console.log(mbtiResult);
+                        
+                        sessionStorage.setItem('mbtiResult', mbtiResult);
+                        location.href = "/mbti/mbtiResult.do"
 					}
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
@@ -57,7 +83,6 @@
 			    	alert("실패");
 			    }
 			});
-//		  }
 		
 		});
 	}); 
