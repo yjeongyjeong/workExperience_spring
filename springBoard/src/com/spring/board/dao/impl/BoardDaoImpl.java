@@ -90,5 +90,13 @@ public class BoardDaoImpl implements BoardDao{
 	public List<BoardVo> selectMbtiList(PageVo pageVo) throws Exception {
 		return sqlSession.selectList("mbti.mbtiList", pageVo);
 	}
+	@Override
+	public String selectMbtiName(String codeId) throws Exception {
+		return sqlSession.selectOne("mbti.mbtiName", codeId);
+	}
+	@Override
+	public List<String> mbtiTypeList() throws Exception {
+		return sqlSession.selectList("mbti.mbtiTypeList");
+	}
 	
 }

@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Spliterator;
+import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +49,7 @@ public class BoardController {
 
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
-		
+
 		int page = 1;
 		int totalCnt = 0;
 
@@ -53,30 +57,32 @@ public class BoardController {
 			pageVo.setPageNo(page);
 			;
 		}
-		
+
 		ComCodeVo codeVo = new ComCodeVo();
-		codeVo.setCodeType("menu"); 
-		
+		codeVo.setCodeType("menu");
+
 		totalCnt = boardService.selectBoardCnt();
 		codeList = boardService.selectCodeList(codeVo);
 //		System.out.println("codeList>>>>>>>>>>>" + codeList);
-		/*		codeList>>>>>>>>>>>
-		[ComCodeVo [codeType=menu, codeId=a01, codeName=일반, creator=null, modifier=null],
-		 ComCodeVo [codeType=menu, codeId=a02, codeName=Q&A, creator=null, modifier=null], 
-		 ComCodeVo [codeType=menu, codeId=a03, codeName=익명, creator=null, modifier=null], 
-		 ComCodeVo [codeType=menu, codeId=a04, codeName=자유, creator=null, modifier=null]]
+		/*
+		 * codeList>>>>>>>>>>> [ComCodeVo [codeType=menu, codeId=a01, codeName=일반,
+		 * creator=null, modifier=null], ComCodeVo [codeType=menu, codeId=a02,
+		 * codeName=Q&A, creator=null, modifier=null], ComCodeVo [codeType=menu,
+		 * codeId=a03, codeName=익명, creator=null, modifier=null], ComCodeVo
+		 * [codeType=menu, codeId=a04, codeName=자유, creator=null, modifier=null]]
 		 */
 
 		List<String> codeIdList = new ArrayList<>();
 		for (ComCodeVo comCode : codeList) {
 			codeIdList.add(comCode.getCodeId());
-		};
+		}
+		;
 		pageVo.setCodeId(codeIdList);
 		boardList = boardService.SelectBoardList(pageVo);
 
 		UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
 		System.out.println("session에서 가져온 userVo >>> " + loginUser);
-		
+
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("codeList", codeList);
 		model.addAttribute("totalCnt", totalCnt);
@@ -87,15 +93,14 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardView.do", method = RequestMethod.GET)
-	public String boardView(Locale locale, Model model, HttpSession session 
-			,@PathVariable("boardType") String boardType,
-			@PathVariable("boardNum") int boardNum) throws Exception {
+	public String boardView(Locale locale, Model model, HttpSession session,
+			@PathVariable("boardType") String boardType, @PathVariable("boardNum") int boardNum) throws Exception {
 
 		BoardVo boardVo = new BoardVo();
 
 		boardVo = boardService.selectBoard(boardType, boardNum);
-		
-		UserInfoVo userVo = (UserInfoVo)session.getAttribute("loginUser");
+
+		UserInfoVo userVo = (UserInfoVo) session.getAttribute("loginUser");
 
 		model.addAttribute("boardType", boardType);
 		model.addAttribute("boardNum", boardNum);
@@ -107,17 +112,17 @@ public class BoardController {
 
 	@RequestMapping(value = "/board/boardWrite.do", method = RequestMethod.GET)
 	public String boardWrite(Locale locale, Model model, ComCodeVo codeVo, HttpSession session) throws Exception {
-		
+
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
 
 		codeVo.setCodeType("mbti");
 		codeList = boardService.selectCodeList(codeVo);
-		
+
 		UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-		
+
 		model.addAttribute("codeList", codeList);
 		model.addAttribute("loginUser", loginUser);
-		
+
 		return "board/boardWrite";
 	}
 
@@ -179,7 +184,7 @@ public class BoardController {
 
 		List<BoardVo> boardVoList = mapper.readValue(jsonBoardList, new TypeReference<List<BoardVo>>() {
 		});
-		
+
 		// boardVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
 		for (BoardVo boardVo : boardVoList) {
 			resultCnt = boardService.boardInsert(boardVo);
@@ -192,14 +197,14 @@ public class BoardController {
 
 		return callbackMsg;
 	}
-	
+
 	@RequestMapping(value = "/board/boardTypesAction.do", method = RequestMethod.GET)
 	@ResponseBody
 	public List<ComCodeVo> boardTypesAction(Locale locale) throws Exception {
 
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
 		ComCodeVo codeVo = new ComCodeVo();
-		codeVo.setCodeType("menu"); 
+		codeVo.setCodeType("menu");
 		codeList = boardService.selectCodeList(codeVo);
 		return codeList;
 	}
@@ -277,13 +282,13 @@ public class BoardController {
 
 		return callbackMsg;
 	}
-	
+
 	@RequestMapping(value = "/board/boardSearchAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public List<BoardVo> boardSearchAction(@RequestBody List<String> boardList, 
-									Model model, Locale locale) throws Exception {
+	public List<BoardVo> boardSearchAction(@RequestBody List<String> boardList, Model model, Locale locale)
+			throws Exception {
 		PageVo pageVo = new PageVo();
-		
+
 		int page = 1;
 		int totalCnt = 0;
 		if (pageVo.getPageNo() == 0) {
@@ -291,91 +296,88 @@ public class BoardController {
 		}
 
 		List<BoardVo> searchBoardList = new ArrayList<BoardVo>();
-		//codeId로 찾음
+		// codeId로 찾음
 		pageVo.setCodeId(boardList);
 		searchBoardList.addAll(boardService.SelectBoardList(pageVo));
-		
+
 		System.out.println(searchBoardList.toString());
 		return searchBoardList;
 	}
-	
+
 	@RequestMapping(value = "/board/boardJoin.do", method = RequestMethod.GET)
-	public String boardjoin(Locale locale, Model model,  ComCodeVo codeVo) throws Exception {
-		
+	public String boardjoin(Locale locale, Model model, ComCodeVo codeVo) throws Exception {
+
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
-		
+
 		codeVo.setCodeType("phone");
 		codeList = boardService.selectCodeList(codeVo);
 		model.addAttribute("codeList", codeList);
-		
+
 		return "board/boardJoin";
-		
+
 	}
-	
+
 	@RequestMapping(value = "/board/boardUserIdCheckAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public int boardUserIdCheckAction(@RequestBody UserInfoVo userVo, 
-									Model model, Locale locale) throws Exception {
-		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); //userId=212tt 이렇게 값이 들어옴!
-	
+	public int boardUserIdCheckAction(@RequestBody UserInfoVo userVo, Model model, Locale locale) throws Exception {
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); // userId=212tt 이렇게 값이 들어옴!
+
 		int userIdCnt = boardService.userIdCheck(userVo);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>" + userIdCnt);
-		
-		if(userIdCnt == 0) {
+
+		if (userIdCnt == 0) {
 			userIdCnt = 0;
-		}else {
+		} else {
 			userIdCnt = -1;
 		}
-		
+
 		return userIdCnt;
 	}
-	
+
 	@RequestMapping(value = "/board/boardUserPwCheckAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public int boardUserPwCheckAction(@RequestBody List<String> pwList, 
-			Model model, Locale locale) throws Exception {
-		//String으로 받는 경우 {"userPw":"1313","userPwChk":"1313"}
-		//List<String>으로 받는 경우[{userPw=111, userPwChk=111}]
-		//ajax에서 pwList에 각각 값을 담아줌 [123, 122]
-		
+	public int boardUserPwCheckAction(@RequestBody List<String> pwList, Model model, Locale locale) throws Exception {
+		// String으로 받는 경우 {"userPw":"1313","userPwChk":"1313"}
+		// List<String>으로 받는 경우[{userPw=111, userPwChk=111}]
+		// ajax에서 pwList에 각각 값을 담아줌 [123, 122]
+
 		int userPwdCnt = -1;
-		
+
 		String userPw = pwList.get(0).toString();
 		String userPwChk = pwList.get(1).toString();
 
 		System.out.println("pwdcheck >> " + userPw + " " + userPwChk);
-		if(userPw.equals(userPwChk)) { 
-			//userPw == userPwChk는 같은 값이여도 오류나는 걸로 봐서 주소값 비교 
-			// ==> 직접 문자열 비교하도록 equals 사용 
+		if (userPw.equals(userPwChk)) {
+			// userPw == userPwChk는 같은 값이여도 오류나는 걸로 봐서 주소값 비교
+			// ==> 직접 문자열 비교하도록 equals 사용
 			userPwdCnt = 1;
 		} else {
 			userPwdCnt = 0;
 		}
-		
+
 		return userPwdCnt;
 	}
-	
+
 	@RequestMapping(value = "/board/boardUserjoinAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardUserjoinAction(UserInfoVo userVo, 
-									Model model, Locale locale) throws Exception {
-		
+	public String boardUserjoinAction(UserInfoVo userVo, Model model, Locale locale) throws Exception {
+
 //		ObjectMapper mapper = new ObjectMapper();
 //		String jsonUserInfoList = mapper.writeValueAsString(userList);
 //
 //		List<UserInfoVo> userInfoList = mapper.readValue(jsonUserInfoList, new TypeReference<List<UserInfoVo>>() {
 //		});
-		
-		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo); //주소값나옴... 
+
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo); // 주소값나옴...
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 
 		int resultCnt = boardService.userInsert(userVo);
-		//ORA-00947: not enough values 발생! 
-		//userAddr2랑 userCompany에 값을 입력하지 않으면 그대로 null이 되어서 들어가지 않음... 
-		//음.. 새로 userVo를 만들고 넣어야하는걸까?-> jsp에서 하려고했는데 if조건으로 하는
-		
+		// ORA-00947: not enough values 발생!
+		// userAddr2랑 userCompany에 값을 입력하지 않으면 그대로 null이 되어서 들어가지 않음...
+		// 음.. 새로 userVo를 만들고 넣어야하는걸까?-> jsp에서 하려고했는데 if조건으로 하는
+
 		System.out.println("resultCnt >>>>>>>>>>>>>>>>>> " + resultCnt);
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
 
@@ -385,86 +387,86 @@ public class BoardController {
 
 		return callbackMsg;
 	}
-	
+
 	@RequestMapping(value = "/board/boardLogin.do", method = RequestMethod.GET)
 	public String boardLogin(Locale locale, Model model) throws Exception {
-		
+
 		return "board/boardLogin";
 	}
-	
-	
+
 	@RequestMapping(value = "/board/boardUserLoginAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public UserInfoVo boardUserLoginAction(UserInfoVo userVo, HttpServletRequest request,
-									Model model, Locale locale) throws Exception {
-		
-		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); //주소값나옴... 
+	public UserInfoVo boardUserLoginAction(UserInfoVo userVo, HttpServletRequest request, Model model, Locale locale)
+			throws Exception {
+
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); // 주소값나옴...
 
 		UserInfoVo loginUser = boardService.selectUser(userVo);
-		
-		if(loginUser != null) {
+
+		if (loginUser != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", loginUser); //user가 있으면 1 (count 쿼리)
+			session.setAttribute("loginUser", loginUser); // user가 있으면 1 (count 쿼리)
 			System.out.println(session.toString());
 			System.out.println(session.getAttribute("loginUser"));
-			//UserInfoVo [userId=whffu1, userPw=whffu1!, userName=null, userPhone1=null, userPhone2=null, userPhone3=null, userAddr1=null, userAddr2=none, userCompany=none, creator=null, modifier=null]
-		} 
+			// UserInfoVo [userId=whffu1, userPw=whffu1!, userName=null, userPhone1=null,
+			// userPhone2=null, userPhone3=null, userAddr1=null, userAddr2=none,
+			// userCompany=none, creator=null, modifier=null]
+		}
 		return loginUser;
 	}
-	
-	
+
 	@RequestMapping(value = "/board/boardUserLogoutAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardUserLogoutAction(UserInfoVo userVo, HttpServletRequest request,
-			Model model, Locale locale) throws Exception {
-		
+	public String boardUserLogoutAction(UserInfoVo userVo, HttpServletRequest request, Model model, Locale locale)
+			throws Exception {
+
 		System.out.println(">>>>>>>>>boardUserLogoutAction>>>>>>>>>> " + userVo.toString());
-		
+
 		int loginCheckNum = boardService.userLoginCheck(userVo);
 		System.out.println("resultCnt >>>>>>>>>>>>>>>>>> " + loginCheckNum);
-		
+
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-		
+
 		result.put("success", (loginCheckNum > 0) ? "Y" : "N");
 
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 
 		System.out.println("callbackMsg::" + callbackMsg);
 
-		if(userVo.getUserId() != null) {
+		if (userVo.getUserId() != null) {
 			HttpSession session = request.getSession();
 			session.removeAttribute("loginUser");
 			System.out.println("세션만료");
-		} 
+		}
 		return callbackMsg;
 	}
-	
+
 	@RequestMapping(value = "/mbti/mbtiTest.do", method = RequestMethod.GET)
 	public String mbtiTest(Locale locale, Model model, PageVo pageVo) throws Exception {
-	
+
 		List<BoardVo> mbtiList = new ArrayList<BoardVo>();
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
-		
+
 		int page = 1;
-		
+
 		if (pageVo.getPageNo() == 0) {
 			pageVo.setPageNo(page);
 			;
 		}
-		
+
 		ComCodeVo codeVo = new ComCodeVo();
-		codeVo.setCodeType("mbti"); 
-		
+		codeVo.setCodeType("mbti");
+
 		codeList = boardService.selectCodeList(codeVo);
 
 		System.out.println("codeList >>> " + codeList);
-		
+
 		List<String> codeIdList = new ArrayList<>();
 		for (ComCodeVo comCode : codeList) {
 			codeIdList.add(comCode.getCodeId());
 		};
-		
+
 		pageVo.setCodeId(codeIdList);
 		pageVo.setCodeType("mbti");
 		mbtiList = boardService.SelectMbtiList(pageVo);
@@ -475,8 +477,7 @@ public class BoardController {
 
 		return "mbti/mbtiTest";
 	}
-	
-	
+
 	@RequestMapping(value = "/mbti/mbtiResultAction.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String mbtiResultAction(@RequestBody List<String> resultList, 
@@ -488,38 +489,43 @@ public class BoardController {
 		int pageNumber = 0;
 		
 		System.out.println(">>>>>>>>>mbtiResultAction>>>>>>>>>> " + resultList.toString());
-//		>>>>>>>>>mbtiResultAction>>>>>>>>>> [JP_5_-2, FT_5_0, EI_4_+2]
+//		>>>>>>>>>mbtiResultAction>>>>>>>>>> [PJ_2_4, IE_2_4, NS_2_4, EI_2_4, TF_2_4]
+//		로직 수정함! 하나만 나오도록 함! PJ => P
+
 		for (int i = 0; i < resultList.size(); i++) {
 			String[] splitList = resultList.get(i).split("_");
 			//selectNum : 마지막 숫자(+-)
 			int selectNum =  Integer.parseInt(splitList[2]) ;
-			//JP_5_-2 => J와 P가 저장되도록 문자열을 자름 [0]에 첫번째 알파벳 [1]에 두번째 알파벳
-			String[] splitType =  splitList[0].split("");
+			//TF 이런식으로 나왔을때 비동의하는 경우(value=> 5 6 7)
+			if(selectNum > 4) { 
+				//selectNum => 567의 값을 가짐 ==> 123이 되어서 반복되도록
+				for(int j = 0; j < (selectNum - 4) ; j++) {
+					//두번째 값 저장
+					mbtiCollection += splitList[0];
+				}
+				System.out.println("mbtiCollection >>>> " + mbtiCollection);
 			
-			//TF 이런식으로 나왔을때 비동의하는 경우(음수값)
-			if(selectNum < 0 ) {
-				
-				for(int j = 0; j < Math.abs(selectNum); j++) {
-					mbtiCollection += splitType[1];
+			//동의 하는 경우(value=> 1 2 3)
+			} else if(selectNum < 4){ 
+				//selectNum => 123의 값을 가짐 ==> 321이 되어서 반복되도록
+				for(int j = 0; j < (4 - selectNum) ; j++) {
+					mbtiCollection += splitList[0];
 				}
 				System.out.println("mbtiCollection >>>> " + mbtiCollection);
-				
-			} else { //동의 하는 경우(양수값)
-				for(int j = 0; j < Math.abs(selectNum); j++) {
-					mbtiCollection += splitType[0];
-				}
-				System.out.println("mbtiCollection >>>> " + mbtiCollection);
-			}
+			} 
 		}
 		
 		//결과값 저장...
 		mbtiResultList.add(mbtiCollection);
 		System.out.println("mbtiResultList >>>> " + mbtiResultList);
 		
+		//세션이 없으면 만들어서 저장
 		if(session.getAttribute("mbtiResultSession") == null) {
 			session.setAttribute("mbtiResultSession", mbtiResultList);
 			pageNumber = 1;
-		} else {
+		} 
+		//세션이 있으면 기존값에다가 새로운 값 추가해서 저장
+		else { 
 			myList = (List<String>) session.getAttribute("mbtiResultSession");
 			myList.addAll(mbtiResultList);
 			System.out.println(myList.toString());
@@ -534,17 +540,123 @@ public class BoardController {
 			return String.valueOf(pageNumber+1);
 		} else {// 5문항씩 4페이지 테스트가 다 끝난경우
 			return myList.toString();
-			//session.removeAttribute("mbtiResultSession"); 세션을 어디서 끊을 수 있을까..?
-			//아예 다른페이지로 보내버려야할까,,,
 		}
 	}
-	
-	@RequestMapping(value = "/mbti/mbtiResult.do", method = RequestMethod.GET)
-	public String mbtiResult(Locale locale, Model model, HttpSession session) throws Exception {
-	
-		session.removeAttribute("mbtiResultSession");
 
-		return "mbti/mbtiResult";
+	@RequestMapping(value = "/mbti/mbtiResult.do", method = RequestMethod.GET)
+	public String mbtiResult(Locale locale, Model model, HttpSession session ) throws Exception {
+
+		if(session.getAttribute("mbtiResultSession") != null) {
+			List<String> mbtiResultSession =  (List<String>) session.getAttribute("mbtiResultSession");
+			
+			System.out.println(mbtiResultSession.toString());
+			//[JTIPF, PEPPF, FSESF, PISIT]
+			
+			List<String> mbtiTypeList = boardService.mbtiTypeList();
+			System.out.println("mbtiTypeList>>> " + mbtiTypeList + "mbtiTypeList size>>> " + mbtiTypeList.size());
+			//mbtiTypeList>>> [E, F, I, J, N, P, S, T] size 8개! : 알파벳순이다..
+	
+			Map<String, String> mbtiTypeMap = new HashMap<String, String>();
+			mbtiTypeMap.put("first", "EI");
+			mbtiTypeMap.put("seconde", "NS");
+			mbtiTypeMap.put("third", "TF");
+			mbtiTypeMap.put("forth", "PJ");
+			
+			String[] first = mbtiTypeMap.get("first").toString().split("");
+			String[] seconde = mbtiTypeMap.get("seconde").toString().split("");
+			String[] third = mbtiTypeMap.get("third").toString().split("");
+			String[] fiforthrst = mbtiTypeMap.get("forth").toString().split("");
+			
+	        Map<String, Integer> resultMap = new HashMap(); 
+	        
+			for(int i = 0; i < mbtiTypeList.size(); i++ ) {
+				
+		        String target = mbtiTypeList.get(i); // 찾을 문자
+		
+		        // 정규 표현식 패턴 생성
+		        String regex = String.valueOf(target);
+		        Pattern pattern = Pattern.compile(regex);
+		
+		        // Matcher를 사용하여 일치하는 부분 찾기
+		        Matcher matcher = pattern.matcher(mbtiResultSession.toString());
+		        int count = 0;
+		        while (matcher.find()) {
+		            count++;
+		        }
+		
+		        resultMap.put(mbtiTypeList.get(i), count);
+		        System.out.println("문자 '" + target + "'의 개수: " + count);
+			}
+	
+			
+			List<String> mbtiResult = new ArrayList<String>();
+			//E랑 I의 개수 비교하기......
+			if(resultMap.get("E") > resultMap.get("I")) {
+				mbtiResult.add("E");
+			} 
+			//개수가 같은 경우, 알파벳 빠른애가 우선
+			else if( resultMap.get("E") ==  resultMap.get("I") ) {
+				//유니코드로 비교... 후 더 작은값(알파벳순서 빠른값)을 result에 넣어줌
+				String result = ('E' < 'I') ? "E" : "I";
+				mbtiResult.add(result);
+			}else {
+				mbtiResult.add("I");
+			}
+			
+			//N이랑 S 비교
+			if(resultMap.get("N") > resultMap.get("S")) {
+				mbtiResult.add("N");
+			}else if( resultMap.get("N") ==  resultMap.get("S") ) {
+				//유니코드로 비교... 후 더 작은값(알파벳순서 빠른값)을 result에 넣어줌
+				String result = ('N' < 'S') ? "N" : "S";
+				mbtiResult.add(result);
+			} else {
+				mbtiResult.add("S");
+			}
+			//개수가 같은 경우, 알파벳 빠른애가 우선
+			
+			
+			//T VS F
+			if(resultMap.get("T") > resultMap.get("F")) {
+				mbtiResult.add("T");
+			}else if( resultMap.get("T") ==  resultMap.get("F") ) {
+				//유니코드로 비교... 후 더 작은값(알파벳순서 빠른값)을 result에 넣어줌
+				String result = ('T' < 'F') ? "T" : "F";
+				mbtiResult.add(result);
+			} else {
+				mbtiResult.add("F");
+			}
+			//개수가 같은 경우, 알파벳 빠른애가 우선
+			
+			
+			//J VS P
+			if(resultMap.get("J") > resultMap.get("P")) {
+				mbtiResult.add("J");
+			}else if( resultMap.get("J") ==  resultMap.get("P") ) {
+				//유니코드로 비교... 후 더 작은값(알파벳순서 빠른값)을 result에 넣어줌
+				String result = ('J' < 'P') ? "J" : "P";
+				mbtiResult.add(result);
+			} else {
+				mbtiResult.add("P");
+			}
+			//개수가 같은 경우, 알파벳 빠른애가 우선
+			
+			String result = String.join("", mbtiResult);
+			System.out.println("result >>>> "  + result);
+	
+			model.addAttribute("mbtiResult" , result);
+			System.out.println("result >>>> "  + result);
+			
+			
+			session.removeAttribute("mbtiResultSession");
+			
+			return "mbti/mbtiResult";
+		}
+		else {
+			model.addAttribute("mbtiResult" , "");
+			return "mbti/mbtiResult";
+			
+		}
 	}
 
 }

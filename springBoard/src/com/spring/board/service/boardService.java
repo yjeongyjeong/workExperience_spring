@@ -32,5 +32,7 @@ public interface boardService {
 
 	//==============================================================
 	public List<BoardVo> SelectMbtiList(PageVo pageVo) throws Exception;
+	public String SelectMbtiName(String codeId) throws Exception;
+	public List<String> mbtiTypeList() throws Exception;
 
 }

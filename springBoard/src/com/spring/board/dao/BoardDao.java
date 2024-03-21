@@ -34,5 +34,7 @@ public interface BoardDao {
 	public UserInfoVo selectUser(UserInfoVo userVo) throws Exception;
 //	============================================
 	public List<BoardVo> selectMbtiList(PageVo pageVo) throws Exception;
+	public String selectMbtiName(String codeId) throws Exception;
+	public List<String> mbtiTypeList() throws Exception;
 	
 }

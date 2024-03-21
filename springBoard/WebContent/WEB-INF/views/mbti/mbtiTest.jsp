@@ -56,7 +56,7 @@
                             console.log("Count of '" + mbtiArray[i] + "': " + count);
                         } */
                         
-                        const typeE = data.match(/E/gi)?.length;
+/*                         const typeE = data.match(/E/gi)?.length;
                         const typeI = data.match(/I/gi)?.length;
                         const typeN = data.match(/N/gi)?.length;
                         const typeS = data.match(/S/gi)?.length;
@@ -67,14 +67,52 @@
                         
                         var mbtiResult = '';
                         
-                        mbtiResult += typeE >= typeI ? 'E' : 'I';
-                        mbtiResult += typeN >= typeS ? 'N' : 'S';
-                        mbtiResult += typeF >= typeT ? 'F' : 'T';
-                        mbtiResult += typeJ >= typeP ? 'J' : 'P';
+                        if( typeE == typeI ){
+                        	"I".charCodeAt() > "E".charCodeAt() ? mbtiResult += 'E' : mbtiResult += 'I';
+                        }
+                        else if(typeE > typeI ) {
+                        	mbtiResult += 'E';
+                        } 
+                        else if( typeE > typeI ){
+                        	mbtiResult += 'I';
+                        }
+                        
+                        
+                        if( typeN == typeS ){
+                        	"N".charCodeAt() > "S".charCodeAt() ? mbtiResult += 'S' : mbtiResult += 'N';
+                        }
+                        else if(typeN > typeS ) {
+                        	mbtiResult += 'N';
+                        } 
+                        else if( typeS > typeN ){
+                        	mbtiResult += 'S';
+                        }
+                        
+                        
+                        if( typeT == typeF ){
+                        	"T".charCodeAt() > "F".charCodeAt() ? mbtiResult += 'F' : mbtiResult += 'T';
+                        }
+                        else if(typeT > typeF) {
+                        	mbtiResult += 'T';
+                        } 
+                        else if( typeF > typeT ){
+                        	mbtiResult += 'F';
+                        }
+                        
+                        
+                        if( typeP == typeJ ){
+                        	"P".charCodeAt() > "J".charCodeAt() ? mbtiResult += 'J' : mbtiResult += 'P';
+                        }
+                        else if(typeP > typeJ) {
+                        	mbtiResult += 'P';
+                        } 
+                        else if( typeJ > typeP ){
+                        	mbtiResult += 'J';
+                        }
                         
                         console.log(mbtiResult);
                         
-                        sessionStorage.setItem('mbtiResult', mbtiResult);
+                        sessionStorage.setItem('mbtiResult', mbtiResult); */
                         location.href = "/mbti/mbtiResult.do"
 					}
 			    },
@@ -98,13 +136,13 @@
 			 <fieldset style="text-align: center;" id="mbtiField">
 				${list.boardComment}
 				<br><br>
-					 <span>동의 <input type="radio" value="+3" name="${list.boardType}_${list.boardNum}"> </span>
-					<span><input type="radio" value="+2" name="${list.boardType}_${list.boardNum}"> </span>
-					<span><input type="radio" value="+1" name="${list.boardType}_${list.boardNum}"> </span>
-					<span><input type="radio" value="0" name="${list.boardType}_${list.boardNum}"> </span>
-					<span><input type="radio" value="-1" name="${list.boardType}_${list.boardNum}"> </span>
-					<span><input type="radio" value="-2" name="${list.boardType}_${list.boardNum}"> </span>
-					<span><input type="radio" value="-3" name="${list.boardType}_${list.boardNum}"> 비동의</span>
+					 <span>동의 <input type="radio" value="1" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="2" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="3" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="4" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="5" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="6" name="${list.boardType}_${list.boardNum}"> </span>
+					<span><input type="radio" value="7" name="${list.boardType}_${list.boardNum}"> 비동의</span>
 			</fieldset>
 			</td>
 		</tr>	

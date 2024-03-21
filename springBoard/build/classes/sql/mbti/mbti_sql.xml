@@ -53,4 +53,17 @@
 		WHERE NUMROW BETWEEN (#{pageNo}-1)*5 + 1 AND (#{pageNo})*5
 	</select>
 	
+	<select id="mbtiName" parameterType="String" resultType="String">
+		select 
+			code_name 
+		from 
+			com_code 
+		where 
+			code_id = #{codeId} 
+			and code_type = 'mbti';
+	</select>
+	
+	<select id="mbtiTypeList" parameterType="String" resultType="String">
+		select code_name from com_code where code_type = 'mbti'
+	</select>
 </mapper>

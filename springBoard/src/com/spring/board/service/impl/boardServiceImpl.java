@@ -93,5 +93,15 @@ public class boardServiceImpl implements boardService{
 	public List<BoardVo> SelectMbtiList(PageVo pageVo) throws Exception {
 		return boardDao.selectMbtiList(pageVo);
 	}
+
+	@Override
+	public String SelectMbtiName(String codeId) throws Exception {
+		return boardDao.selectMbtiName(codeId);
+	}
+
+	@Override
+	public List<String> mbtiTypeList() throws Exception {
+		return boardDao.mbtiTypeList();
+	}
 	
 }

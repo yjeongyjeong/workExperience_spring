@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="[]"/>
+		<item key="selection" value="COUNT"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="count"/>
+			<item value="code_name"/>
+			<item value="Object"/>
+			<item value="object"/>
+			<item value="pageVo"/>
+			<item value="false"/>
 			<item value="[]"/>
 			<item value="add"/>
 			<item value="typeof"/>
@@ -17,12 +23,6 @@
 			<item value="list"/>
 			<item value="        if(count &lt;= 4){"/>
 			<item value="page"/>
-			<item value="pw"/>
-			<item value="for"/>
-			<item value="each"/>
-			<item value="eq"/>
-			<item value="phone"/>
-			<item value="phoneNumber"/>
 		</list>
 		<list key="replacehistory">
 			<item value="UTF-8"/>

@@ -9,7 +9,7 @@
 </head>
 
 <script type="text/javascript">
-	$j(document).ready(function(){
+ 	$j(document).ready(function(){
 		const mbtiResult = sessionStorage.getItem('mbtiResult');
 		
 		var mbtiResultRow = document.getElementById('mbtiResultRow');
@@ -20,8 +20,12 @@
 		 $j("#restart").on("click", function(e){
 			 sessionStorage.removeItem('mbtiResult');
 	    	 location.href = 'http://localhost:8081/mbti/mbtiTest.do';
+	    	 
+	    	// 문자열로 넘겨받은 배열을 쉼표로 분할하여 배열로 변환
+	    	// var mbtiTypeList = `${mbtiTypeList}`.split(",");
+	        // console.log(mbtiTypeList);
 		 });
-	});
+	}); 
 </script>
 
 <body>
@@ -34,6 +38,7 @@
 	</tr>	
 	<tr>
 		<td align="center" id="mbtiResultRow" style="font-style: italic ; font-size: 2em; ">
+		${mbtiResult}
 		</td>
 	</tr>
 	<tr>

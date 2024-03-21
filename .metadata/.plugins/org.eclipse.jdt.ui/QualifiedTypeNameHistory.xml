@@ -3,7 +3,6 @@
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.BoardVo"/>
     <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
-    <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ResponseBody"/>
     <fullyQualifiedTypeName name="com.sun.tools.javac.util.List"/>
     <fullyQualifiedTypeName name="java.util.List"/>
@@ -12,7 +11,6 @@
     <fullyQualifiedTypeName name="com.spring.board.vo.PageVo"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.ComCodeVo"/>
     <fullyQualifiedTypeName name="java.util.stream.Collectors"/>
-    <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="java.lang.Exception"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
@@ -20,4 +18,10 @@
     <fullyQualifiedTypeName name="javax.servlet.http.HttpServletRequest"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.UserInfoVo"/>
     <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
+    <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
+    <fullyQualifiedTypeName name="java.util.regex.Matcher"/>
+    <fullyQualifiedTypeName name="java.util.Stack"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="java.util.HashMap"/>
 </qualifiedTypeNameHistroy>
