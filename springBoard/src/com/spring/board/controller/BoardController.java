@@ -5,11 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Spliterator;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -490,27 +487,22 @@ public class BoardController {
 		
 		System.out.println(">>>>>>>>>mbtiResultAction>>>>>>>>>> " + resultList.toString());
 //		>>>>>>>>>mbtiResultAction>>>>>>>>>> [PJ_2_4, IE_2_4, NS_2_4, EI_2_4, TF_2_4]
-//		로직 수정함! 하나만 나오도록 함! PJ => P
+//		로직 수정함! 하나만 나오도록 함! PJ => P 따라서 [P_2_4, I_2_4, N_2_4, E_2_4, T_2_4]
 
 		for (int i = 0; i < resultList.size(); i++) {
-			String[] splitList = resultList.get(i).split("_");
-			//selectNum : 마지막 숫자(+-)
+			String[] splitList = resultList.get(i).split("_"); //P_2_4 => [P, 2, 4]
+			//selectNum : [P, 2, 4] 마지막 숫자 => 점수를 나타냄
 			int selectNum =  Integer.parseInt(splitList[2]) ;
 			//TF 이런식으로 나왔을때 비동의하는 경우(value=> 5 6 7)
 			if(selectNum > 4) { 
-				//selectNum => 567의 값을 가짐 ==> 123이 되어서 반복되도록
-				for(int j = 0; j < (selectNum - 4) ; j++) {
-					//두번째 값 저장
-					mbtiCollection += splitList[0];
-				}
+				//selectNum => 567의 값을 가짐 ==> 123이 되어서 반복되도록			
+				mbtiCollection.repeat(selectNum - 4);
 				System.out.println("mbtiCollection >>>> " + mbtiCollection);
 			
 			//동의 하는 경우(value=> 1 2 3)
 			} else if(selectNum < 4){ 
 				//selectNum => 123의 값을 가짐 ==> 321이 되어서 반복되도록
-				for(int j = 0; j < (4 - selectNum) ; j++) {
-					mbtiCollection += splitList[0];
-				}
+				mbtiCollection.repeat(4 - selectNum);
 				System.out.println("mbtiCollection >>>> " + mbtiCollection);
 			} 
 		}
@@ -529,7 +521,7 @@ public class BoardController {
 			myList = (List<String>) session.getAttribute("mbtiResultSession");
 			myList.addAll(mbtiResultList);
 			System.out.println(myList.toString());
-			pageNumber = myList.size();
+			pageNumber = myList.size(); //[JTIPF, PEPPF, FSESF, PISIT] 이런식으로 저장됨
 			session.setAttribute("mbtiResultSession", myList);
 		}
 
@@ -556,17 +548,6 @@ public class BoardController {
 			System.out.println("mbtiTypeList>>> " + mbtiTypeList + "mbtiTypeList size>>> " + mbtiTypeList.size());
 			//mbtiTypeList>>> [E, F, I, J, N, P, S, T] size 8개! : 알파벳순이다..
 	
-			Map<String, String> mbtiTypeMap = new HashMap<String, String>();
-			mbtiTypeMap.put("first", "EI");
-			mbtiTypeMap.put("seconde", "NS");
-			mbtiTypeMap.put("third", "TF");
-			mbtiTypeMap.put("forth", "PJ");
-			
-			String[] first = mbtiTypeMap.get("first").toString().split("");
-			String[] seconde = mbtiTypeMap.get("seconde").toString().split("");
-			String[] third = mbtiTypeMap.get("third").toString().split("");
-			String[] fiforthrst = mbtiTypeMap.get("forth").toString().split("");
-			
 	        Map<String, Integer> resultMap = new HashMap(); 
 	        
 			for(int i = 0; i < mbtiTypeList.size(); i++ ) {
