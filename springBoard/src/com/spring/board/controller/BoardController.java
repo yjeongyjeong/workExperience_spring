@@ -1,6 +1,8 @@
 package com.spring.board.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -62,11 +64,11 @@ public class BoardController {
 		codeList = boardService.selectCodeList(codeVo);
 //		System.out.println("codeList>>>>>>>>>>>" + codeList);
 		/*
-		 * codeList>>>>>>>>>>> [ComCodeVo [codeType=menu, codeId=a01, codeName=ÀÏ¹İ,
+		 * codeList>>>>>>>>>>> [ComCodeVo [codeType=menu, codeId=a01, codeName=ì¼ë°˜,
 		 * creator=null, modifier=null], ComCodeVo [codeType=menu, codeId=a02,
 		 * codeName=Q&A, creator=null, modifier=null], ComCodeVo [codeType=menu,
-		 * codeId=a03, codeName=ÀÍ¸í, creator=null, modifier=null], ComCodeVo
-		 * [codeType=menu, codeId=a04, codeName=ÀÚÀ¯, creator=null, modifier=null]]
+		 * codeId=a03, codeName=ìµëª…, creator=null, modifier=null], ComCodeVo
+		 * [codeType=menu, codeId=a04, codeName=ììœ , creator=null, modifier=null]]
 		 */
 
 		List<String> codeIdList = new ArrayList<>();
@@ -78,7 +80,7 @@ public class BoardController {
 		boardList = boardService.SelectBoardList(pageVo);
 
 		UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-		System.out.println("session¿¡¼­ °¡Á®¿Â userVo >>> " + loginUser);
+		System.out.println("sessionì—ì„œ ê°€ì ¸ì˜¨ userVo >>> " + loginUser);
 
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("codeList", codeList);
@@ -127,20 +129,20 @@ public class BoardController {
 	 * @RequestMapping(value = "/board/boardWriteAction.do", method =
 	 * RequestMethod.POST)
 	 * 
-	 * @ResponseBody // @Transactional //µÇ³ª.? public String boardWriteAction(Locale
+	 * @ResponseBody // @Transactional //ë˜ë‚˜.? public String boardWriteAction(Locale
 	 * locale, @RequestBody List<?> boardData) throws Exception{
 	 * 
-	 * System.out.println("ÇöÀç °Ô½Ã±Û board >>>>>>>>>>>>>>>>> " + boardData.toString());
-	 * System.out.println("ÇöÀç °Ô½Ã±Û board >>>>>>>>>>>>>>>>> " + boardData.size());
+	 * System.out.println("í˜„ì¬ ê²Œì‹œê¸€ board >>>>>>>>>>>>>>>>> " + boardData.toString());
+	 * System.out.println("í˜„ì¬ ê²Œì‹œê¸€ board >>>>>>>>>>>>>>>>> " + boardData.size());
 	 * 
 	 * HashMap<String, String> result = new HashMap<String, String>(); CommonUtil
 	 * commonUtil = new CommonUtil(); int resultCnt = -1;
 	 * 
-	 * //class java.lang.Integer cannot be cast to class java.lang.String ¹ß»ı =>
-	 * List<String>À¸·Î ÇØ¼­ ¹ß»ıÇÑ ¹®Á¦¿´À½.. <?>·Î ¹Ù²ã¼­ ÁøÇà int divisionNum = (Integer)
+	 * //class java.lang.Integer cannot be cast to class java.lang.String ë°œìƒ =>
+	 * List<String>ìœ¼ë¡œ í•´ì„œ ë°œìƒí•œ ë¬¸ì œì˜€ìŒ.. <?>ë¡œ ë°”ê¿”ì„œ ì§„í–‰ int divisionNum = (Integer)
 	 * boardData.get(0); System.out.println("divisionNum >> " + divisionNum);
 	 * 
-	 * boardData.remove(0); //0¹ø µ¥ÀÌÅÍ »èÁ¦ System.out.println("»èÁ¦ ÈÄ »çÀÌÁî >> " +
+	 * boardData.remove(0); //0ë²ˆ ë°ì´í„° ì‚­ì œ System.out.println("ì‚­ì œ í›„ ì‚¬ì´ì¦ˆ >> " +
 	 * boardData.size());
 	 * 
 	 * for(int i = 0; i < (boardData.size() /divisionNum); i++) {
@@ -162,27 +164,27 @@ public class BoardController {
 
 	@RequestMapping(value = "/board/boardWriteAction.do", method = RequestMethod.POST)
 	@ResponseBody
-//	@Transactional //µÇ³ª.?
+//	@Transactional //ë˜ë‚˜.?
 	public String boardWriteAction(@RequestBody List<BoardVo> boardList, Locale locale) throws Exception {
 //		[{boardType=a01, boardTitle=1212, boardComment=222}, {boardType=a01, boardTitle=4545, boardComment=444}]
-		System.out.println("ÇöÀç °Ô½Ã±Û board >>>>>>>>>>>>>>>>> " + boardList.toString());
+		System.out.println("í˜„ì¬ ê²Œì‹œê¸€ board >>>>>>>>>>>>>>>>> " + boardList.toString());
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 		int resultCnt = -1;
 
 //		java.util.LinkedHashMap cannot be cast to class com.spring.board.vo.BoardVo (java.util.LinkedHashMap
-//		list·Î ¹Ş¾Æ¿À¶ó°í ÇßÀ¸³ª ¹Ş¾Æ¿Ã ‹š objectMapper.readValue()¸¦ ºÎ¸£°Ô µÇ°í ArrayList.class ¶ó´Â Å¬·¡½º °´Ã¼¸¦ Áö³ª°Ô µÈ´Ù.
-//		json¿¡¼­ ArrayList¶ó´Â °´Ã¼·Î ¿ªÁ÷·ÄÈ­ ÇØ¾ßÇÏ´Âµ¥ Å¸ÀÔÀ» ¸ğ¸£±â ¶§¹®¿¡ ¹ß»ıÇÏ´Â ¿À·ù..
-//		==>ÇØ½¬¸ÊÀ» »ç¿ëÇÏ°Å³ª ¸µÅ©µåÇØ½¬¸Ê È¤Àº °´Ã¼¸¦ Á÷Á¢ Ä¿½ºÅÒ
-//		³»°¡ »ç¿ëÇÑ ¹æ¹ıÀº Á÷Á¢ ¾î¶² Å¬·¡½º·Î ÀĞ¾î¿Í¾ß ÇÏ´ÂÁö ¸í½ÃÇØÁÜ
+//		listë¡œ ë°›ì•„ì˜¤ë¼ê³  í–ˆìœ¼ë‚˜ ë°›ì•„ì˜¬ ë–„ objectMapper.readValue()ë¥¼ ë¶€ë¥´ê²Œ ë˜ê³  ArrayList.class ë¼ëŠ” í´ë˜ìŠ¤ ê°ì²´ë¥¼ ì§€ë‚˜ê²Œ ëœë‹¤.
+//		jsonì—ì„œ ArrayListë¼ëŠ” ê°ì²´ë¡œ ì—­ì§ë ¬í™” í•´ì•¼í•˜ëŠ”ë° íƒ€ì…ì„ ëª¨ë¥´ê¸° ë•Œë¬¸ì— ë°œìƒí•˜ëŠ” ì˜¤ë¥˜..
+//		==>í•´ì‰¬ë§µì„ ì‚¬ìš©í•˜ê±°ë‚˜ ë§í¬ë“œí•´ì‰¬ë§µ í˜¹ì€ ê°ì²´ë¥¼ ì§ì ‘ ì»¤ìŠ¤í…€
+//		ë‚´ê°€ ì‚¬ìš©í•œ ë°©ë²•ì€ ì§ì ‘ ì–´ë–¤ í´ë˜ìŠ¤ë¡œ ì½ì–´ì™€ì•¼ í•˜ëŠ”ì§€ ëª…ì‹œí•´ì¤Œ
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonBoardList = mapper.writeValueAsString(boardList);
 
 		List<BoardVo> boardVoList = mapper.readValue(jsonBoardList, new TypeReference<List<BoardVo>>() {
 		});
 
-		// boardVo¶ó´Â °´Ã¼¿¡ ÀüºÎ µ¥ÀÌÅÍ¸¦ ´ã¾ÆÁÜ(¾Ë¾Æ¼­ ¸ÊÇÎ)
+		// boardVoë¼ëŠ” ê°ì²´ì— ì „ë¶€ ë°ì´í„°ë¥¼ ë‹´ì•„ì¤Œ(ì•Œì•„ì„œ ë§µí•‘)
 		for (BoardVo boardVo : boardVoList) {
 			resultCnt = boardService.boardInsert(boardVo);
 			System.out.println("resultCnt >> " + resultCnt);
@@ -206,7 +208,7 @@ public class BoardController {
 		return codeList;
 	}
 
-//requestMappingÀ» Å¬·¡½º À§¿¡ ½á¼­ "/board"¸¦ °øÅëÀ¸·Î °®°Ô ¸¸µé°í @GetMappingÀÌ³ª @PostMappingÀ» »ç¿ëÇØÁàµµ ±¦Âú´Ù~
+//requestMappingì„ í´ë˜ìŠ¤ ìœ„ì— ì¨ì„œ "/board"ë¥¼ ê³µí†µìœ¼ë¡œ ê°–ê²Œ ë§Œë“¤ê³  @GetMappingì´ë‚˜ @PostMappingì„ ì‚¬ìš©í•´ì¤˜ë„ ê´œì°®ë‹¤~
 
 	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardModify.do", method = RequestMethod.GET)
 	public String boardModify(Locale locale, Model model, @PathVariable("boardType") String boardType,
@@ -233,15 +235,15 @@ public class BoardController {
 
 		System.out.println("=========================post=======================");
 		System.out.println("boardVo >>> " + boardVo.toString());
-		// boardType¿¡¼­ null°ª ¿¡·¯ ¹ß»ı.. ¿Ö³Ä¸é Äõ¸®½ºÆ®¸µ¿¡¼­ °¡Á®¿ÀÁöµµ ¾Ê¾Ò°í hiddenÀ¸·Î °¡Á®¿ÀÁöµµ ¾Ê¾Ò±â ¶§¹®
-		// Äõ¸®½ºÆ®¸µ ±ÍÂú¾Æ¼­ ±×³É hiddenÀ¸·Î °¡Á®¿È
+		// boardTypeì—ì„œ nullê°’ ì—ëŸ¬ ë°œìƒ.. ì™œëƒë©´ ì¿¼ë¦¬ìŠ¤íŠ¸ë§ì—ì„œ ê°€ì ¸ì˜¤ì§€ë„ ì•Šì•˜ê³  hiddenìœ¼ë¡œ ê°€ì ¸ì˜¤ì§€ë„ ì•Šì•˜ê¸° ë•Œë¬¸
+		// ì¿¼ë¦¬ìŠ¤íŠ¸ë§ ê·€ì°®ì•„ì„œ ê·¸ëƒ¥ hiddenìœ¼ë¡œ ê°€ì ¸ì˜´
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 
 		int resultCnt = boardService.boardUpdate(boardVo);
 		System.out.println("resultCnt >>>>>>>>>>>>>>>>>> " + resultCnt);
-		// ¿µÇâ¹ŞÀº ÇàÀÇ °³¼öÀÌ¹Ç·Î ¾ç¼ö¸é ¼º°øÀÎ°Ç°¡?
+		// ì˜í–¥ë°›ì€ í–‰ì˜ ê°œìˆ˜ì´ë¯€ë¡œ ì–‘ìˆ˜ë©´ ì„±ê³µì¸ê±´ê°€?
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
 
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
@@ -252,14 +254,14 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/boardRemoveAction.do", method = RequestMethod.POST)
-	@ResponseBody // ¾øÀ¸¸é jsonµ¥ÀÌÅÍ¸¦ ÀÎ½Ä¸øÇÏ´Â °Í °°À½...? callbackMsg ¹İÈ¯ÀÌ ¾ÈµÊ
+	@ResponseBody // ì—†ìœ¼ë©´ jsonë°ì´í„°ë¥¼ ì¸ì‹ëª»í•˜ëŠ” ê²ƒ ê°™ìŒ...? callbackMsg ë°˜í™˜ì´ ì•ˆë¨
 	public String boardRemove(Locale locale, BoardVo boardVo, Model model) throws Exception {
 
 		System.out.println("boardRemoveAction~~~~~");
-		System.out.println("delete ÇÒ board >>>>>>>>>>>>>>>>>>>>>> \n" + boardVo);
+		System.out.println("delete í•  board >>>>>>>>>>>>>>>>>>>>>> \n" + boardVo);
 //		
 //		boardVo = boardService.selectBoard(boardVo.getBoardType(), boardVo.getBoardNum());
-//		System.out.println("delete ÇÒ board >>>>>>>>>>>>>>>>>>>>>> \n" + boardVo);
+//		System.out.println("delete í•  board >>>>>>>>>>>>>>>>>>>>>> \n" + boardVo);
 		System.out.println("boardType >> " + boardVo.getBoardType());
 		System.out.println("boardNum >> " + boardVo.getBoardNum());
 
@@ -273,9 +275,9 @@ public class BoardController {
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 
 		System.out.println("callbackMsg::" + callbackMsg);
-		System.out.println("»èÁ¦µÈ ¹øÈ£ >> " + boardVo.getBoardNum());
+		System.out.println("ì‚­ì œëœ ë²ˆí˜¸ >> " + boardVo.getBoardNum());
 
-		model.addAttribute("msg", "°Ô½Ã±ÛÀÌ »èÁ¦µÇ¾ú½À´Ï´Ù.");
+		model.addAttribute("msg", "ê²Œì‹œê¸€ì´ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.");
 
 		return callbackMsg;
 	}
@@ -293,7 +295,7 @@ public class BoardController {
 		}
 
 		List<BoardVo> searchBoardList = new ArrayList<BoardVo>();
-		// codeId·Î Ã£À½
+		// codeIdë¡œ ì°¾ìŒ
 		pageVo.setCodeId(boardList);
 		searchBoardList.addAll(boardService.SelectBoardList(pageVo));
 
@@ -317,7 +319,7 @@ public class BoardController {
 	@RequestMapping(value = "/board/boardUserIdCheckAction.do", method = RequestMethod.POST)
 	@ResponseBody
 	public int boardUserIdCheckAction(@RequestBody UserInfoVo userVo, Model model, Locale locale) throws Exception {
-		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); // userId=212tt ÀÌ·¸°Ô °ªÀÌ µé¾î¿È!
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); // userId=212tt ì´ë ‡ê²Œ ê°’ì´ ë“¤ì–´ì˜´!
 
 		int userIdCnt = boardService.userIdCheck(userVo);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>" + userIdCnt);
@@ -334,9 +336,9 @@ public class BoardController {
 	@RequestMapping(value = "/board/boardUserPwCheckAction.do", method = RequestMethod.POST)
 	@ResponseBody
 	public int boardUserPwCheckAction(@RequestBody List<String> pwList, Model model, Locale locale) throws Exception {
-		// StringÀ¸·Î ¹Ş´Â °æ¿ì {"userPw":"1313","userPwChk":"1313"}
-		// List<String>À¸·Î ¹Ş´Â °æ¿ì[{userPw=111, userPwChk=111}]
-		// ajax¿¡¼­ pwList¿¡ °¢°¢ °ªÀ» ´ã¾ÆÁÜ [123, 122]
+		// Stringìœ¼ë¡œ ë°›ëŠ” ê²½ìš° {"userPw":"1313","userPwChk":"1313"}
+		// List<String>ìœ¼ë¡œ ë°›ëŠ” ê²½ìš°[{userPw=111, userPwChk=111}]
+		// ajaxì—ì„œ pwListì— ê°ê° ê°’ì„ ë‹´ì•„ì¤Œ [123, 122]
 
 		int userPwdCnt = -1;
 
@@ -345,8 +347,8 @@ public class BoardController {
 
 		System.out.println("pwdcheck >> " + userPw + " " + userPwChk);
 		if (userPw.equals(userPwChk)) {
-			// userPw == userPwChk´Â °°Àº °ªÀÌ¿©µµ ¿À·ù³ª´Â °É·Î ºÁ¼­ ÁÖ¼Ò°ª ºñ±³
-			// ==> Á÷Á¢ ¹®ÀÚ¿­ ºñ±³ÇÏµµ·Ï equals »ç¿ë
+			// userPw == userPwChkëŠ” ê°™ì€ ê°’ì´ì—¬ë„ ì˜¤ë¥˜ë‚˜ëŠ” ê±¸ë¡œ ë´ì„œ ì£¼ì†Œê°’ ë¹„êµ
+			// ==> ì§ì ‘ ë¬¸ìì—´ ë¹„êµí•˜ë„ë¡ equals ì‚¬ìš©
 			userPwdCnt = 1;
 		} else {
 			userPwdCnt = 0;
@@ -365,15 +367,15 @@ public class BoardController {
 //		List<UserInfoVo> userInfoList = mapper.readValue(jsonUserInfoList, new TypeReference<List<UserInfoVo>>() {
 //		});
 
-		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo); // ÁÖ¼Ò°ª³ª¿È...
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo); // ì£¼ì†Œê°’ë‚˜ì˜´...
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 
 		int resultCnt = boardService.userInsert(userVo);
-		// ORA-00947: not enough values ¹ß»ı!
-		// userAddr2¶û userCompany¿¡ °ªÀ» ÀÔ·ÂÇÏÁö ¾ÊÀ¸¸é ±×´ë·Î nullÀÌ µÇ¾î¼­ µé¾î°¡Áö ¾ÊÀ½...
-		// À½.. »õ·Î userVo¸¦ ¸¸µé°í ³Ö¾î¾ßÇÏ´Â°É±î?-> jsp¿¡¼­ ÇÏ·Á°íÇß´Âµ¥ ifÁ¶°ÇÀ¸·Î ÇÏ´Â
+		// ORA-00947: not enough values ë°œìƒ!
+		// userAddr2ë‘ userCompanyì— ê°’ì„ ì…ë ¥í•˜ì§€ ì•Šìœ¼ë©´ ê·¸ëŒ€ë¡œ nullì´ ë˜ì–´ì„œ ë“¤ì–´ê°€ì§€ ì•ŠìŒ...
+		// ìŒ.. ìƒˆë¡œ userVoë¥¼ ë§Œë“¤ê³  ë„£ì–´ì•¼í•˜ëŠ”ê±¸ê¹Œ?-> jspì—ì„œ í•˜ë ¤ê³ í–ˆëŠ”ë° ifì¡°ê±´ìœ¼ë¡œ í•˜ëŠ”
 
 		System.out.println("resultCnt >>>>>>>>>>>>>>>>>> " + resultCnt);
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
@@ -396,13 +398,13 @@ public class BoardController {
 	public UserInfoVo boardUserLoginAction(UserInfoVo userVo, HttpServletRequest request, Model model, Locale locale)
 			throws Exception {
 
-		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); // ÁÖ¼Ò°ª³ª¿È...
+		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); // ì£¼ì†Œê°’ë‚˜ì˜´...
 
 		UserInfoVo loginUser = boardService.selectUser(userVo);
 
 		if (loginUser != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", loginUser); // user°¡ ÀÖÀ¸¸é 1 (count Äõ¸®)
+			session.setAttribute("loginUser", loginUser); // userê°€ ìˆìœ¼ë©´ 1 (count ì¿¼ë¦¬)
 			System.out.println(session.toString());
 			System.out.println(session.getAttribute("loginUser"));
 			// UserInfoVo [userId=whffu1, userPw=whffu1!, userName=null, userPhone1=null,
@@ -434,7 +436,7 @@ public class BoardController {
 		if (userVo.getUserId() != null) {
 			HttpSession session = request.getSession();
 			session.removeAttribute("loginUser");
-			System.out.println("¼¼¼Ç¸¸·á");
+			System.out.println("ì„¸ì…˜ë§Œë£Œ");
 		}
 		return callbackMsg;
 	}
@@ -487,50 +489,59 @@ public class BoardController {
 		
 		System.out.println(">>>>>>>>>mbtiResultAction>>>>>>>>>> " + resultList.toString());
 //		>>>>>>>>>mbtiResultAction>>>>>>>>>> [PJ_2_4, IE_2_4, NS_2_4, EI_2_4, TF_2_4]
-//		·ÎÁ÷ ¼öÁ¤ÇÔ! ÇÏ³ª¸¸ ³ª¿Àµµ·Ï ÇÔ! PJ => P µû¶ó¼­ [P_2_4, I_2_4, N_2_4, E_2_4, T_2_4]
+		
+		//ë§¤ìš°ë™ì˜~ë¹„ë™ì˜ëŠ” 1~7ì˜ ê°’ì„ ê°€ì§€ê³  ê° 123ì ì˜ ì ìˆ˜ë¡œ ê³„ì‚°
+		Map<Integer, Integer> answerMap = new HashMap<>(); 
+		answerMap.put(1, 3);
+		answerMap.put(2, 2);
+		answerMap.put(3, 1);
+		answerMap.put(4, 0);
+		answerMap.put(5, 1);
+		answerMap.put(6, 2);
+		answerMap.put(7, 3);
 
 		for (int i = 0; i < resultList.size(); i++) {
-			String[] splitList = resultList.get(i).split("_"); //P_2_4 => [P, 2, 4]
-			//selectNum : [P, 2, 4] ¸¶Áö¸· ¼ıÀÚ => Á¡¼ö¸¦ ³ªÅ¸³¿
+			String[] splitList = resultList.get(i).split("_"); //PJ_2_4 => [PJ, 2, 4]
+			String[] splitType = splitList[0].split("");
+			//selectNum : [PJ, 2, 4] ë§ˆì§€ë§‰ ìˆ«ì => ì ìˆ˜ë¥¼ ë‚˜íƒ€ëƒ„
 			int selectNum =  Integer.parseInt(splitList[2]) ;
-			//TF ÀÌ·±½ÄÀ¸·Î ³ª¿ÔÀ»¶§ ºñµ¿ÀÇÇÏ´Â °æ¿ì(value=> 5 6 7)
+			
+			//TF ì´ëŸ°ì‹ìœ¼ë¡œ ë‚˜ì™”ì„ë•Œ ë¹„ë™ì˜í•˜ëŠ” ê²½ìš°(value=> 5 6 7)
 			if(selectNum > 4) { 
-				//selectNum => 567ÀÇ °ªÀ» °¡Áü ==> 123ÀÌ µÇ¾î¼­ ¹İº¹µÇµµ·Ï			
-				mbtiCollection.repeat(selectNum - 4);
+				mbtiCollection += splitType[1].repeat(answerMap.get(selectNum));
 				System.out.println("mbtiCollection >>>> " + mbtiCollection);
 			
-			//µ¿ÀÇ ÇÏ´Â °æ¿ì(value=> 1 2 3)
+			//ë™ì˜ í•˜ëŠ” ê²½ìš°(value=> 1 2 3)
 			} else if(selectNum < 4){ 
-				//selectNum => 123ÀÇ °ªÀ» °¡Áü ==> 321ÀÌ µÇ¾î¼­ ¹İº¹µÇµµ·Ï
-				mbtiCollection.repeat(4 - selectNum);
+				mbtiCollection += splitType[0].repeat(answerMap.get(selectNum));
 				System.out.println("mbtiCollection >>>> " + mbtiCollection);
 			} 
 		}
 		
-		//°á°ú°ª ÀúÀå...
+		//ê²°ê³¼ê°’ ì €ì¥...
 		mbtiResultList.add(mbtiCollection);
 		System.out.println("mbtiResultList >>>> " + mbtiResultList);
 		
-		//¼¼¼ÇÀÌ ¾øÀ¸¸é ¸¸µé¾î¼­ ÀúÀå
+		//ì„¸ì…˜ì´ ì—†ìœ¼ë©´ ë§Œë“¤ì–´ì„œ ì €ì¥
 		if(session.getAttribute("mbtiResultSession") == null) {
 			session.setAttribute("mbtiResultSession", mbtiResultList);
 			pageNumber = 1;
 		} 
-		//¼¼¼ÇÀÌ ÀÖÀ¸¸é ±âÁ¸°ª¿¡´Ù°¡ »õ·Î¿î °ª Ãß°¡ÇØ¼­ ÀúÀå
+		//ì„¸ì…˜ì´ ìˆìœ¼ë©´ ê¸°ì¡´ê°’ì—ë‹¤ê°€ ìƒˆë¡œìš´ ê°’ ì¶”ê°€í•´ì„œ ì €ì¥
 		else { 
 			myList = (List<String>) session.getAttribute("mbtiResultSession");
 			myList.addAll(mbtiResultList);
 			System.out.println(myList.toString());
-			pageNumber = myList.size(); //[JTIPF, PEPPF, FSESF, PISIT] ÀÌ·±½ÄÀ¸·Î ÀúÀåµÊ
+			pageNumber = myList.size(); //[JTIPF, PEPPF, FSESF, PISIT] ì´ëŸ°ì‹ìœ¼ë¡œ ì €ì¥ë¨
 			session.setAttribute("mbtiResultSession", myList);
 		}
 
 		System.out.println("pageNumberpageNumber >>>> " + pageNumber);
 		
-		//ÄÁÆ®·Ñ·¯°¡ ÀÌ·¸°Ô ±æ°í º¹ÀâÇØµµ µÇ´Â°É±î?
+		//ì»¨íŠ¸ë¡¤ëŸ¬ê°€ ì´ë ‡ê²Œ ê¸¸ê³  ë³µì¡í•´ë„ ë˜ëŠ”ê±¸ê¹Œ?
 		if(pageNumber < 4) {
 			return String.valueOf(pageNumber+1);
-		} else {// 5¹®Ç×¾¿ 4ÆäÀÌÁö Å×½ºÆ®°¡ ´Ù ³¡³­°æ¿ì
+		} else {// 5ë¬¸í•­ì”© 4í˜ì´ì§€ í…ŒìŠ¤íŠ¸ê°€ ë‹¤ ëë‚œê²½ìš°
 			return myList.toString();
 		}
 	}
@@ -546,97 +557,66 @@ public class BoardController {
 			
 			List<String> mbtiTypeList = boardService.mbtiTypeList();
 			System.out.println("mbtiTypeList>>> " + mbtiTypeList + "mbtiTypeList size>>> " + mbtiTypeList.size());
-			//mbtiTypeList>>> [E, F, I, J, N, P, S, T] size 8°³! : ¾ËÆÄºª¼øÀÌ´Ù..
-	
+			//mbtiTypeList>>> [E, F, I, J, N, P, S, T] size 8ê°œ! : ì•ŒíŒŒë²³ìˆœì´ë‹¤..
+			
 	        Map<String, Integer> resultMap = new HashMap(); 
-	        
 			for(int i = 0; i < mbtiTypeList.size(); i++ ) {
 				
-		        String target = mbtiTypeList.get(i); // Ã£À» ¹®ÀÚ
+		        String target = mbtiTypeList.get(i); // ì°¾ì„ ë¬¸ì
 		
-		        // Á¤±Ô Ç¥Çö½Ä ÆĞÅÏ »ı¼º
+		        // ì •ê·œ í‘œí˜„ì‹ íŒ¨í„´ ìƒì„±
 		        String regex = String.valueOf(target);
 		        Pattern pattern = Pattern.compile(regex);
 		
-		        // Matcher¸¦ »ç¿ëÇÏ¿© ÀÏÄ¡ÇÏ´Â ºÎºĞ Ã£±â
+		        // Matcherë¥¼ ì‚¬ìš©í•˜ì—¬ ì¼ì¹˜í•˜ëŠ” ë¶€ë¶„ ì°¾ê¸°
 		        Matcher matcher = pattern.matcher(mbtiResultSession.toString());
 		        int count = 0;
 		        while (matcher.find()) {
 		            count++;
 		        }
 		
-		        resultMap.put(mbtiTypeList.get(i), count);
-		        System.out.println("¹®ÀÚ '" + target + "'ÀÇ °³¼ö: " + count);
+		        //"E", 3 ì´ëŸ°ì‹ìœ¼ë¡œ ê°’ì„ ì €ì¥
+		        resultMap.put(mbtiTypeList.get(i), count); 
+		        System.out.println("ë¬¸ì '" +mbtiTypeList.get(i) + "'ì˜ ê°œìˆ˜: " + count);
 			}
+			
+			//2ì°¨ì› ë°°ì—´ì— ê°’ì„ ì €ì¥í•¨.....
+			char[][] mbtiResultList = {
+			    {'E', 'I'},
+			    {'N', 'S'},
+			    {'T', 'F'},
+			    {'P', 'J'}
+			};
 	
-			
-			List<String> mbtiResult = new ArrayList<String>();
-			//E¶û IÀÇ °³¼ö ºñ±³ÇÏ±â......
-			if(resultMap.get("E") > resultMap.get("I")) {
-				mbtiResult.add("E");
-			} 
-			//°³¼ö°¡ °°Àº °æ¿ì, ¾ËÆÄºª ºü¸¥¾Ö°¡ ¿ì¼±
-			else if( resultMap.get("E") ==  resultMap.get("I") ) {
-				//À¯´ÏÄÚµå·Î ºñ±³... ÈÄ ´õ ÀÛÀº°ª(¾ËÆÄºª¼ø¼­ ºü¸¥°ª)À» result¿¡ ³Ö¾îÁÜ
-				String result = ('E' < 'I') ? "E" : "I";
-				mbtiResult.add(result);
-			}else {
-				mbtiResult.add("I");
+			String mbtiResult = "";
+
+			// ì •ë ¬ëœ ìˆœì„œëŒ€ë¡œ ê°’ì„ ê°€ì ¸ì™€ì„œ ê²°ê³¼ ë¬¸ìì—´ì— ì¶”ê°€í•¨
+			for(int i = 0; i < mbtiResultList.length ; i++) {
+					//ì•ŒíŒŒë²³ ë³„ ê°œìˆ˜ë¹„êµ
+					if(resultMap.get(String.valueOf(mbtiResultList[i][0])) > resultMap.get(String.valueOf(mbtiResultList[i][1])) ) {
+						mbtiResult += String.valueOf(mbtiResultList[i][0]);
+					}
+					//ê°œìˆ˜ê°€ ë™ì¼í•œ ê²½ìš° ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ ì €ì¥
+					else if(resultMap.get(String.valueOf(mbtiResultList[i][0])) == resultMap.get(String.valueOf(mbtiResultList[i][1]))) {
+						mbtiResult += (mbtiResultList[i][0] <= mbtiResultList[i][1]) ? mbtiResultList[i][0] : mbtiResultList[i][1];
+					}
+					else {
+						mbtiResult += String.valueOf(mbtiResultList[i][1]);
+					}
 			}
-			
-			//NÀÌ¶û S ºñ±³
-			if(resultMap.get("N") > resultMap.get("S")) {
-				mbtiResult.add("N");
-			}else if( resultMap.get("N") ==  resultMap.get("S") ) {
-				//À¯´ÏÄÚµå·Î ºñ±³... ÈÄ ´õ ÀÛÀº°ª(¾ËÆÄºª¼ø¼­ ºü¸¥°ª)À» result¿¡ ³Ö¾îÁÜ
-				String result = ('N' < 'S') ? "N" : "S";
-				mbtiResult.add(result);
-			} else {
-				mbtiResult.add("S");
-			}
-			//°³¼ö°¡ °°Àº °æ¿ì, ¾ËÆÄºª ºü¸¥¾Ö°¡ ¿ì¼±
-			
-			
-			//T VS F
-			if(resultMap.get("T") > resultMap.get("F")) {
-				mbtiResult.add("T");
-			}else if( resultMap.get("T") ==  resultMap.get("F") ) {
-				//À¯´ÏÄÚµå·Î ºñ±³... ÈÄ ´õ ÀÛÀº°ª(¾ËÆÄºª¼ø¼­ ºü¸¥°ª)À» result¿¡ ³Ö¾îÁÜ
-				String result = ('T' < 'F') ? "T" : "F";
-				mbtiResult.add(result);
-			} else {
-				mbtiResult.add("F");
-			}
-			//°³¼ö°¡ °°Àº °æ¿ì, ¾ËÆÄºª ºü¸¥¾Ö°¡ ¿ì¼±
-			
-			
-			//J VS P
-			if(resultMap.get("J") > resultMap.get("P")) {
-				mbtiResult.add("J");
-			}else if( resultMap.get("J") ==  resultMap.get("P") ) {
-				//À¯´ÏÄÚµå·Î ºñ±³... ÈÄ ´õ ÀÛÀº°ª(¾ËÆÄºª¼ø¼­ ºü¸¥°ª)À» result¿¡ ³Ö¾îÁÜ
-				String result = ('J' < 'P') ? "J" : "P";
-				mbtiResult.add(result);
-			} else {
-				mbtiResult.add("P");
-			}
-			//°³¼ö°¡ °°Àº °æ¿ì, ¾ËÆÄºª ºü¸¥¾Ö°¡ ¿ì¼±
-			
-			String result = String.join("", mbtiResult);
-			System.out.println("result >>>> "  + result);
-	
-			model.addAttribute("mbtiResult" , result);
-			System.out.println("result >>>> "  + result);
-			
-			
+
+			System.out.println("result =============> " + mbtiResult);
+
+			model.addAttribute("mbtiResult", mbtiResult);
 			session.removeAttribute("mbtiResultSession");
 			
 			return "mbti/mbtiResult";
-		}
-		else {
+		
+		}//end if(session != null)
+	
+		else { //session == null
 			model.addAttribute("mbtiResult" , "");
 			return "mbti/mbtiResult";
-			
 		}
 	}
 

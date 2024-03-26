@@ -29,7 +29,7 @@
 		FROM
 		(
 			SELECT
-				code.code_name as BOARD_TYPE
+				code.code_id as BOARD_TYPE
 				,bd.BOARD_NUM
 				,bd.BOARD_TITLE
 				,bd.BOARD_COMMENT
