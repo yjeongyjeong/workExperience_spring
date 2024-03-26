@@ -532,13 +532,13 @@ public class BoardController {
 		        case "동의":
 		        	repeatNum = 2;
 		        	break;
-		        case "조금동의":
+		        case "약간동의":
 		        	repeatNum = 1;
 		        	break;
-		        case "중립":
+		        case "모르겠음":
 		        	repeatNum = 0;
 		        	break;
-		        case "조금비동의":
+		        case "약간비동의":
 		        	repeatNum = 1;
 		        	break;
 		        case "비동의":
