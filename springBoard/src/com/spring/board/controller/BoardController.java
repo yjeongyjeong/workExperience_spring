@@ -490,30 +490,73 @@ public class BoardController {
 		System.out.println(">>>>>>>>>mbtiResultAction>>>>>>>>>> " + resultList.toString());
 //		>>>>>>>>>mbtiResultAction>>>>>>>>>> [PJ_2_4, IE_2_4, NS_2_4, EI_2_4, TF_2_4]
 		
-		//매우동의~비동의는 1~7의 값을 가지고 각 123점의 점수로 계산
-		Map<Integer, Integer> answerMap = new HashMap<>(); 
-		answerMap.put(1, 3);
-		answerMap.put(2, 2);
-		answerMap.put(3, 1);
-		answerMap.put(4, 0);
-		answerMap.put(5, 1);
-		answerMap.put(6, 2);
-		answerMap.put(7, 3);
-
 		for (int i = 0; i < resultList.size(); i++) {
 			String[] splitList = resultList.get(i).split("_"); //PJ_2_4 => [PJ, 2, 4]
 			String[] splitType = splitList[0].split("");
 			//selectNum : [PJ, 2, 4] 마지막 숫자 => 점수를 나타냄
 			int selectNum =  Integer.parseInt(splitList[2]) ;
 			
+			String agreeDegree = "";
+			int repeatNum = 0;
+			
+			// 라디오 버튼 값에 따라 동의 정도를 변환하는 메서드
+		    switch (selectNum) {
+		        case 1:
+		        	agreeDegree = "매우동의";
+		        	break;
+		        case 2:
+		        	agreeDegree = "동의";
+		        	break;
+		        case 3:
+		        	agreeDegree = "약간동의";
+		        	break;
+		        case 4:
+		        	agreeDegree = "모르겠음";
+		        	break;
+		        case 5:
+		        	agreeDegree = "약간비동의";
+		        	break;
+		        case 6:
+		        	agreeDegree = "비동의";
+		        	break;
+		        case 7:
+		        	agreeDegree = "매우비동의";
+		        	break;
+		    }
+
+		// 동의 정도를 바탕으로 점수를 할당하는 메서드
+		    switch (agreeDegree) {
+		        case "매우동의":
+		        	repeatNum = 3;
+		        	break;
+		        case "동의":
+		        	repeatNum = 2;
+		        	break;
+		        case "조금동의":
+		        	repeatNum = 1;
+		        	break;
+		        case "중립":
+		        	repeatNum = 0;
+		        	break;
+		        case "조금비동의":
+		        	repeatNum = 1;
+		        	break;
+		        case "비동의":
+		        	repeatNum = 2;
+		        	break;
+		        case "매우비동의":
+		        	repeatNum = 3;
+		        	break;
+		    }
+			
 			//TF 이런식으로 나왔을때 비동의하는 경우(value=> 5 6 7)
 			if(selectNum > 4) { 
-				mbtiCollection += splitType[1].repeat(answerMap.get(selectNum));
+				mbtiCollection += splitType[1].repeat(repeatNum);
 				System.out.println("mbtiCollection >>>> " + mbtiCollection);
 			
 			//동의 하는 경우(value=> 1 2 3)
 			} else if(selectNum < 4){ 
-				mbtiCollection += splitType[0].repeat(answerMap.get(selectNum));
+				mbtiCollection += splitType[0].repeat(repeatNum);
 				System.out.println("mbtiCollection >>>> " + mbtiCollection);
 			} 
 		}
