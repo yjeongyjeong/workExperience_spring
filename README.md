@@ -1,20 +1,25 @@
 # spring
  etrees_일경험
 
-### 목차
-*[개요](#-개요)
-*[개발 환경](#-개발-환경)
-*[ppt](#-ppt)
-*[기능 명세서](#-기능 명세서)
-*[diagram](#-diagram)
-*[기능 시연](#-기능-시연)
+***
 
+### 목차
+* [개요](#-개요)
+* [개발 환경](#-개발-환경)
+* [ppt](#-ppt)
+* [기능 명세서](#-기능-명세서)
+* [diagram](#-diagram)
+* [기능 시연](#-기능-시연)
+
+***
 
 ### ✔ 개요
 ```
 명세서를 토대로 기능을 구현하였습니다.
 ```
+
 ***
+
 ### ⚙ 개발 환경
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
@@ -28,6 +33,7 @@
 <img src="https://img.shields.io/badge/Mybatis-000000?style=flat&logo=Fluentd&logoColor=white"/>
 <br>
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+
 
 ***
 
@@ -68,6 +74,7 @@
 ![교육용 화면_8](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/cb9acbbc-d7c2-4422-8c85-e1057c5822a0)
 
 </details>
+
 
 <details>
   <summary>
