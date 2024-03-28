@@ -70,7 +70,7 @@
 			    {
 			    	alert("실패");
 			    }
-			}); 
+			}); //end ajax
 			
 			count++;
 			console.log("count >> " + count);

@@ -10,6 +10,7 @@ import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
+import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
 
 @Service
@@ -102,6 +103,11 @@ public class boardServiceImpl implements boardService{
 	@Override
 	public List<String> mbtiTypeList() throws Exception {
 		return boardDao.mbtiTypeList();
+	}
+
+	@Override
+	public RecruitVo recruitLoginCheck(RecruitVo recruitVo) throws Exception {
+		return boardDao.recruitLoginCheck(recruitVo);
 	}
 	
 }

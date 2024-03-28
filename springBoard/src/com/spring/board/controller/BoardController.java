@@ -1,8 +1,6 @@
 package com.spring.board.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.board.HomeController;
@@ -32,6 +29,7 @@ import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
+import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
 import com.spring.common.CommonUtil;
 
@@ -361,12 +359,6 @@ public class BoardController {
 	@ResponseBody
 	public String boardUserjoinAction(UserInfoVo userVo, Model model, Locale locale) throws Exception {
 
-//		ObjectMapper mapper = new ObjectMapper();
-//		String jsonUserInfoList = mapper.writeValueAsString(userList);
-//
-//		List<UserInfoVo> userInfoList = mapper.readValue(jsonUserInfoList, new TypeReference<List<UserInfoVo>>() {
-//		});
-
 		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo); // 주소값나옴...
 
 		HashMap<String, String> result = new HashMap<String, String>();
@@ -374,8 +366,6 @@ public class BoardController {
 
 		int resultCnt = boardService.userInsert(userVo);
 		// ORA-00947: not enough values 발생!
-		// userAddr2랑 userCompany에 값을 입력하지 않으면 그대로 null이 되어서 들어가지 않음...
-		// 음.. 새로 userVo를 만들고 넣어야하는걸까?-> jsp에서 하려고했는데 if조건으로 하는
 
 		System.out.println("resultCnt >>>>>>>>>>>>>>>>>> " + resultCnt);
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
@@ -496,59 +486,33 @@ public class BoardController {
 			//selectNum : [PJ, 2, 4] 마지막 숫자 => 점수를 나타냄
 			int selectNum =  Integer.parseInt(splitList[2]) ;
 			
-			String agreeDegree = "";
 			int repeatNum = 0;
 			
 			// 라디오 버튼 값에 따라 동의 정도를 변환하는 메서드
 		    switch (selectNum) {
 		        case 1:
-		        	agreeDegree = "매우동의";
+		        	repeatNum = 3;
 		        	break;
 		        case 2:
-		        	agreeDegree = "동의";
+		        	repeatNum = 2;
 		        	break;
 		        case 3:
-		        	agreeDegree = "약간동의";
+		        	repeatNum = 1;
 		        	break;
 		        case 4:
-		        	agreeDegree = "모르겠음";
+		        	repeatNum = 0;
 		        	break;
 		        case 5:
-		        	agreeDegree = "약간비동의";
+		        	repeatNum = 1;
 		        	break;
 		        case 6:
-		        	agreeDegree = "비동의";
+		        	repeatNum = 2;
 		        	break;
 		        case 7:
-		        	agreeDegree = "매우비동의";
+		        	repeatNum = 3;
 		        	break;
 		    }
 
-		// 동의 정도를 바탕으로 점수를 할당하는 메서드
-		    switch (agreeDegree) {
-		        case "매우동의":
-		        	repeatNum = 3;
-		        	break;
-		        case "동의":
-		        	repeatNum = 2;
-		        	break;
-		        case "약간동의":
-		        	repeatNum = 1;
-		        	break;
-		        case "모르겠음":
-		        	repeatNum = 0;
-		        	break;
-		        case "약간비동의":
-		        	repeatNum = 1;
-		        	break;
-		        case "비동의":
-		        	repeatNum = 2;
-		        	break;
-		        case "매우비동의":
-		        	repeatNum = 3;
-		        	break;
-		    }
-			
 			//TF 이런식으로 나왔을때 비동의하는 경우(value=> 5 6 7)
 			if(selectNum > 4) { 
 				mbtiCollection += splitType[1].repeat(repeatNum);
@@ -663,4 +627,38 @@ public class BoardController {
 		}
 	}
 
+	
+	@RequestMapping(value = "recruit/login.do", method = RequestMethod.GET)
+	public String recruitLogin() {
+	
+		return "recruit/login";
+	}
+	
+	@RequestMapping(value = "recruit/recruitLoginAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public RecruitVo recruitLoginAction(RecruitVo recruitVo, HttpSession session, Model model, Locale locale) throws Exception {
+		System.out.println("recruitVo >>>>> " + recruitVo.getName() + " "+ recruitVo.getPhone());
+		System.out.println("recruitVo.toString >>>>> " + recruitVo.toString());
+		
+		RecruitVo loginUser = boardService.recruitLoginCheck(recruitVo);
+		System.out.println("loginUser"+loginUser);
+		
+		if (loginUser != null) {
+			session.setAttribute("loginUser", loginUser);
+			System.out.println(session.getAttribute("loginUser"));
+		}
+		
+		return loginUser;
+	}
+	
+	@RequestMapping(value = "recruit/main.do", method = RequestMethod.GET)
+	public String recruitMain(HttpSession session, Model model, Locale locale) {
+		
+		RecruitVo loginUser =  (RecruitVo) session.getAttribute("loginUser");
+		if(loginUser != null) {
+			model.addAttribute("loginUser", loginUser);
+		}
+		
+		return "recruit/main";
+	}
 }

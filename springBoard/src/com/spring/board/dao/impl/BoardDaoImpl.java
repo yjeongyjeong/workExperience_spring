@@ -10,6 +10,7 @@ import com.spring.board.dao.BoardDao;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.PageVo;
+import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
 
 @Repository
@@ -97,6 +98,10 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public List<String> mbtiTypeList() throws Exception {
 		return sqlSession.selectList("mbti.mbtiTypeList");
+	}
+	@Override
+	public RecruitVo recruitLoginCheck(RecruitVo recruitVo) throws Exception {
+		return sqlSession.selectOne("recruit.recruitLoginCheck", recruitVo);
 	}
 	
 }
