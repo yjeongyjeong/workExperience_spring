@@ -12,13 +12,21 @@ public class EducationVo {
 	GRADE	VARCHAR(255)		NULL,
 	LOCATION	VARCHAR(255)	NULL
  * */
+
+	private String name;
+	private String phone;
 	
-	private String SEQ; 
+	private String seq; 
+	private String edu_seq;
+	
 	private String school_name;
 	private String division;
-	private String start_period;
-	private String end_period;
+	private double start_period;
+	private double end_period;
 	private String major;
-	private String grade;
+	private double grade;
 	private String location;
+
+	
+	
 }

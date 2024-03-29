@@ -28,6 +28,7 @@ import com.spring.board.HomeController;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
+import com.spring.board.vo.EducationVo;
 import com.spring.board.vo.PageVo;
 import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
@@ -112,7 +113,7 @@ public class BoardController {
 
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
 
-		codeVo.setCodeType("mbti");
+		codeVo.setCodeType("menu");
 		codeList = boardService.selectCodeList(codeVo);
 
 		UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
@@ -628,37 +629,69 @@ public class BoardController {
 	}
 
 	
-	@RequestMapping(value = "recruit/login.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/recruit/login.do", method = RequestMethod.GET)
 	public String recruitLogin() {
 	
 		return "recruit/login";
 	}
 	
-	@RequestMapping(value = "recruit/recruitLoginAction.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/recruit/recruitLoginAction.do", method = RequestMethod.POST)
 	@ResponseBody
 	public RecruitVo recruitLoginAction(RecruitVo recruitVo, HttpSession session, Model model, Locale locale) throws Exception {
+		
 		System.out.println("recruitVo >>>>> " + recruitVo.getName() + " "+ recruitVo.getPhone());
 		System.out.println("recruitVo.toString >>>>> " + recruitVo.toString());
 		
-		RecruitVo loginUser = boardService.recruitLoginCheck(recruitVo);
-		System.out.println("loginUser"+loginUser);
+		RecruitVo recruitLoginUser = boardService.recruitLoginCheck(recruitVo);
+		System.out.println("recruitLoginUser"+recruitLoginUser);
 		
-		if (loginUser != null) {
-			session.setAttribute("loginUser", loginUser);
-			System.out.println(session.getAttribute("loginUser"));
+		if (recruitLoginUser != null) {
+			session.setAttribute("recruitLoginUser", recruitLoginUser);
+			System.out.println(session.getAttribute("recruitLoginUser"));
 		}
 		
-		return loginUser;
+		return recruitLoginUser;
 	}
 	
-	@RequestMapping(value = "recruit/main.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/recruit/main.do", method = RequestMethod.GET)
 	public String recruitMain(HttpSession session, Model model, Locale locale) {
 		
-		RecruitVo loginUser =  (RecruitVo) session.getAttribute("loginUser");
-		if(loginUser != null) {
-			model.addAttribute("loginUser", loginUser);
+		RecruitVo recruitLoginUser =  (RecruitVo) session.getAttribute("recruitLoginUser");
+		if(recruitLoginUser != null) {
+			model.addAttribute("recruitLoginUser", recruitLoginUser);
 		}
 		
 		return "recruit/main";
 	}
+	
+	@RequestMapping(value = "/recruit/resumeSubmitAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String resumeSubmitAction(@RequestBody List<EducationVo> educationList, Locale locale) throws Exception {
+		
+		System.out.println("현재 게시글 educationList >>>>>>>>>>>>>>>>> " + educationList.toString());
+
+		HashMap<String, String> result = new HashMap<String, String>();
+		CommonUtil commonUtil = new CommonUtil();
+		int resultCnt = -1;
+
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonBoardList = mapper.writeValueAsString(educationList);
+
+		List<EducationVo> educationVoList = mapper.readValue(jsonBoardList, new TypeReference<List<EducationVo>>() {
+		});
+
+		// EducationVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
+		for (EducationVo eduVo : educationVoList) {
+			resultCnt = boardService.insertEducation(eduVo);
+			System.out.println("resultCnt >> " + resultCnt);
+		}
+
+		result.put("success", (resultCnt > 0) ? "Y" : "N");
+		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
+		System.out.println("callbackMsg::" + callbackMsg);
+
+		return callbackMsg;
+	}
+	
+	
 }

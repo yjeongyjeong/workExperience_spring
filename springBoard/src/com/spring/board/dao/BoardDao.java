@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
+import com.spring.board.vo.EducationVo;
 import com.spring.board.vo.PageVo;
 import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
@@ -39,5 +40,6 @@ public interface BoardDao {
 	public List<String> mbtiTypeList() throws Exception;
 //	============================================
 	public RecruitVo recruitLoginCheck(RecruitVo recruitVo) throws Exception;
+	public int insertEducation(EducationVo educationVo) throws Exception;
 	
 }

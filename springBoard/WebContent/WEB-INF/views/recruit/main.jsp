@@ -9,47 +9,166 @@
 </head>
 
 <script type="text/javascript">
-		
+$j(document).ready(function(){
+	const tableEducation = document.getElementById('tableEducation');
+	
+	const koreaArea = ['강원도', '경기도', '경상남도', '경상북도',
+				'광주광역시', '대구광역시', '대전광역시', '부산광역시', '서울특별시', '세종특별자치시',
+				'울산광역시', '인천광역시', '전라남도', '전라북도', '제주특별자치도', '충청남도', '충청북도'];
+	const schoolPeriod = ['졸업', '재학', '중퇴'];
+	
 //행추가함수
-$j("#addEducation").on("click",function(){
-	console.log("행추가함수"); //보인다!
-	//새 행(row)추가 ==> writer보다 앞에.. -1로 잡고 해도 될 것 같고 writer id나 name값으로 해도 될 것 같음 
-	//그래서 그냥 boardWriter 선택해서 하는걸로 했다..ㅎㅎ
-	const tableEducation = $j('#tableEducation');
-	const educationIndex = tableEducation.rowIndex;
-	console.log("insert될 위치 educationIndex >> " + educationIndex ); 
-/*	
-	const newEducation = table.insertRow(writerIndex);
-	
-	//새 행(row)에 cell추가
-	const newCell1 = newEducation.insertCell(0);
-	const newCell2 = newEducation.insertCell(1);
-	const newCell3 = newEducation.insertCell(2);
-	const newCell4 = newEducation.insertCell(3);
-	const newCell5 = newEducation.insertCell(4);
-	const newCell6 = newEducation.insertCell(5); //ajax에서 처리함!
-	
-	//checkBox 추가
-	var checkBox = document.createElement( 'input' );
-	checkBox.type = "checkbox";
-	checkBox.name = "deleteCheck";
-	newCell1.appendChild(checkBox);
-		
-	//input 박스로 변환... 이라기보단 추가
-	var addedEnrollmentPeriod= document.createElement( 'input' );
-	addedEnrollmentPeriod.type = "text";
-	addedEnrollmentPeriod.placeholder="xxxx.xx";
-	addedEnrollmentPeriod.oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');"
-	newCell1.appendChild(addedEnrollmentPeriod);
-	
- 	var addedComment = document.createElement( 'textarea' );
-	addedComment.cols = 55;
-	addedComment.rows = 20;
-	addedComment.name = "boardComment";	
-	newCell4.appendChild(addedComment); */
+	$j("#addEducation").on("click",function(){
+		console.log("행추가함수"); //보인다!
 
-});
+		const newEducation = tableEducation.insertRow(-1);
 		
+		//새 행(row)에 cell추가
+		const newCell1 = newEducation.insertCell(0);
+		const newCell2 = newEducation.insertCell(1);
+		const newCell3 = newEducation.insertCell(2);
+		const newCell4 = newEducation.insertCell(3);
+		const newCell5 = newEducation.insertCell(4);
+		const newCell6 = newEducation.insertCell(5); //ajax에서 처리함!
+		
+		//checkBox 추가
+		var checkBox = document.createElement( 'input' );
+		checkBox.type = "checkbox";
+		checkBox.name = "eduDeleteCheck";
+		newCell1.appendChild(checkBox);
+		
+		// 재학기간
+		var firstEnrollmentPeriod = createInputPeriod();
+		firstEnrollmentPeriod.name = "eduPeriodFirst";
+		var tildeText = document.createTextNode('~');
+		var secondEnrollmentPeriod = createInputPeriod();
+		secondEnrollmentPeriod.name = "eduPeriodSecond";
+		// 셀에 요소 추가
+		newCell2.appendChild(firstEnrollmentPeriod);
+		newCell2.appendChild(tildeText);
+		newCell2.appendChild(secondEnrollmentPeriod);
+	
+		//졸업, 재학, 중퇴 구분!
+		var periodSelect = document.createElement('select');
+        periodSelect.name = "eduStatus";
+        periodSelect.id = "eduStatus";
+
+        schoolPeriod.forEach(function(schoolPeriod, index){
+        	var option = document.createElement('option');
+        	option.value = schoolPeriod;
+        	option.textContent = schoolPeriod;
+        	periodSelect.appendChild(option);
+        })
+        
+		newCell3.appendChild(periodSelect); 
+        
+        //학교명
+	 	var areaSelect = document.createElement('select');
+	 	areaSelect.name = "eduSchoolArea";
+        areaSelect.id = "eduSchoolArea";
+	 	var educationSchool = document.createElement('input');
+	 	educationSchool.name = "eduSchoolName";
+	 	educationSchool.id = "eduSchoolName";
+        
+        koreaArea.forEach(function(koreaArea, index){
+        	var option = document.createElement('option');
+        	option.value = koreaArea;
+        	option.textContent = koreaArea;
+        	areaSelect.appendChild(option);
+        })
+        
+		newCell4.appendChild(educationSchool); 
+		newCell4.appendChild(areaSelect); 
+        
+        var educationMajor = document.createElement( 'input' );
+        educationMajor.name = "eduMajor";
+        educationMajor.id = "eduMajor";
+        newCell5.appendChild(educationMajor);
+
+        var educationScore = document.createElement( 'input' );
+        educationMajor.name = "eduScore";
+        educationMajor.id = "eduScore";
+        newCell6.appendChild(educationScore);
+	});
+	
+	$j("#saveResume").on("click",function(){
+		
+	});
+	
+	
+	
+	
+	$j("#submitResume").on("click",function(){
+		const table = document.getElementById('wrapTable');
+		var eduPeriodFirst = $j("input[name='eduPeriodFirst']");
+		var eduPeriodSecond = $j("input[name='eduPeriodSecond']");
+		var eduStatus = $j("select[name='eduStatus']");
+		var eduSchoolName = $j("input[name='eduSchoolName']");
+		var eduSchoolArea = $j("select[name='eduSchoolArea']");
+		var eduMajor = $j("input[name='eduMajor']");
+		var eduScore = $j("input[name='eduScore']");
+		var name = `${recruitLoginUser.name}`;
+		var phone = `${recruitLoginUser.phone}`;
+		
+		var eduData = [];
+		
+		for(var i= 0; i < eduPeriodFirst.length; i++ ){
+			var start_period = eduPeriodFirst.eq(i).val();
+			var end_period = eduPeriodSecond.eq(i).val();
+			var division = eduStatus.eq(i).val();
+			var school_name = eduSchoolName.eq(i).val();
+			var location = eduSchoolArea.eq(i).val();
+			var major = eduMajor.eq(i).val();
+			var grade = eduScore.eq(i).val();
+			
+			const educationVo = {
+					"name": name,
+					"phone": phone,
+					"start_period": start_period,
+					"end_period": end_period,
+					"division": division,
+					"school_name": school_name,
+					"location": location,
+					"major": major,
+					"grade": grade
+			}
+			console.log(educationVo);
+			eduData.push(educationVo);
+		}//end for
+		
+		$j.ajax({
+		    url : "/recruit/resumeSubmitAction.do",
+		    dataType: "json",
+		    type: "POST",
+		    contentType: "application/json; charset=utf-8", //컨트롤러에서 받아오는 타입
+		    data : JSON.stringify(eduData),
+		    success: function(data, textStatus, jqXHR)
+		    {
+				alert("작성완료");
+				alert("메세지:"+data.success);
+		    },
+		    error: function (jqXHR, textStatus, errorThrown)
+		    {
+		    	alert("실패");
+		    }
+		}); //end ajax  
+		
+		
+	});
+	
+});
+
+	//입력 필드 생성 함수
+	function createInputPeriod() {
+	    var inputField = document.createElement('input');
+	    inputField.type = "text";
+	    inputField.maxLength = 7;
+	    inputField.placeholder = "xxxx.xx";
+	    inputField.addEventListener('input', function() {
+	        this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');
+	    });
+	    return inputField;
+	}
 		
 </script>
 
@@ -73,14 +192,13 @@ $j("#addEducation").on("click",function(){
 						<strong>이름</strong>
 					</td>
 					<td width="120">
-					${loginUser.name}
+					${recruitLoginUser.name}
 					</td>
 					<td width="120" align="center">
 						<strong>생년월일</strong>
 					</td>
 					<td width="120">
-					<input type="text" name="name" id="name" maxlength="4" placeholder="name"
- 					oninput="this.value = this.value.replace(/[^ㄱ-힣]/ig, '')">
+					${recruitLoginUser.birth}
 					</td>
 				</tr>
 
@@ -98,7 +216,7 @@ $j("#addEducation").on("click",function(){
 						<strong>연락처</strong>
 					</td>
 					<td>
-					${loginUser.phone}
+					${recruitLoginUser.phone}
 					</td>
 				</tr>
 				
@@ -107,13 +225,13 @@ $j("#addEducation").on("click",function(){
 						<strong>email</strong>
 					</td>
 					<td>
-					${loginUser.email }
+					${recruitLoginUser.email }
 					</td>
 					<td align="center">
 						<strong>주소</strong>
 					</td>
 					<td>
-					${loginUser.addr}
+					${recruitLoginUser.addr}
 					</td>
 				</tr>
 				
@@ -173,8 +291,8 @@ $j("#addEducation").on("click",function(){
 	
 	<tr>
 	<td>		
-		<table align="center" id="" class="" border = "1" width="800px">
-			<tr id="tableEducation">
+		<table align="center" id="tableEducation" class="tableEducation" border = "1" width="800px">
+			<tr id="trEducation">
 				<td  align="center">
 				</td>
 				<td  align="center">
@@ -196,17 +314,17 @@ $j("#addEducation").on("click",function(){
 			
 			<tr>
 				<td align="center">
-					<input type="checkbox">
+					<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
 				</td>
 				<td  align="center">
-					<input type="text" maxlength="7" placeholder="xxxx.xx"  
+					<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodFirst" name="eduPeriodFirst"
 					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 					~
-					<input type="text" maxlength="7" placeholder="xxxx.xx"  
+					<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodSecond" name="eduPeriodSecond"
 					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 				</td>
 				<td align="center">
-				<select>
+				<select id="eduStatus" name="eduStatus">
 					<option>졸업</option>
 					<option>재학</option>
 					<option>중퇴</option>
@@ -214,8 +332,8 @@ $j("#addEducation").on("click",function(){
 				</td>
 				
 				<td align="center">
-					<input type="text">
-				<select>
+					<input type="text" id="eduSchoolName" name="eduSchoolName">
+				<select id="eduSchoolArea" name="eduSchoolArea">
 					<option value="강원도">강원도</option>
 					<option value="경기도">경기도</option>
 					<option value="경상남도">경상남도</option>
@@ -237,11 +355,11 @@ $j("#addEducation").on("click",function(){
 				</td>
 			
 				<td align="center">
-					<input>
+					<input type="text" id="eduMajor" name="eduMajor">
 				</td>
 
 				<td align="center">
-					<input>
+					<input type="text" id="eduScore" name="eduScore">
 				</td>
 			</tr>
 			</table>
@@ -262,8 +380,8 @@ $j("#addEducation").on("click",function(){
 
 	<tr>
 	<td>
-		<table align="center" id="" class="" border = "1" width="800px">
-			<tr>
+		<table align="center" id="tableCareer" class="tableCareer" border = "1" width="800px">
+			<tr id="trCarrer">
 				<td align="center">
 				</td>
 				<td align="center">
@@ -282,22 +400,24 @@ $j("#addEducation").on("click",function(){
 			
 			<tr>
 				<td align="center">
-					<input type="checkbox">
+					<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck">
 				</td>
 				<td align="left">
-					<input>
+					<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodFirst" name="careerPeriodFirst"
+					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 					~
-					<input>
+					<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodSecond" name="careerPeriodSecond"
+					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 				</td>
 				<td align="center">
-					<input>
+					<input type="text" id="careerName" name="careerName">
 				</td>
 				
 				<td align="center">
-					<input type="text">
+					<input type="text" id="careerPosition" name="careerPosition">
 				</td>
 				<td align="center">
-					<input>
+					<input type="text" id="careerArea" name="careerArea">
 				</td>
 			</tr>
 		
@@ -321,8 +441,8 @@ $j("#addEducation").on("click",function(){
 
 	<tr>
 	<td>
-		<table align="center" id="" class="" border = "1" width="800px">
-			<tr>
+		<table align="center" id="tableCertificate" class="tableCertificate" border = "1" width="800px">
+			<tr id="trCertificate">
 				<td align="center">
 				</td>
 				<td align="center">
@@ -338,16 +458,16 @@ $j("#addEducation").on("click",function(){
 			
 			<tr>
 				<td align="center">
-					<input type="checkbox">
+					<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck">
 				</td>
 				<td align="center">
-					<input>
+					<input type="text" id="certiName" name="certiName">
 				</td>
 				<td align="center">
-					<input>
+					<input type="text" id="certiDate" name="certiDate">
 				</td>
 				<td align="center">
-					<input type="text">
+					<input type="text" id="certiPublisher" name="certiPublisher">
 				</td>
 			</tr>
 		
@@ -361,8 +481,8 @@ $j("#addEducation").on("click",function(){
 
 <tr>
 	<td align="center">
-		<button>저장</button>
-		<button>제출</button>
+		<button id="saveResume" name="saveResume">저장</button>
+		<button id="submitResume" name="submitResume">제출</button>
 		</td>
 </tr>
 		

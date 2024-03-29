@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.spring.board.dao.BoardDao;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
+import com.spring.board.vo.EducationVo;
 import com.spring.board.vo.PageVo;
 import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
@@ -102,6 +103,10 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public RecruitVo recruitLoginCheck(RecruitVo recruitVo) throws Exception {
 		return sqlSession.selectOne("recruit.recruitLoginCheck", recruitVo);
+	}
+	@Override
+	public int insertEducation(EducationVo educationVo) throws Exception {
+		return sqlSession.insert("recruit.insertEducation", educationVo);
 	}
 	
 }

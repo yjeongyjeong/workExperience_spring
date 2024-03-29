@@ -9,6 +9,7 @@ import com.spring.board.dao.BoardDao;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.ComCodeVo;
+import com.spring.board.vo.EducationVo;
 import com.spring.board.vo.PageVo;
 import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
@@ -108,6 +109,11 @@ public class boardServiceImpl implements boardService{
 	@Override
 	public RecruitVo recruitLoginCheck(RecruitVo recruitVo) throws Exception {
 		return boardDao.recruitLoginCheck(recruitVo);
+	}
+
+	@Override
+	public int insertEducation(EducationVo educationVo) throws Exception {
+		return boardDao.insertEducation(educationVo);
 	}
 	
 }
