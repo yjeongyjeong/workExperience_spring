@@ -24,6 +24,11 @@
 	</select>
 	
 	<insert id="insertEducation" parameterType="com.spring.board.vo.EducationVo">
+	
+	    <selectKey keyProperty="seq" resultType="int" order="BEFORE">
+	  		  select seq from recruit where name = #{name} and phone = #{phone}
+	    </selectKey>
+    
 		insert into education(
 		    seq,
 		    edu_seq,
@@ -35,15 +40,8 @@
 		    grade,
 		    location)
 	values(
-	     (select seq from recruit where name = #{name} and phone = #{phone}),
-	     (SELECT NVL((SELECT 
-	        MAX(seq)+1
-	        FROM 
-	            education
-	        ) , 1 )
-	        AS 
-	            EDU_SEQ
-		    FROM DUAL ),
+	    	#{seq},
+	     	(SELECT NVL(MAX(edu_seq) + 1, 1) AS EDU_SEQ FROM education WHERE seq = #{seq}),
 		    #{school_name},
 		    #{division},
 		    #{start_period},
@@ -51,7 +49,7 @@
 		    #{major},
 		    #{grade},
 		    #{location}
-	    );
+	    )
 	
 	</insert>
 </mapper>

@@ -17,7 +17,7 @@ $j(document).ready(function(){
 				'울산광역시', '인천광역시', '전라남도', '전라북도', '제주특별자치도', '충청남도', '충청북도'];
 	const schoolPeriod = ['졸업', '재학', '중퇴'];
 	
-//행추가함수
+//학력 행추가함수
 	$j("#addEducation").on("click",function(){
 		console.log("행추가함수"); //보인다!
 
@@ -35,6 +35,7 @@ $j(document).ready(function(){
 		var checkBox = document.createElement( 'input' );
 		checkBox.type = "checkbox";
 		checkBox.name = "eduDeleteCheck";
+		checkBox.id = "eduDeleteCheck";
 		newCell1.appendChild(checkBox);
 		
 		// 재학기간
@@ -44,6 +45,7 @@ $j(document).ready(function(){
 		var secondEnrollmentPeriod = createInputPeriod();
 		secondEnrollmentPeriod.name = "eduPeriodSecond";
 		// 셀에 요소 추가
+		newCell2.align="center";
 		newCell2.appendChild(firstEnrollmentPeriod);
 		newCell2.appendChild(tildeText);
 		newCell2.appendChild(secondEnrollmentPeriod);
@@ -86,10 +88,31 @@ $j(document).ready(function(){
         newCell5.appendChild(educationMajor);
 
         var educationScore = document.createElement( 'input' );
-        educationMajor.name = "eduScore";
-        educationMajor.id = "eduScore";
+        educationScore.name = "eduScore";
+        educationScore.id = "eduScore";
         newCell6.appendChild(educationScore);
 	});
+	
+	
+	$j("#deleteEducation").on("click",function(){
+		console.log("행삭제함수");
+		
+		const table = document.getElementById('tableEducation');
+		var checkbox = $j("input:checkbox[name=eduDeleteCheck]:checked"); //jQuery 객체로 데이터가 담겨있는 상태
+		
+		checkbox.each(function(){
+	    var selectedTr = $j(this).closest('tr'); // 현재 체크박스가 속한 tr 요소를 찾음
+	    console.log("title의 index >> " + selectedTr[0].rowIndex);
+	    table.deleteRow(selectedTr[0].rowIndex); // title tr 요소 삭제
+	    
+		});
+		
+		if(checkbox.length == 0){
+			alert("삭제할 행이 없습니다.");
+		}
+	});
+	
+	
 	
 	$j("#saveResume").on("click",function(){
 		
@@ -109,7 +132,7 @@ $j(document).ready(function(){
 		var eduScore = $j("input[name='eduScore']");
 		var name = `${recruitLoginUser.name}`;
 		var phone = `${recruitLoginUser.phone}`;
-		
+				
 		var eduData = [];
 		
 		for(var i= 0; i < eduPeriodFirst.length; i++ ){
@@ -120,6 +143,23 @@ $j(document).ready(function(){
 			var location = eduSchoolArea.eq(i).val();
 			var major = eduMajor.eq(i).val();
 			var grade = eduScore.eq(i).val();
+			
+			
+			console.log(typeof(start_period)); //string으로 나오는데 대소비교는 되는듯..?
+			console.log(typeof(end_period));
+			//재학기간 날짜가 앞보다 뒤가 크면 alert
+			if(start_period > end_period ){
+				console.log(start_period);
+				console.log(end_period);
+				alert("재학기간을 다시 확인해주세요.");
+				return false;
+			};
+			if(grade > 4.50){
+				console.log(grade);
+				alert("학점을 다시 확인해주세요.");
+				return false;
+			}
+
 			
 			const educationVo = {
 					"name": name,
@@ -359,7 +399,8 @@ $j(document).ready(function(){
 				</td>
 
 				<td align="center">
-					<input type="text" id="eduScore" name="eduScore">
+					<input type="text" id="eduScore" name="eduScore" maxlength="4"
+					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
 				</td>
 			</tr>
 			</table>
