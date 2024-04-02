@@ -12,10 +12,21 @@
 $j(document).ready(function(){
 	const tableEducation = document.getElementById('tableEducation');
 	
+	//학교명(소재지)
 	const koreaArea = ['강원도', '경기도', '경상남도', '경상북도',
 				'광주광역시', '대구광역시', '대전광역시', '부산광역시', '서울특별시', '세종특별자치시',
 				'울산광역시', '인천광역시', '전라남도', '전라북도', '제주특별자치도', '충청남도', '충청북도'];
+	//재학상태
 	const schoolPeriod = ['졸업', '재학', '중퇴'];
+	
+	//현재날짜
+	const currentDate = new Date();
+	const currentYear = currentDate.getFullYear();
+	const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0!
+	const formattedDate = currentYear +'.' +currentMonth;
+	
+	
+	
 	
 //학력 행추가함수
 	$j("#addEducation").on("click",function(){
@@ -144,16 +155,46 @@ $j(document).ready(function(){
 			var major = eduMajor.eq(i).val();
 			var grade = eduScore.eq(i).val();
 			
+			var start_period_array = start_period.text.split(".");
+			var end_period_array = end_period.text.split(".");
 			
-			console.log(typeof(start_period)); //string으로 나오는데 대소비교는 되는듯..?
-			console.log(typeof(end_period));
-			//재학기간 날짜가 앞보다 뒤가 크면 alert
+			//재학기간 날짜가 앞보다 뒤가 크면 false
 			if(start_period > end_period ){
 				console.log(start_period);
 				console.log(end_period);
+				$j('#start_period').focus();
 				alert("재학기간을 다시 확인해주세요.");
 				return false;
 			};
+			//재학기간의 형식이 올바르지 않은 경우 false
+			if(start_period.length != 7 ){
+				$j('#start_period').focus();
+				alert("재학기간을 다시 확인해주세요.");
+				return false;
+			};
+			if(end_period.length != 7 ){
+				$j('#end_period').focus();
+				alert("재학기간을 다시 확인해주세요.");
+				return false;
+			};
+			//재학기간의 마지막날이 현재보다 큰 경우 false
+			if(end_period > formattedDate ){
+				$j('#end_period').focus();
+				alert("재학기간을 다시 확인해주세요.");
+				return false;
+			};
+			//월 단위가 01~12가 아닌 경우
+			if(start_period_array[1] > 12 && start_period_array[1] < 1){
+				$j('#start_period').focus();
+				alert("재학기간을 다시 확인해주세요.");
+				return false;
+			};
+			if(end_period_array[1] > 12 && end_period_array[1] < 1){
+				$j('#end_period').focus();
+				alert("재학기간을 다시 확인해주세요.");
+				return false;
+			};
+			
 			if(grade > 4.50){
 				console.log(grade);
 				alert("학점을 다시 확인해주세요.");

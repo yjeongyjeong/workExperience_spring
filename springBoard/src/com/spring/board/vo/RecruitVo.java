@@ -24,7 +24,6 @@ public class RecruitVo {
 	private String workType; //근무형태
 	private String submit; //제출여부
 	
-	
 	@Override
 	public String toString() {
 		return "RecruitVo [SEQ=" + SEQ + ", name=" + name + ", birth=" + birth + ", gender=" + gender + ", phone="
