@@ -12,121 +12,79 @@
 $j(document).ready(function(){
 	const tableEducation = document.getElementById('tableEducation');
 	
-	//학교명(소재지)
+/* 	//학교명(소재지)
 	const koreaArea = ['강원도', '경기도', '경상남도', '경상북도',
 				'광주광역시', '대구광역시', '대전광역시', '부산광역시', '서울특별시', '세종특별자치시',
 				'울산광역시', '인천광역시', '전라남도', '전라북도', '제주특별자치도', '충청남도', '충청북도'];
 	//재학상태
-	const schoolPeriod = ['졸업', '재학', '중퇴'];
+	const schoolPeriod = ['졸업', '재학', '중퇴']; */
 	
 	//현재날짜
 	const currentDate = new Date();
 	const currentYear = currentDate.getFullYear();
 	const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0!
 	const formattedDate = currentYear +'.' +currentMonth;
-	
-	
-	
-	
-//학력 행추가함수
+
+	//학력 행추가함수
 	$j("#addEducation").on("click",function(){
-		console.log("행추가함수"); //보인다!
-
-		const newEducation = tableEducation.insertRow(-1);
-		
-		//새 행(row)에 cell추가
-		const newCell1 = newEducation.insertCell(0);
-		const newCell2 = newEducation.insertCell(1);
-		const newCell3 = newEducation.insertCell(2);
-		const newCell4 = newEducation.insertCell(3);
-		const newCell5 = newEducation.insertCell(4);
-		const newCell6 = newEducation.insertCell(5); //ajax에서 처리함!
-		
-		//checkBox 추가
-		var checkBox = document.createElement( 'input' );
-		checkBox.type = "checkbox";
-		checkBox.name = "eduDeleteCheck";
-		checkBox.id = "eduDeleteCheck";
-		newCell1.appendChild(checkBox);
-		
-		// 재학기간
-		var firstEnrollmentPeriod = createInputPeriod();
-		firstEnrollmentPeriod.name = "eduPeriodFirst";
-		var tildeText = document.createTextNode('~');
-		var secondEnrollmentPeriod = createInputPeriod();
-		secondEnrollmentPeriod.name = "eduPeriodSecond";
-		// 셀에 요소 추가
-		newCell2.align="center";
-		newCell2.appendChild(firstEnrollmentPeriod);
-		newCell2.appendChild(tildeText);
-		newCell2.appendChild(secondEnrollmentPeriod);
-	
-		//졸업, 재학, 중퇴 구분!
-		var periodSelect = document.createElement('select');
-        periodSelect.name = "eduStatus";
-        periodSelect.id = "eduStatus";
-
-        schoolPeriod.forEach(function(schoolPeriod, index){
-        	var option = document.createElement('option');
-        	option.value = schoolPeriod;
-        	option.textContent = schoolPeriod;
-        	periodSelect.appendChild(option);
-        })
-        
-		newCell3.appendChild(periodSelect); 
-        
-        //학교명
-	 	var areaSelect = document.createElement('select');
-	 	areaSelect.name = "eduSchoolArea";
-        areaSelect.id = "eduSchoolArea";
-	 	var educationSchool = document.createElement('input');
-	 	educationSchool.name = "eduSchoolName";
-	 	educationSchool.id = "eduSchoolName";
-        
-        koreaArea.forEach(function(koreaArea, index){
-        	var option = document.createElement('option');
-        	option.value = koreaArea;
-        	option.textContent = koreaArea;
-        	areaSelect.appendChild(option);
-        })
-        
-		newCell4.appendChild(educationSchool); 
-		newCell4.appendChild(areaSelect); 
-        
-        var educationMajor = document.createElement( 'input' );
-        educationMajor.name = "eduMajor";
-        educationMajor.id = "eduMajor";
-        newCell5.appendChild(educationMajor);
-
-        var educationScore = document.createElement( 'input' );
-        educationScore.name = "eduScore";
-        educationScore.id = "eduScore";
-        newCell6.appendChild(educationScore);
+		console.log("학력행추가함수"); //보인다!
+		var targetTD = $j('#trEducationContent td');
+		var tableName = document.getElementById('tableEducation');
+		addRowFunc(targetTD, tableName);
 	});
 	
+	//경력 행추가함수
+	$j("#addCareer").on("click",function(){
+		console.log("경력행추가함수"); //보인다!
+		var targetTD = $j('#trCareerContent td');
+		var tableName = document.getElementById('tableCareer');
+
+		addRowFunc(targetTD, tableName);
+	});//end addCarrer
 	
+	//자격증 행추가함수
+	$j("#addCertificate").on("click",function(){
+		console.log("자격증행추가함수"); //보인다!
+		var targetTD = $j('#trCertificateContent td');
+		var tableName = document.getElementById('tableCertificate');
+		addRowFunc(targetTD, tableName);
+	});	
+	
+	//학력 행삭제	
 	$j("#deleteEducation").on("click",function(){
-		console.log("행삭제함수");
-		
-		const table = document.getElementById('tableEducation');
+		console.log("학력행삭제함수");
+		const tableName = document.getElementById('tableEducation');
 		var checkbox = $j("input:checkbox[name=eduDeleteCheck]:checked"); //jQuery 객체로 데이터가 담겨있는 상태
 		
-		checkbox.each(function(){
-	    var selectedTr = $j(this).closest('tr'); // 현재 체크박스가 속한 tr 요소를 찾음
-	    console.log("title의 index >> " + selectedTr[0].rowIndex);
-	    table.deleteRow(selectedTr[0].rowIndex); // title tr 요소 삭제
-	    
-		});
-		
-		if(checkbox.length == 0){
-			alert("삭제할 행이 없습니다.");
-		}
+		deleteRowFunc(tableName, checkbox);
 	});
+
+	//경력 행삭제	
+	$j("#deleteCareer").on("click",function(){
+		console.log("경력행삭제함수");
+		const tableName = document.getElementById('tableCareer');
+		var checkbox = $j("input:checkbox[name=careerDeleteCheck]:checked"); //jQuery 객체로 데이터가 담겨있는 상태
+		
+		deleteRowFunc(tableName, checkbox);
+	});
+
+	//자격증 행삭제	
+	$j("#deleteCertificate").on("click",function(){
+		console.log("자격증행삭제함수");
+		const tableName = document.getElementById('tableCertificate');
+		var checkbox = $j("input:checkbox[name=certiDeleteCheck]:checked"); //jQuery 객체로 데이터가 담겨있는 상태
+		
+		deleteRowFunc(tableName, checkbox);
+	});
+	
+	
 	
 	
 	
 	$j("#saveResume").on("click",function(){
-		
+	    var targetInputs = $j('#wrapTable td input, #wrapTable td select');
+//	    var targetTDChildren = $j('#trEducationContent td').find('*');
+	    targetInputs.prop("disabled", true);
 	});
 	
 	
@@ -155,52 +113,71 @@ $j(document).ready(function(){
 			var major = eduMajor.eq(i).val();
 			var grade = eduScore.eq(i).val();
 			
-			var start_period_array = start_period.text.split(".");
-			var end_period_array = end_period.text.split(".");
+			var start_period_array = start_period.split(".");
+			var end_period_array = end_period.split(".");
 			
 			//재학기간 날짜가 앞보다 뒤가 크면 false
 			if(start_period > end_period ){
 				console.log(start_period);
 				console.log(end_period);
-				$j('#start_period').focus();
+				eduPeriodFirst.eq(i).focus();
 				alert("재학기간을 다시 확인해주세요.");
 				return false;
 			};
 			//재학기간의 형식이 올바르지 않은 경우 false
 			if(start_period.length != 7 ){
-				$j('#start_period').focus();
+				eduPeriodFirst.eq(i).focus();
 				alert("재학기간을 다시 확인해주세요.");
 				return false;
 			};
 			if(end_period.length != 7 ){
-				$j('#end_period').focus();
+				eduPeriodSecond.eq(i).focus();
 				alert("재학기간을 다시 확인해주세요.");
 				return false;
 			};
 			//재학기간의 마지막날이 현재보다 큰 경우 false
 			if(end_period > formattedDate ){
-				$j('#end_period').focus();
+				eduPeriodSecond.eq(i).focus();
 				alert("재학기간을 다시 확인해주세요.");
 				return false;
 			};
 			//월 단위가 01~12가 아닌 경우
 			if(start_period_array[1] > 12 && start_period_array[1] < 1){
-				$j('#start_period').focus();
+				eduPeriodFirst.eq(i).focus();
 				alert("재학기간을 다시 확인해주세요.");
 				return false;
 			};
 			if(end_period_array[1] > 12 && end_period_array[1] < 1){
-				$j('#end_period').focus();
+				eduPeriodSecond.eq(i).focus();
 				alert("재학기간을 다시 확인해주세요.");
 				return false;
 			};
 			
+			//학력 필수체크확인 => 재학기간이랑 학점은 각각 7이아닐때와 4가 아닐때로 들어가서 제외
+			if(eduSchoolName.length == 0){
+				eduSchoolName.eq(i).focus();
+				alert("학교명을 입력해주세요.");
+				return false;
+			}
+			//학력 필수체크확인 => 재학기간이랑 학점은 각각 7이아닐때와 4가 아닐때로 들어가서 제외
+			if(eduMajor.length == 0){
+				eduMajor.eq(i).focus();
+				alert("전공을 입력해주세요.");
+				return false;
+			}
+			
+			//학점이 4.5 이상인 경우
 			if(grade > 4.50){
-				console.log(grade);
+				eduScore.eq(i).focus();
 				alert("학점을 다시 확인해주세요.");
 				return false;
 			}
-
+			//학점이 x.xx가 아닌 경우
+			if(grade.length != 4){
+				eduScore.eq(i).focus();
+				alert("학점을 다시 확인해주세요.");
+				return false;
+			}
 			
 			const educationVo = {
 					"name": name,
@@ -234,21 +211,42 @@ $j(document).ready(function(){
 		    }
 		}); //end ajax  
 		
-		
-	});
+	}); //end submitResume
 	
-});
+	
 
-	//입력 필드 생성 함수
-	function createInputPeriod() {
-	    var inputField = document.createElement('input');
-	    inputField.type = "text";
-	    inputField.maxLength = 7;
-	    inputField.placeholder = "xxxx.xx";
-	    inputField.addEventListener('input', function() {
-	        this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');
-	    });
-	    return inputField;
+}); //end entireJQuery..
+
+	//행추가 함수...
+	function addRowFunc(targetTD, tableName){
+		var newCareer = tableName.insertRow(-1); // 맨 마지막 행에 tr 생성
+		for(var i = 0; i < targetTD.length; i++){
+			targetTD.eq(i).clone(true).appendTo(newCareer);
+		}
+		
+		/*
+		var newRow = $j('#trCareerContent td'); //trCareerContent의 자식 td 선택(복사하려는 내용행들!)
+		var newCareer = tableCareer.insertRow(-1); //tr 생성
+		console.log(newRow);
+		for(var i = 0; i < newRow.length; i++){
+			//console.log(newRow.eq(i));
+			newRow.eq(i).clone(true).appendTo(newCareer);
+		}		 
+		*/
+	}
+	
+	//행삭제 함수...
+	function deleteRowFunc(tableName, checkbox ){
+		checkbox.each(function(){
+	    var selectedTr = $j(this).closest('tr'); // 현재 체크박스가 속한 tr 요소를 찾음
+	    console.log("title의 index >> " + selectedTr[0].rowIndex);
+	    tableName.deleteRow(selectedTr[0].rowIndex); // title tr 요소 삭제
+	    
+		});
+		
+		if(checkbox.length == 0){
+			alert("삭제할 행이 없습니다.");
+		}
 	}
 		
 </script>
@@ -289,8 +287,14 @@ $j(document).ready(function(){
 					</td>
 					<td>
 						<select>
-							<option>남자</option>
-							<option>여자</option>
+						<c:choose>
+								<c:when test="${recruitLoginUser.gender == 'W'}">
+									<option>여자</option>
+								</c:when>
+								<c:otherwise>
+									<option>남자</option>
+								</c:otherwise>
+							</c:choose>
 						</select>
 					</td>
 					<td align="center">
@@ -301,7 +305,7 @@ $j(document).ready(function(){
 					</td>
 				</tr>
 				
-				<tr>
+				<tr >
 					<td align="center">
 						<strong>email</strong>
 					</td>
@@ -393,7 +397,7 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
-			<tr>
+			<tr id="trEducationContent">
 				<td align="center">
 					<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
 				</td>
@@ -463,7 +467,7 @@ $j(document).ready(function(){
 	<tr>
 	<td>
 		<table align="center" id="tableCareer" class="tableCareer" border = "1" width="800px">
-			<tr id="trCarrer">
+			<tr id="trCareer">
 				<td align="center">
 				</td>
 				<td align="center">
@@ -480,9 +484,9 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
-			<tr>
+			<tr id="trCareerContent">
 				<td align="center">
-					<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck">
+					<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck" >
 				</td>
 				<td align="left">
 					<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodFirst" name="careerPeriodFirst"
@@ -538,7 +542,7 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
-			<tr>
+			<tr id="trCertificateContent">
 				<td align="center">
 					<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck">
 				</td>
