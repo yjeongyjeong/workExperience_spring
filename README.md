@@ -89,13 +89,27 @@
 ![MBTI 만들기_5](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/74d624f0-9d66-4e1c-8a87-4ceb8e295e8f)
 </details>
 
+<details>
+  <summary>
+  입사지원서 만들기
+  </summary>
+
+![입사지원서만들기_2](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/2c9801d9-b73f-4078-9018-f9ececcb35b7)
+![입사지원서만들기_3](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/f7f249db-4d3a-4a16-9abb-d0d3112c08b0)
+![입사지원서만들기_4](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/fbfad0ec-9721-4bda-a2b5-c597d7f7a5fb)
+
+</details>
+
 ***
 
 ### 📊 Diagram
 <details>
   <summary>
-    diagram
+    입사지원서 다이어그램
   </summary>
+
+  ![입사지원서](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/6bef0b7d-abc2-4b6c-bd21-6d1a248ed893)
+
 </details>
 
 ***
