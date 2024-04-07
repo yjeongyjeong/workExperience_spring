@@ -221,9 +221,11 @@ $j(document).ready(function(){
 
 	//행추가 함수...
 	function addRowFunc(targetTD, tableName){
-		console.log(targetTD);
+		console.log(targetTD); //td들(jQuery로 선택됨)..
 		var newRowTR = tableName.insertRow(-1); // 맨 마지막 행에 tr 생성
-
+		var className = targetTD.parent().attr('class'); //부모 찾아가서 class 이름 가져옴!
+		newRowTR.classList.add(className); //tr(javascript)에 class 이름 추가
+		
 		targetTD.each(function(){
 		    var clonedTD = $j(this).clone(true); // 내부 데이터를 복제
 		    // td 내부의 input과 select 요소의 값을 비움
@@ -237,22 +239,13 @@ $j(document).ready(function(){
 		})
 		
 		/*
-		var newRow = $j('#trCareerContent td'); //trCareerContent의 자식 td 선택(복사하려는 내용행들!)
-		var newCareer = tableCareer.insertRow(-1); //tr 생성
-		console.log(newRow);
-		for(var i = 0; i < newRow.length; i++){
-			//console.log(newRow.eq(i));
-			newRow.eq(i).clone(true).appendTo(newCareer);
-		}	
-		
-		var newRow = $j('#trCareerContent td'); //trCareerContent의 자식 td 선택(복사하려는 내용행들!)
-		var newCareer = tableCareer.insertRow(-1); //tr 생성
-		console.log(newRow);
-		newRow.each(function() {
-		    var clonedTD = this.cloneNode(false); // 내부 데이터를 복제하지 않음 
-		    //=> 근데 진짜 구조만 복제됨 td같은거.. 그래서 전부복제하고 값을 지우자..
-		    newCareer.appendChild(clonedTD);
-		});
+			$j("#addEducation").on("click",function(){
+				
+				var targetTD = $j('#trEducation').next().children(); //content 행
+				var tableName = document.getElementById('tableEducation');
+				
+				addRowFunc(targetTD, tableName);
+			});
 		*/
 	}
 	
@@ -262,13 +255,25 @@ $j(document).ready(function(){
 		//학력 전부 삭제하는 경우
 		if(tableName.getAttribute('id') == 'tableEducation' && (tableName.rows.length -1 == checkbox.length) ){
 			console.log(tableName.getAttribute('id')); // table객체를 선택해서 true로 나옴...
+			console.log("//학력 전부 삭제하는 경우"); 
 	    	alert("학력은 필수사항입니다.");
 	    	return false;
 	    }
 
 		//경력, 자격증 전부 삭제하는 경우
  		if(tableName.getAttribute('id') != 'tableEducation' && (tableName.rows.length -1 == checkbox.length) ){
- 		    var inputs = tableName.querySelectorAll('input');
+ 			console.log("//경력, 자격증 전부 삭제하는 경우"); 
+ 		    for (var i = 0; i < checkbox.length-1 ; i++) {
+ 		    	tableName.deleteRow(1);
+ 		    }
+ 			
+ 			/* checkbox.each(function(){
+ 			    var selectedTr = $j(this).closest('tr'); // 현재 체크박스가 속한 tr 요소를 찾음
+ 			    	//jQuery로 선택한거라 [0] 해서 DOM메서드 사용가능하도록함(별의미없음)
+ 			    	tableName.deleteRow(selectedTr[0].rowIndex); // title tr 요소 삭제
+ 				}); */
+ 			
+/*  			var inputs = tableName.querySelectorAll('input');
  		    var selects = tableName.querySelectorAll('select');
  		    var checkboxes = tableName.querySelectorAll('input[type="checkbox"]');
 
@@ -282,12 +287,13 @@ $j(document).ready(function(){
 
  		    checkboxes.forEach(function(checkbox) {
  		        checkbox.checked = false;
- 		    });
+ 		    }); */
 
 		} 
 
 		//전부 삭제하는 게 아닌 경우
 		if(tableName.rows.length -1 != checkbox.length){
+			console.log("//전부 삭제하는 게 아닌 경우");
 		    checkbox.each(function(){
 		    var selectedTr = $j(this).closest('tr'); // 현재 체크박스가 속한 tr 요소를 찾음
 		    	//jQuery로 선택한거라 [0] 해서 DOM메서드 사용가능하도록함(별의미없음)
@@ -297,6 +303,7 @@ $j(document).ready(function(){
 		
 		//체크된 게 없는 경우
 		if(checkbox.length == 0){
+			console.log("//체크된 게 없는 경우");
 			alert("삭제할 행이 없습니다.");
 		}
 		
@@ -310,7 +317,7 @@ $j(document).ready(function(){
 	}
 	
 	function careerCheck(){
-		var inputs = $j('#tableCareer :input[type="text"]');
+		var inputs = $j('.trCertificateContent :input[type="text"]');
 		inputs.each(function(){
 			var value = $j(this).val(); // 각 input 요소의 값 가져오기
 		    console.log(value);
@@ -470,7 +477,7 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
-			<tr id="trEducationContent">
+			<tr class="trEducationContent">
 				<td align="center">
 					<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
 				</td>
@@ -557,7 +564,7 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
-			<tr id="trCareerContent">
+			<tr class="trCareerContent">
 				<td align="center">
 					<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck" >
 				</td>
@@ -615,7 +622,7 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
-			<tr id="trCertificateContent" >
+			<tr class="trCertificateContent" >
 				<td align="center">
 					<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck">
 				</td>

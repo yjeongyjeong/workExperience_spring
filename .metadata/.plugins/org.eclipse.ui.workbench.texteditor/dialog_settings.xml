@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="addRowFunc"/>
+		<item key="selection" value="tableCareer"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="tableCareer"/>
+			<item value="each"/>
+			<item value="key"/>
+			<item value="자격증"/>
+			<item value="경력"/>
+			<item value="학력"/>
+			<item value="parent"/>
+			<item value="child"/>
 			<item value="addRowFuncFunc"/>
 			<item value="addRow"/>
 			<item value="deleteRow"/>
@@ -15,14 +23,6 @@
 			<item value="insertRow"/>
 			<item value="for"/>
 			<item value="forEach"/>
-			<item value="tableEducaton"/>
-			<item value="trCareer"/>
-			<item value="trCarrer"/>
-			<item value="row"/>
-			<item value="rows"/>
-			<item value="여자"/>
-			<item value="c:"/>
-			<item value="c:switch"/>
 		</list>
 		<list key="replacehistory">
 			<item value="addRowFunc"/>
