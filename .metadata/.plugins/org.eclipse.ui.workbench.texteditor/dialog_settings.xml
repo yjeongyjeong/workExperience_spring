@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="tableCareer"/>
+		<item key="selection" value="com_name"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="com_name"/>
+			<item value="careerPeriodFirst_array"/>
+			<item value="_array"/>
+			<item value="formattedDate"/>
+			<item value="certificateVo"/>
+			<item value="성별"/>
+			<item value="insert"/>
+			<item value="careerCheck()"/>
+			<item value="save"/>
+			<item value="submit"/>
+			<item value="end_period"/>
+			<item value="다시"/>
 			<item value="tableCareer"/>
 			<item value="each"/>
 			<item value="key"/>
-			<item value="자격증"/>
-			<item value="경력"/>
-			<item value="학력"/>
-			<item value="parent"/>
-			<item value="child"/>
-			<item value="addRowFuncFunc"/>
-			<item value="addRow"/>
-			<item value="deleteRow"/>
-			<item value="createInputPeriod"/>
-			<item value="insertRow"/>
-			<item value="for"/>
-			<item value="forEach"/>
 		</list>
 		<list key="replacehistory">
 			<item value="addRowFunc"/>

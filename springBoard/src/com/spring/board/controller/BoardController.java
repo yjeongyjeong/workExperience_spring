@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.spring.board.HomeController;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.CareerVo;
+import com.spring.board.vo.CertificateVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.EducationVo;
 import com.spring.board.vo.PageVo;
@@ -666,25 +668,30 @@ public class BoardController {
 	
 	@RequestMapping(value = "/recruit/resumeSubmitAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String resumeSubmitAction(@RequestBody List<EducationVo> educationList, Locale locale) throws Exception {
+	public String resumeSubmitAction(@RequestBody List<EducationVo> educationList,
+									@RequestBody List<CareerVo> careerList,
+									@RequestBody List<CertificateVo> certificateList,
+									Locale locale) throws Exception {
 		
 		System.out.println("현재 게시글 educationList >>>>>>>>>>>>>>>>> " + educationList.toString());
+		System.out.println("현재 게시글 careerList >>>>>>>>>>>>>>>>> " + careerList.toString());
+		System.out.println("현재 게시글 certificateList >>>>>>>>>>>>>>>>> " + certificateList.toString());
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 		int resultCnt = -1;
 
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonBoardList = mapper.writeValueAsString(educationList);
-
-		List<EducationVo> educationVoList = mapper.readValue(jsonBoardList, new TypeReference<List<EducationVo>>() {
-		});
-
-		// EducationVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
-		for (EducationVo eduVo : educationVoList) {
-			resultCnt = boardService.insertEducation(eduVo);
-			System.out.println("resultCnt >> " + resultCnt);
-		}
+//		ObjectMapper mapper = new ObjectMapper();
+//		String jsonBoardList = mapper.writeValueAsString(educationList);
+//
+//		List<EducationVo> educationVoList = mapper.readValue(jsonBoardList, new TypeReference<List<EducationVo>>() {
+//		});
+//
+//		// EducationVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
+//		for (EducationVo eduVo : educationVoList) {
+//			resultCnt = boardService.insertEducation(eduVo);
+//			System.out.println("resultCnt >> " + resultCnt);
+//		}
 
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);

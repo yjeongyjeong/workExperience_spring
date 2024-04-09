@@ -23,7 +23,9 @@ $j(document).ready(function(){
 	const currentDate = new Date();
 	const currentYear = currentDate.getFullYear();
 	const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0!
-	const formattedDate = currentYear +'.' +currentMonth;
+	const formattedDate = currentYear +'.' +currentMonth; //2024.04
+	
+	console.log("formattedDate >>> " + formattedDate);
 
 	//학력 행추가함수
 	$j("#addEducation").on("click",function(){
@@ -86,13 +88,14 @@ $j(document).ready(function(){
 /* 	    var targetInputs = $j('#wrapTable td input, #wrapTable td select');
 //	    var targetTDChildren = $j('#trEducationContent td').find('*');
 	    targetInputs.prop("disabled", true); */
-		careerCheck();
+		
 	});
 	
 	
 	
 	
 	$j("#submitResume").on("click",function(){
+		
 		const table = document.getElementById('wrapTable');
 		var eduPeriodFirst = $j("input[name='eduPeriodFirst']");
 		var eduPeriodSecond = $j("input[name='eduPeriodSecond']");
@@ -123,35 +126,35 @@ $j(document).ready(function(){
 				console.log(start_period);
 				console.log(end_period);
 				eduPeriodFirst.eq(i).focus();
-				alert("재학기간을 다시 확인해주세요.");
+				alert("재학기간을 확인해주세요.");
 				return false;
 			};
 			//재학기간의 형식이 올바르지 않은 경우 false
 			if(start_period.length != 7 ){
 				eduPeriodFirst.eq(i).focus();
-				alert("재학기간을 다시 확인해주세요.");
+				alert("재학기간을 확인해주세요.");
 				return false;
 			};
 			if(end_period.length != 7 ){
 				eduPeriodSecond.eq(i).focus();
-				alert("재학기간을 다시 확인해주세요.");
+				alert("재학기간을 확인해주세요.");
 				return false;
 			};
 			//재학기간의 마지막날이 현재보다 큰 경우 false
 			if(end_period > formattedDate ){
 				eduPeriodSecond.eq(i).focus();
-				alert("재학기간을 다시 확인해주세요.");
+				alert("재학기간을 확인해주세요.");
 				return false;
 			};
 			//월 단위가 01~12가 아닌 경우
 			if(start_period_array[1] > 12 && start_period_array[1] < 1){
 				eduPeriodFirst.eq(i).focus();
-				alert("재학기간을 다시 확인해주세요.");
+				alert("재학기간을 확인해주세요.");
 				return false;
 			};
 			if(end_period_array[1] > 12 && end_period_array[1] < 1){
 				eduPeriodSecond.eq(i).focus();
-				alert("재학기간을 다시 확인해주세요.");
+				alert("재학기간을 확인해주세요.");
 				return false;
 			};
 			
@@ -171,13 +174,13 @@ $j(document).ready(function(){
 			//학점이 4.5 이상인 경우
 			if(grade > 4.50){
 				eduScore.eq(i).focus();
-				alert("학점을 다시 확인해주세요.");
+				alert("학점을 확인해주세요.");
 				return false;
 			}
 			//학점이 x.xx가 아닌 경우
 			if(grade.length != 4){
 				eduScore.eq(i).focus();
-				alert("학점을 다시 확인해주세요.");
+				alert("학점을 확인해주세요.");
 				return false;
 			}
 			
@@ -196,6 +199,55 @@ $j(document).ready(function(){
 			eduData.push(educationVo);
 		}//end for
 		
+		
+		//경력
+		careerCheck();
+		
+		var careerData = [];
+		
+		var name = `${recruitLoginUser.name}`;
+		var phone = `${recruitLoginUser.phone}`;
+
+		var start_period = $j("input[name='careerPeriodFirst']");
+		var end_period = $j("input[name='careerPeriodSecond']");
+		var comp_name = $j("input[name='careerName']");
+		var task = $j("input[name='careerPosition']");
+		var location = $j("input[name='careerArea']");
+		
+		const careerVo = {
+				"name": name,
+				"phone": phone,
+				"location": location,
+				"comp_name": comp_name,
+				"start_period": start_period,
+				"end_period": end_period,
+				"task": task
+		}
+		
+		console.log("careerVo >> \n" + careerVo);
+		careerData.push(careerVo);
+		
+		//자격증
+		certificateCheck();
+
+		var certiData = [];
+		
+		var qualifi_name = $j("input[name='certiName']");
+		var acqu_date = $j("input[name='certiDate']");
+		var organize_name = $j("input[name='certiPublisher']");
+		
+		const certificateVo = {
+			"name": name,
+			"phone": phone,
+			"qualifi_name": qualifi_name,
+			"acqu_date": acqu_date,
+			"organize_name": organize_name
+		}
+		
+		console.log(certificateVo);
+		certiData.push(certificateVo);
+
+		
 		$j.ajax({
 		    url : "/recruit/resumeSubmitAction.do",
 		    dataType: "json",
@@ -211,7 +263,41 @@ $j(document).ready(function(){
 		    {
 		    	alert("실패");
 		    }
-		}); //end ajax  
+		}); //end Education ajax  
+		
+		$j.ajax({
+		    url : "/recruit/resumeSubmitAction.do",
+		    dataType: "json",
+		    type: "POST",
+		    contentType: "application/json; charset=utf-8", //컨트롤러에서 받아오는 타입
+		    data : JSON.stringify(careerData),
+		    success: function(data, textStatus, jqXHR)
+		    {
+				alert("작성완료");
+				alert("메세지:"+data.success);
+		    },
+		    error: function (jqXHR, textStatus, errorThrown)
+		    {
+		    	alert("실패");
+		    }
+		}); //end career ajax  
+		
+		$j.ajax({
+		    url : "/recruit/resumeSubmitAction.do",
+		    dataType: "json",
+		    type: "POST",
+		    contentType: "application/json; charset=utf-8", //컨트롤러에서 받아오는 타입
+		    data : JSON.stringify(certiData),
+		    success: function(data, textStatus, jqXHR)
+		    {
+				alert("작성완료");
+				alert("메세지:"+data.success);
+		    },
+		    error: function (jqXHR, textStatus, errorThrown)
+		    {
+		    	alert("실패");
+		    }
+		}); //end certificate ajax  
 		
 	}); //end submitResume
 	
@@ -261,19 +347,18 @@ $j(document).ready(function(){
 	    }
 
 		//경력, 자격증 전부 삭제하는 경우
- 		if(tableName.getAttribute('id') != 'tableEducation' && (tableName.rows.length -1 == checkbox.length) ){
+		else if(tableName.getAttribute('id') != 'tableEducation' && (tableName.rows.length -1 == checkbox.length) ){
  			console.log("//경력, 자격증 전부 삭제하는 경우"); 
  		    for (var i = 0; i < checkbox.length-1 ; i++) {
  		    	tableName.deleteRow(1);
  		    }
- 			
  			/* checkbox.each(function(){
  			    var selectedTr = $j(this).closest('tr'); // 현재 체크박스가 속한 tr 요소를 찾음
  			    	//jQuery로 선택한거라 [0] 해서 DOM메서드 사용가능하도록함(별의미없음)
  			    	tableName.deleteRow(selectedTr[0].rowIndex); // title tr 요소 삭제
  				}); */
  			
-/*  			var inputs = tableName.querySelectorAll('input');
+  			var inputs = tableName.querySelectorAll('input');
  		    var selects = tableName.querySelectorAll('select');
  		    var checkboxes = tableName.querySelectorAll('input[type="checkbox"]');
 
@@ -287,12 +372,12 @@ $j(document).ready(function(){
 
  		    checkboxes.forEach(function(checkbox) {
  		        checkbox.checked = false;
- 		    }); */
+ 		    });
 
 		} 
 
 		//전부 삭제하는 게 아닌 경우
-		if(tableName.rows.length -1 != checkbox.length){
+		else if(tableName.rows.length -1 != checkbox.length){
 			console.log("//전부 삭제하는 게 아닌 경우");
 		    checkbox.each(function(){
 		    var selectedTr = $j(this).closest('tr'); // 현재 체크박스가 속한 tr 요소를 찾음
@@ -317,17 +402,119 @@ $j(document).ready(function(){
 	}
 	
 	function careerCheck(){
-		var inputs = $j('.trCertificateContent :input[type="text"]');
-		inputs.each(function(){
-			var value = $j(this).val(); // 각 input 요소의 값 가져오기
-		    console.log(value);
-			
-		})
-	}
+		var currentDate = new Date();
+		var currentYear = currentDate.getFullYear();
+		var currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0!
+		var formattedDate = currentYear +'.' +currentMonth; //2024.04
+
+		var careerRow = $j('.trCareerContent');
+		    console.log(careerRow);
+		    console.log("***");
+		    
+		    careerRow.each(function() {
+		        var careerPeriodFirst = $j(this).find('#careerPeriodFirst').val(); // 자격증명 input 요소의 값 가져오기
+		        var careerPeriodSecond = $j(this).find('#careerPeriodSecond').val(); // 취득일 input 요소의 값 가져오기
+		        var careerName = $j(this).find('#careerName').val(); // 발행처 input 요소의 값 가져오기
+		        var careerPosition = $j(this).find('#careerPosition').val(); // 발행처 input 요소의 값 가져오기
+		        var careerArea = $j(this).find('#careerArea').val(); // 발행처 input 요소의 값 가져오기
+		        
+		        var careerPeriodFirst_array = careerPeriodFirst.split(".");
+		        var careerPeriodSecond_array = careerPeriodSecond.split(".");
+		        
+		        //입력된게 하나라도 있으면
+		        if(careerPeriodFirst.length + careerPeriodSecond.length + careerName.length + careerPosition.length + careerArea.length != 0){
+		        	//근무기간의 앞이 뒤보다 큰경우
+		        	if(careerPeriodFirst > careerPeriodSecond){
+		        		alert("근무기간을 확인해주세요");
+		        		$j(this).find('#careerPeriodFirst').focus();
+		        		return false;
+		        	}
+		        	
+		        	//근무기간의 마지막날이 현재보다 큰 경우
+		        	if(careerPeriodSecond > formattedDate ){
+		        		alert("근무기간을 확인해주세요");
+		        		$j(this).find('#careerPeriodSecond').focus();
+		        		return false;
+		        	}
+		        	
+		        	//근무기간의 월단위가 01~12가 아닌 경우
+		        	if(careerPeriodFirst_array[1] > 12 && careerPeriodFirst_array[1] < 1){
+		        		alert("근무기간을 확인해주세요");
+		        		$j(this).find('#careerPeriodFirst').focus();
+		        		return false;
+		        	}
+		        	//근무기간의 월단위가 01~12가 아닌 경우
+		        	if(careerPeriodSecond_array[1] > 12 && careerPeriodSecond_array[1] < 1){
+		        		alert("근무기간을 확인해주세요");
+		        		$j(this).find('#careerPeriodSecond').focus();
+		        		return false;
+		        	}
+		        	
+		        	//근무기간 xxxx.xx형식이 안지켜진경우
+		        	if(careerPeriodFirst.length != 7){
+		        		alert("근무기간을 확인해주세요");
+		        		$j(this).find('#careerPeriodFirst').focus();
+		        		return false;
+		        	}
+		        	
+		        	if(careerPeriodSecond.length != 7){
+		        		alert("근무기간을 확인해주세요");
+		        		$j(this).find('#careerPeriodSecond').focus();
+		        		return false;
+		        	}
+		        	
+		        	if(careerName.length == 0){
+		        		alert("회사명을 확인해주세요");
+		        		$j(this).find('#careerName').focus();
+		        		return false;
+		        	}
+		        	if(careerPosition.length == 0){
+		        		alert("부서/직급/직책란을 확인해주세요");
+		        		$j(this).find('#careerPosition').focus();
+		        		return false;
+		        	}
+		        	if(careerArea.length == 0){
+		        		alert("지역을 확인해주세요");
+		        		$j(this).find('#careerArea').focus();
+		        		return false;
+		        	}
+		        	
+		        }// end if(행 내에 입력된 값이 하나라도 있는 경우)
+		        	
+		})//end each(행 별로 if 실행)
+	}//end careerCheck
 	
 	function certificateCheck(){
-		
-	}
+		var certificateRow = $j('.trCertificateContent');
+	    console.log(certificateRow);
+	    console.log("***");
+	    
+	    certificateRow.each(function() {
+	        var certiName = $j(this).find('#certiName').val(); // 자격증명 input 요소의 값 가져오기
+	        var certiDate = $j(this).find('#certiDate').val(); // 취득일 input 요소의 값 가져오기
+	        var certiPublisher = $j(this).find('#certiPublisher').val(); // 발행처 input 요소의 값 가져오기
+	        
+	        //입력된게 하나라도 있으면
+	        if(certiName.length != 0 || certiDate.length != 0 || certiPublisher.length != 0){
+	        	if(certiName.length == 0){
+	        		alert("자격증명을 입력해주세요");
+	        		$j(this).find('#certiName').focus();
+	        		return false;
+	        	}
+	        	if(certiDate.length == 0){
+	        		alert("취득일을 입력해주세요");
+	        		$j(this).find('#certiDate').focus();
+	        		return false;
+	        	}
+	        	if(certiPublisher.length == 0){
+	        		alert("발행처를 입력해주세요");
+	        		$j(this).find('#certiPublisher').focus();
+	        		return false;
+	        	}
+	        }// end if(행 내에 입력된 값이 하나라도 있는 경우)
+		})//end each(행 별로 if 실행)
+	    
+	}//end certificateCheck
 		
 </script>
 
@@ -366,7 +553,7 @@ $j(document).ready(function(){
 						<strong>성별</strong>
 					</td>
 					<td>
-						<select>
+						<select >
 						<c:choose>
 								<c:when test="${recruitLoginUser.gender == 'W'}">
 									<option>여자</option>

@@ -31,4 +31,6 @@
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
     <fullyQualifiedTypeName name="java.lang.Exception"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.EducationVo"/>
+    <fullyQualifiedTypeName name="com.spring.board.vo.CareerVo"/>
+    <fullyQualifiedTypeName name="com.spring.board.vo.CertificateVo"/>
 </qualifiedTypeNameHistroy>
