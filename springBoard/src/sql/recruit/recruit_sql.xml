@@ -23,6 +23,34 @@
 			phone = #{phone}
 	</select>
 	
+	<insert id="insertRecruit" parameterType="com.spring.board.vo.RecruitVo">
+		insert into recruit(
+			seq,
+			name,
+			birth,
+			gender,
+			phone,
+			email,
+			addr,
+			location,
+			workType,
+			submit
+		)
+		values(
+			(select NVL((select MAX(seq) + 1 from recruit), 1) as seq from dual ),
+			#{name},
+			#{birth},
+			#{gender},
+			#{phone},
+			#{email},
+			#{addr},
+			#{location},
+			#{workType},
+			#{submit}
+		)
+	</insert>
+	
+	
 	<insert id="insertEducation" parameterType="com.spring.board.vo.EducationVo">
 	
 	    <selectKey keyProperty="seq" resultType="int" order="BEFORE">
@@ -52,4 +80,54 @@
 	    )
 	
 	</insert>
+	
+	<insert id="insertCareer" parameterType="com.spring.board.vo.CareerVo">
+	
+	    <selectKey keyProperty="seq" resultType="int" order="BEFORE">
+	  		  select seq from recruit where name = #{name} and phone = #{phone}
+	    </selectKey>
+    
+		insert into career(
+		    seq,
+		    car_seq,
+		    comp_name,
+		    location,
+		    start_period,
+		    end_period,
+		    task
+		    )
+	values(
+	    	#{seq},
+	     	(SELECT NVL(MAX(car_seq) + 1, 1) AS CAR_SEQ FROM career WHERE seq = #{seq}),
+		    #{comp_name},
+		    #{location},
+		    #{start_period},
+		    #{end_period},
+		    #{task}
+	    )
+	</insert>
+	
+	<insert id="insertCertificate" parameterType="com.spring.board.vo.CertificateVo">
+	
+	    <selectKey keyProperty="seq" resultType="int" order="BEFORE">
+	  		  select seq from recruit where name = #{name} and phone = #{phone}
+	    </selectKey>
+    
+		insert into certificate(
+		    seq,
+		    cert_seq,
+		    qualifi_name,
+		    acqu_date,
+		    organize_name
+		    )
+	values(
+	    	#{seq},
+	     	(SELECT NVL(MAX(cert_seq) + 1, 1) AS CERT_SEQ FROM certificate WHERE seq = #{seq}),
+		    #{qualifi_name},
+		    #{acqu_date},
+		    #{organize_name}
+	    )
+	</insert>
+
+
 </mapper>

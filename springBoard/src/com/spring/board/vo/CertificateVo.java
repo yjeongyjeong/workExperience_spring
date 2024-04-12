@@ -11,18 +11,37 @@ public class CertificateVo {
 	private String name;
 	private String phone;
 	
-	private String sert_seq;
-	private String seq;
+	private int cert_seq;
+	private int seq;
 	
 	private String qualifi_name; 
 	private String acqu_date;
 	private String organize_name;
 	
+
+	
+	
 	@Override
 	public String toString() {
-		return "CertificateVo [name=" + name + ", phone=" + phone + ", sert_seq=" + sert_seq + ", seq=" + seq
+		return "CertificateVo [name=" + name + ", phone=" + phone + ", cert_seq=" + cert_seq + ", seq=" + seq
 				+ ", qualifi_name=" + qualifi_name + ", acqu_date=" + acqu_date + ", organize_name=" + organize_name
 				+ "]";
+	}
+
+	public int getCert_seq() {
+		return cert_seq;
+	}
+
+	public void setCert_seq(int cert_seq) {
+		this.cert_seq = cert_seq;
+	}
+
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 
 	public String getName() {
@@ -39,22 +58,6 @@ public class CertificateVo {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public String getSert_seq() {
-		return sert_seq;
-	}
-
-	public void setSert_seq(String sert_seq) {
-		this.sert_seq = sert_seq;
-	}
-
-	public String getSeq() {
-		return seq;
-	}
-
-	public void setSeq(String seq) {
-		this.seq = seq;
 	}
 
 	public String getQualifi_name() {

@@ -14,8 +14,8 @@ public class CareerVo {
 	private String name;
 	private String phone;
 	
-	private String seq;
-	private String car_seq;
+	private int seq;
+	private int car_seq;
 	
 	private String comp_name;
 	private String location;
@@ -24,19 +24,29 @@ public class CareerVo {
 	private String task;
 	private String salary;
 	
-	
+
 	@Override
 	public String toString() {
 		return "CareerVo [name=" + name + ", phone=" + phone + ", seq=" + seq + ", car_seq=" + car_seq + ", comp_name="
 				+ comp_name + ", location=" + location + ", start_period=" + start_period + ", end_period=" + end_period
 				+ ", task=" + task + ", salary=" + salary + "]";
 	}
+	
+	
 
-	public String getCar_seq() {
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
+
+	public int getCar_seq() {
 		return car_seq;
 	}
 
-	public void setCar_seq(String car_seq) {
+	public void setCar_seq(int car_seq) {
 		this.car_seq = car_seq;
 	}
 
@@ -54,14 +64,6 @@ public class CareerVo {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public String getSeq() {
-		return seq;
-	}
-
-	public void setSeq(String seq) {
-		this.seq = seq;
 	}
 
 	public String getComp_name() {

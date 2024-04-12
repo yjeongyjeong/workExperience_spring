@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.board.dao.BoardDao;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.CareerVo;
+import com.spring.board.vo.CertificateVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.EducationVo;
 import com.spring.board.vo.PageVo;
@@ -107,6 +109,14 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public int insertEducation(EducationVo educationVo) throws Exception {
 		return sqlSession.insert("recruit.insertEducation", educationVo);
+	}
+	@Override
+	public int insertCareer(CareerVo careerVo) throws Exception {
+		return sqlSession.insert("recruit.insertCareer", careerVo);
+	}
+	@Override
+	public int insertCertificate(CertificateVo certificateVo) throws Exception {
+		return sqlSession.insert("recruit.insertCertificate", certificateVo);
 	}
 	
 }

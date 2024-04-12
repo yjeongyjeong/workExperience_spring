@@ -26,7 +26,34 @@ $j(document).ready(function(){
 	const formattedDate = currentYear +'.' +currentMonth; //2024.04
 	
 	console.log("formattedDate >>> " + formattedDate);
+	console.log("recruitLoginUser >>> " + `${recruitLoginUser.name}`);
 
+	//재로그인 유저(수정가능한사람)의 select 기본값 설정... 근데 recruitLoginUser가 없으면 그냥 빈칸으로 되어버린다... 맨위의 기본값이 먹히지 않음..
+	if(`${recruitLoginUser.location}` !== null){
+		$j('#location').val(`${recruitLoginUser.location}`);
+	    console.log(" != null 인 경우 ");
+	} else {
+	    // null인 경우, 첫 번째 옵션을 선택하도록 설정
+	    console.log( ">>> " + $j('#location').val($j('#location option:first').val()) );
+	    console.log($j('#location option:first').val());
+	    console.log(" else 인 경우 ");
+	    $j('#location').val($j('#location option:first').val());
+	}
+	if(`${recruitLoginUser.gender}` !== null){
+		$j('#gender').val(`${recruitLoginUser.gender}`);
+	} else {
+	    $j('#gender').val($j('#gender option:first').val());
+	}
+	if(`${recruitLoginUser.workType}` !== null){
+		$j('#workType').val(`${recruitLoginUser.workType}`);
+	} else {
+	    $j('#workType').val($j('#workType option:first').val());
+	}
+	
+	
+	
+	
+	
 	//학력 행추가함수
 	$j("#addEducation").on("click",function(){
 		console.log("학력행추가함수"); //보인다!
@@ -95,6 +122,16 @@ $j(document).ready(function(){
 	
 	
 	$j("#submitResume").on("click",function(){
+		
+		var recruitData= [];
+		
+		var name = `${recruitLoginUser.name}`;
+		var birth = $j("input[name='eduPeriodFirst']");
+		var phone = `${recruitLoginUser.phone}`;
+		var gender = $j("select[name='gender']");
+		var location = $j("select[name='location']");
+		var workType = $j("select[name='workType']");
+		
 		
 		const table = document.getElementById('wrapTable');
 		var eduPeriodFirst = $j("input[name='eduPeriodFirst']");
@@ -193,7 +230,7 @@ $j(document).ready(function(){
 					"school_name": school_name,
 					"location": location,
 					"major": major,
-					"grade": grade
+					"grade": grade					
 			}
 			console.log(educationVo);
 			eduData.push(educationVo);
@@ -208,102 +245,101 @@ $j(document).ready(function(){
 		var name = `${recruitLoginUser.name}`;
 		var phone = `${recruitLoginUser.phone}`;
 
-		var start_period = $j("input[name='careerPeriodFirst']");
-		var end_period = $j("input[name='careerPeriodSecond']");
-		var comp_name = $j("input[name='careerName']");
-		var task = $j("input[name='careerPosition']");
-		var location = $j("input[name='careerArea']");
+		var careerStart_period = $j("input[name='careerPeriodFirst']");
+		var careerEnd_period = $j("input[name='careerPeriodSecond']");
+		var careerComp_name = $j("input[name='careerName']");
+		var careerTask = $j("input[name='careerPosition']");
+		var careerLocation = $j("input[name='careerArea']");
 		
-		const careerVo = {
-				"name": name,
-				"phone": phone,
-				"location": location,
-				"comp_name": comp_name,
-				"start_period": start_period,
-				"end_period": end_period,
-				"task": task
-		}
+		for(var i = 0; i < careerStart_period.length; i++ ){
+			var start_period = careerStart_period.eq(i).val();
+			var end_period = careerEnd_period.eq(i).val();
+			var comp_name = careerComp_name.eq(i).val();
+			var task = careerTask.eq(i).val();
+			var location = careerLocation.eq(i).val();
 		
-		console.log("careerVo >> \n" + careerVo);
-		careerData.push(careerVo);
+			const careerVo = {
+					"name": name,
+					"phone": phone,
+					"location": location,
+					"comp_name": comp_name,
+					"start_period": start_period,
+					"end_period": end_period,
+					"task": task
+			}
+		
+			console.log("careerVo >> \n" + careerVo);
+			
+			//아예 안쓴경우 name이랑 phone이 있어서 내용이 빈 배열이 생성됨..!! 따라서 값이 있는 경우에만 담도록 함..
+			if(start_period.length != 0)
+				careerData.push(careerVo);
+			
+		}//end for
+		
 		
 		//자격증
 		certificateCheck();
 
 		var certiData = [];
 		
-		var qualifi_name = $j("input[name='certiName']");
-		var acqu_date = $j("input[name='certiDate']");
-		var organize_name = $j("input[name='certiPublisher']");
+		var certiQualifi_name = $j("input[name='certiName']");
+		var certiAcqu_date = $j("input[name='certiDate']");
+		var certiOrganize_name = $j("input[name='certiPublisher']");
 		
-		const certificateVo = {
-			"name": name,
-			"phone": phone,
-			"qualifi_name": qualifi_name,
-			"acqu_date": acqu_date,
-			"organize_name": organize_name
-		}
 		
-		console.log(certificateVo);
-		certiData.push(certificateVo);
+		for(var i = 0; i < certiQualifi_name.length ; i++ ){
+			var qualifi_name = certiQualifi_name.eq(i).val();
+			var acqu_date = certiAcqu_date.eq(i).val();
+			var organize_name = certiOrganize_name.eq(i).val();
+		
+			const certificateVo = {
+				"name": name,
+				"phone": phone,
+				"qualifi_name": qualifi_name,
+				"acqu_date": acqu_date,
+				"organize_name": organize_name
+			}
+		
+			console.log(certificateVo);
+	
+			//아예 안쓴경우 name이랑 phone이 있어서 내용이 빈 배열이 생성됨..!! 따라서 값이 있는 경우에만 담도록 함..
+			if(qualifi_name.length != 0)
+				certiData.push(certificateVo);
 
+		}//end for
+		
+
+
+		var data = {
+				"recruitVo": recruitData,
+			    "educationList": eduData,
+			    "careerList": careerData,
+			    "certificateList": certiData
+			};
 		
 		$j.ajax({
 		    url : "/recruit/resumeSubmitAction.do",
 		    dataType: "json",
 		    type: "POST",
 		    contentType: "application/json; charset=utf-8", //컨트롤러에서 받아오는 타입
-		    data : JSON.stringify(eduData),
+		    data : JSON.stringify(data),
+		    //async : false,
 		    success: function(data, textStatus, jqXHR)
 		    {
-				alert("작성완료");
-				alert("메세지:"+data.success);
+				alert("작성이 완료되었습니다.");
 		    },
 		    error: function (jqXHR, textStatus, errorThrown)
 		    {
-		    	alert("실패");
+		    	alert("실패" + textStatus + "\n" + jqXHR + "\n" + errorThrown);
 		    }
-		}); //end Education ajax  
-		
-		$j.ajax({
-		    url : "/recruit/resumeSubmitAction.do",
-		    dataType: "json",
-		    type: "POST",
-		    contentType: "application/json; charset=utf-8", //컨트롤러에서 받아오는 타입
-		    data : JSON.stringify(careerData),
-		    success: function(data, textStatus, jqXHR)
-		    {
-				alert("작성완료");
-				alert("메세지:"+data.success);
-		    },
-		    error: function (jqXHR, textStatus, errorThrown)
-		    {
-		    	alert("실패");
-		    }
-		}); //end career ajax  
-		
-		$j.ajax({
-		    url : "/recruit/resumeSubmitAction.do",
-		    dataType: "json",
-		    type: "POST",
-		    contentType: "application/json; charset=utf-8", //컨트롤러에서 받아오는 타입
-		    data : JSON.stringify(certiData),
-		    success: function(data, textStatus, jqXHR)
-		    {
-				alert("작성완료");
-				alert("메세지:"+data.success);
-		    },
-		    error: function (jqXHR, textStatus, errorThrown)
-		    {
-		    	alert("실패");
-		    }
-		}); //end certificate ajax  
+		}); //end ajax  
 		
 	}); //end submitResume
 	
-	
-
 }); //end entireJQuery..
+
+
+
 
 	//행추가 함수...
 	function addRowFunc(targetTD, tableName){
@@ -530,6 +566,7 @@ $j(document).ready(function(){
 <tr>
 <td style="border: 1px">
 <table  align="center" id="wrapTable" width="80%">
+
 	<tr>
 		<td>
 			<table align="center" id="" class="" border = "1">
@@ -544,7 +581,16 @@ $j(document).ready(function(){
 						<strong>생년월일</strong>
 					</td>
 					<td width="120">
-					${recruitLoginUser.birth}
+					
+					<c:choose>
+						<c:when test="${recruitLoginUser.birth != null}">
+							${recruitLoginUser.birth}
+						</c:when>
+						<c:otherwise>
+							<input type="text" maxlength="7" placeholder="xxxxxx" id="birth" name="birth"
+							oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+						</c:otherwise>
+					</c:choose>
 					</td>
 				</tr>
 
@@ -553,15 +599,9 @@ $j(document).ready(function(){
 						<strong>성별</strong>
 					</td>
 					<td>
-						<select >
-						<c:choose>
-								<c:when test="${recruitLoginUser.gender == 'W'}">
-									<option>여자</option>
-								</c:when>
-								<c:otherwise>
-									<option>남자</option>
-								</c:otherwise>
-							</c:choose>
+						<select id="gender" name="gender">
+							<option value="M">남자</option>
+							<option value="W">여자</option>
 						</select>
 					</td>
 					<td align="center">
@@ -576,14 +616,32 @@ $j(document).ready(function(){
 					<td align="center">
 						<strong>email</strong>
 					</td>
-					<td>
-					${recruitLoginUser.email }
-					</td>
+					
+					<c:choose>
+						<c:when test="${recruitLoginUser.email != null}">
+							<td>
+								${recruitLoginUser.email}
+							</td>
+						</c:when>
+						<c:otherwise>
+							<td>
+								<input type="text" id="email" name="email" maxlength="50">
+							</td>
+						</c:otherwise>
+					</c:choose>
+					
 					<td align="center">
 						<strong>주소</strong>
 					</td>
 					<td>
-					${recruitLoginUser.addr}
+					<c:choose>
+						<c:when test="${recruitLoginUser.addr != null}">
+							${recruitLoginUser.addr}
+						</c:when>
+						<c:otherwise>
+							<input type="text" id="addr" name="addr">
+						</c:otherwise>
+					</c:choose>
 					</td>
 				</tr>
 				
@@ -592,7 +650,7 @@ $j(document).ready(function(){
 						<strong>희망근무지</strong>
 					</td>
 					<td>
-						<select>
+						<select id="location" name="location">
 							<option value="전국">전국</option>
 							<option value="강원도">강원도</option>
 							<option value="경기도">경기도</option>
@@ -617,7 +675,7 @@ $j(document).ready(function(){
 						<strong>근무형태</strong>
 					</td>
 					<td>
-						<select>
+						<select id="workType" name="workType">
 							<option>계약직</option>
 							<option>정규직</option>
 						</select>

@@ -3,6 +3,8 @@ package com.spring.board.service;
 import java.util.List;
 
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.CareerVo;
+import com.spring.board.vo.CertificateVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.EducationVo;
 import com.spring.board.vo.PageVo;
@@ -40,6 +42,8 @@ public interface boardService {
 	//==============================================================
 	public RecruitVo recruitLoginCheck(RecruitVo recruitVo) throws Exception;
 	public int insertEducation(EducationVo educationVo) throws Exception;
+	public int insertCareer(CareerVo careerVo) throws Exception;
+	public int insertCertificate(CertificateVo certificateVo) throws Exception;
 
 
 }

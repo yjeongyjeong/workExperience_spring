@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.board.HomeController;
@@ -647,10 +648,11 @@ public class BoardController {
 		RecruitVo recruitLoginUser = boardService.recruitLoginCheck(recruitVo);
 		System.out.println("recruitLoginUser"+recruitLoginUser);
 		
+		// 기존 회원인 경우
 		if (recruitLoginUser != null) {
 			session.setAttribute("recruitLoginUser", recruitLoginUser);
 			System.out.println(session.getAttribute("recruitLoginUser"));
-		}
+		} 
 		
 		return recruitLoginUser;
 	}
@@ -661,17 +663,21 @@ public class BoardController {
 		RecruitVo recruitLoginUser =  (RecruitVo) session.getAttribute("recruitLoginUser");
 		if(recruitLoginUser != null) {
 			model.addAttribute("recruitLoginUser", recruitLoginUser);
+			System.out.println("세션에서 get했을때 != null 이라 담아준 recruitLoginUser >>> " + recruitLoginUser);
 		}
+		System.out.println("세션에서 get했을때 == null인 recruitLoginUser >>> " + recruitLoginUser);
 		
 		return "recruit/main";
 	}
+
 	
 	@RequestMapping(value = "/recruit/resumeSubmitAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String resumeSubmitAction(@RequestBody List<EducationVo> educationList,
-									@RequestBody List<CareerVo> careerList,
-									@RequestBody List<CertificateVo> certificateList,
-									Locale locale) throws Exception {
+	public String resumeSubmitAction(@RequestBody Map<String, Object> requestData, Locale locale) throws Exception {
+
+		List<EducationVo> educationList = (List<EducationVo>) requestData.get("educationList");
+	    List<CareerVo> careerList = (List<CareerVo>) requestData.get("careerList");
+	    List<CertificateVo> certificateList = (List<CertificateVo>) requestData.get("certificateList");
 		
 		System.out.println("현재 게시글 educationList >>>>>>>>>>>>>>>>> " + educationList.toString());
 		System.out.println("현재 게시글 careerList >>>>>>>>>>>>>>>>> " + careerList.toString());
@@ -680,20 +686,31 @@ public class BoardController {
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 		int resultCnt = -1;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonEduList = mapper.writeValueAsString(educationList);
+		String jsonCareerList = mapper.writeValueAsString(careerList);
+		String jsonCertificateList = mapper.writeValueAsString(certificateList);
 
-//		ObjectMapper mapper = new ObjectMapper();
-//		String jsonBoardList = mapper.writeValueAsString(educationList);
-//
-//		List<EducationVo> educationVoList = mapper.readValue(jsonBoardList, new TypeReference<List<EducationVo>>() {
-//		});
-//
-//		// EducationVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
-//		for (EducationVo eduVo : educationVoList) {
-//			resultCnt = boardService.insertEducation(eduVo);
-//			System.out.println("resultCnt >> " + resultCnt);
-//		}
+		List<EducationVo> educationVoList = mapper.readValue(jsonEduList, new TypeReference<List<EducationVo>>() {});
+		List<CareerVo> careerVoList = mapper.readValue(jsonCareerList, new TypeReference<List<CareerVo>>() {});
+		List<CertificateVo> certificateVoList = mapper.readValue(jsonCertificateList, new TypeReference<List<CertificateVo>>() {});
 
-		result.put("success", (resultCnt > 0) ? "Y" : "N");
+		// EducationVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
+		for (EducationVo eduVo : educationVoList) {
+			resultCnt += boardService.insertEducation(eduVo); //성공하면 1
+			System.out.println("resultCnt >> " + resultCnt);
+		}
+		for (CareerVo careerVo : careerVoList) {
+			resultCnt += boardService.insertCareer(careerVo); //성공하면 1
+			System.out.println("resultCnt >> " + resultCnt);
+		}
+		for (CertificateVo certificateVo : certificateVoList) {
+			resultCnt += boardService.insertCertificate(certificateVo); //성공하면 1
+			System.out.println("resultCnt >> " + resultCnt);
+		}
+
+		result.put("success", (resultCnt > 0) ? "Y" : "N"); // for의 개수보다 크게하려면 어케할까...?
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 		System.out.println("callbackMsg::" + callbackMsg);
 

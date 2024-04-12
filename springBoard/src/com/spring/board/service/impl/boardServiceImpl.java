@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.spring.board.dao.BoardDao;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.CareerVo;
+import com.spring.board.vo.CertificateVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.EducationVo;
 import com.spring.board.vo.PageVo;
@@ -114,6 +116,16 @@ public class boardServiceImpl implements boardService{
 	@Override
 	public int insertEducation(EducationVo educationVo) throws Exception {
 		return boardDao.insertEducation(educationVo);
+	}
+
+	@Override
+	public int insertCareer(CareerVo careerVo) throws Exception {
+		return boardDao.insertCareer(careerVo);
+	}
+
+	@Override
+	public int insertCertificate(CertificateVo certificateVo) throws Exception {
+		return boardDao.insertCertificate(certificateVo);
 	}
 	
 }
