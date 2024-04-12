@@ -646,13 +646,17 @@ public class BoardController {
 		System.out.println("recruitVo.toString >>>>> " + recruitVo.toString());
 		
 		RecruitVo recruitLoginUser = boardService.recruitLoginCheck(recruitVo);
-		System.out.println("recruitLoginUser"+recruitLoginUser);
+		System.out.println("================ recruitLoginUser >>> "+recruitLoginUser);
 		
 		// 기존 회원인 경우
 		if (recruitLoginUser != null) {
 			session.setAttribute("recruitLoginUser", recruitLoginUser);
 			System.out.println(session.getAttribute("recruitLoginUser"));
 		} 
+		else { //기존 회원이 아닌 경우
+			session.setAttribute("recruitLoginUser", recruitVo);
+			System.out.println(session.getAttribute("recruitLoginUser"));
+		}
 		
 		return recruitLoginUser;
 	}
@@ -663,9 +667,12 @@ public class BoardController {
 		RecruitVo recruitLoginUser =  (RecruitVo) session.getAttribute("recruitLoginUser");
 		if(recruitLoginUser != null) {
 			model.addAttribute("recruitLoginUser", recruitLoginUser);
-			System.out.println("세션에서 get했을때 != null 이라 담아준 recruitLoginUser >>> " + recruitLoginUser);
+			//System.out.println("세션에서 get했을때 != null 이라 담아준 recruitLoginUser >>> " + recruitLoginUser);
 		}
-		System.out.println("세션에서 get했을때 == null인 recruitLoginUser >>> " + recruitLoginUser);
+		else {
+			return "recruit/login";
+		}
+		//System.out.println("세션에서 get했을때 == null인 recruitLoginUser >>> " + recruitLoginUser);
 		
 		return "recruit/main";
 	}
@@ -678,25 +685,35 @@ public class BoardController {
 		List<EducationVo> educationList = (List<EducationVo>) requestData.get("educationList");
 	    List<CareerVo> careerList = (List<CareerVo>) requestData.get("careerList");
 	    List<CertificateVo> certificateList = (List<CertificateVo>) requestData.get("certificateList");
+	    List<RecruitVo> recruitVo = (List<RecruitVo>) requestData.get("recruitVo");
 		
 		System.out.println("현재 게시글 educationList >>>>>>>>>>>>>>>>> " + educationList.toString());
 		System.out.println("현재 게시글 careerList >>>>>>>>>>>>>>>>> " + careerList.toString());
 		System.out.println("현재 게시글 certificateList >>>>>>>>>>>>>>>>> " + certificateList.toString());
+		System.out.println("현재 게시글 recruitVo >>>>>>>>>>>>>>>>> " + recruitVo.toString());
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 		int resultCnt = -1;
 		
 		ObjectMapper mapper = new ObjectMapper();
+		String jsonRecruitVo = mapper.writeValueAsString(recruitVo);
 		String jsonEduList = mapper.writeValueAsString(educationList);
 		String jsonCareerList = mapper.writeValueAsString(careerList);
 		String jsonCertificateList = mapper.writeValueAsString(certificateList);
 
+		List<RecruitVo> recruitVoConverted = mapper.readValue(jsonRecruitVo, new TypeReference<List<RecruitVo>>() {});
 		List<EducationVo> educationVoList = mapper.readValue(jsonEduList, new TypeReference<List<EducationVo>>() {});
 		List<CareerVo> careerVoList = mapper.readValue(jsonCareerList, new TypeReference<List<CareerVo>>() {});
 		List<CertificateVo> certificateVoList = mapper.readValue(jsonCertificateList, new TypeReference<List<CertificateVo>>() {});
 
+		resultCnt += boardService.insertRecruit((RecruitVo) recruitVoConverted);
+		
 		// EducationVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
+		for (RecruitVo reVo : recruitVoConverted) {
+			resultCnt += boardService.insertRecruit(reVo ); //성공하면 1
+			System.out.println("resultCnt >> " + resultCnt);
+		}
 		for (EducationVo eduVo : educationVoList) {
 			resultCnt += boardService.insertEducation(eduVo); //성공하면 1
 			System.out.println("resultCnt >> " + resultCnt);

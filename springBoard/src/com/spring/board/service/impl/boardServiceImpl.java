@@ -127,5 +127,10 @@ public class boardServiceImpl implements boardService{
 	public int insertCertificate(CertificateVo certificateVo) throws Exception {
 		return boardDao.insertCertificate(certificateVo);
 	}
+
+	@Override
+	public int insertRecruit(RecruitVo recruitVo) throws Exception {
+		return boardDao.insertRecruit(recruitVo);
+	}
 	
 }

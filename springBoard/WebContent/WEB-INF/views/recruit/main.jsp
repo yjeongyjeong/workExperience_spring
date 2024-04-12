@@ -26,28 +26,26 @@ $j(document).ready(function(){
 	const formattedDate = currentYear +'.' +currentMonth; //2024.04
 	
 	console.log("formattedDate >>> " + formattedDate);
-	console.log("recruitLoginUser >>> " + `${recruitLoginUser.name}`);
 
 	//재로그인 유저(수정가능한사람)의 select 기본값 설정... 근데 recruitLoginUser가 없으면 그냥 빈칸으로 되어버린다... 맨위의 기본값이 먹히지 않음..
-	if(`${recruitLoginUser.location}` !== null){
-		$j('#location').val(`${recruitLoginUser.location}`);
-	    console.log(" != null 인 경우 ");
-	} else {
+	if(`${recruitLoginUser.location}`.length == 0) { 
 	    // null인 경우, 첫 번째 옵션을 선택하도록 설정
-	    console.log( ">>> " + $j('#location').val($j('#location option:first').val()) );
-	    console.log($j('#location option:first').val());
-	    console.log(" else 인 경우 ");
 	    $j('#location').val($j('#location option:first').val());
 	}
-	if(`${recruitLoginUser.gender}` !== null){
-		$j('#gender').val(`${recruitLoginUser.gender}`);
-	} else {
+	else { // if(`${recruitLoginUser.location}` !== null)인 경우.. null이 인식되지 않아서 length로 하고 분기를 나눔..
+		$j('#location').val(`${recruitLoginUser.location}`);
+	    console.log(" != null 인 경우 ");
+	} 
+	
+	if(`${recruitLoginUser.gender}`.length == 0){
 	    $j('#gender').val($j('#gender option:first').val());
-	}
-	if(`${recruitLoginUser.workType}` !== null){
-		$j('#workType').val(`${recruitLoginUser.workType}`);
 	} else {
+		$j('#gender').val(`${recruitLoginUser.gender}`);
+	}
+	if(`${recruitLoginUser.workType}`.length == 0){
 	    $j('#workType').val($j('#workType option:first').val());
+	} else {
+		$j('#workType').val(`${recruitLoginUser.workType}`);
 	}
 	
 	
@@ -122,17 +120,64 @@ $j(document).ready(function(){
 	
 	
 	$j("#submitResume").on("click",function(){
-		
+		//recruit 인적사항
 		var recruitData= [];
 		
 		var name = `${recruitLoginUser.name}`;
-		var birth = $j("input[name='eduPeriodFirst']");
+		var birth = $j("input[name='birth']").val();
+		var gender = $j("select[name='gender']").val();
 		var phone = `${recruitLoginUser.phone}`;
-		var gender = $j("select[name='gender']");
-		var location = $j("select[name='location']");
-		var workType = $j("select[name='workType']");
+		var email = $j("input[name='email']").val();
+		var addr = $j("input[name='addr']").val();
+		var location = $j("select[name='location']").val();
+		var workType = $j("select[name='workType']").val();
+		
+/* 		console.log ("name >>>>> " + name);
+		console.log ("birth >>>>> " + birth);
+		console.log ("phone >>>>> " + phone);
+		console.log ("gender >>>>> " + gender);
+		console.log ("location >>>>> " + location);
+		console.log ("workType >>>>> " + workType); */
+		var regex = /^(?=.*[a-zA-Z])(?=.*[@])(?=.*\.)[a-zA-Z0-9@.]{6,100}$/;
+
+		if(birth.length != 6){
+			alert("생년월일을 확인해주세요.");
+			$j("input[name='birth']").focus();
+			return false;
+		}
+		if(email.length == 0){
+			alert("이메일을 확인해주세요.");
+			$j("input[name='email']").focus();
+			return false;
+		}
+		if( !regex.test(email) ){
+			alert("이메일을 확인해주세요.");
+			$j("input[name='email']").focus();
+			return false;
+		}
+		if(addr.length == 0){
+			alert("주소를 확인해주세요.");
+			$j("input[name='addr']").focus();
+			return false;
+		}
 		
 		
+		const recruitVo = {
+				"name": name,
+				"birth": birth,
+				"gender": gender,
+				"phone": phone,
+				"email": email,
+				"addr": addr,
+				"location": location,
+				"workType": workType
+		}
+		
+		console.log ("recruitVo >>>>> " + recruitVo);
+		recruitData.push(recruitVo);
+		
+		
+		//education 관련
 		const table = document.getElementById('wrapTable');
 		var eduPeriodFirst = $j("input[name='eduPeriodFirst']");
 		var eduPeriodSecond = $j("input[name='eduPeriodSecond']");
@@ -587,7 +632,7 @@ $j(document).ready(function(){
 							${recruitLoginUser.birth}
 						</c:when>
 						<c:otherwise>
-							<input type="text" maxlength="7" placeholder="xxxxxx" id="birth" name="birth"
+							<input type="text" maxlength="6" placeholder="xxxxxx" id="birth" name="birth"
 							oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</c:otherwise>
 					</c:choose>
@@ -625,7 +670,7 @@ $j(document).ready(function(){
 						</c:when>
 						<c:otherwise>
 							<td>
-								<input type="text" id="email" name="email" maxlength="50">
+								<input type="text" id="email" name="email" maxlength="50" placeholder="hongGilDong@xxxx.xxx">
 							</td>
 						</c:otherwise>
 					</c:choose>

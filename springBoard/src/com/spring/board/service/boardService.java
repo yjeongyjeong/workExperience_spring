@@ -44,6 +44,8 @@ public interface boardService {
 	public int insertEducation(EducationVo educationVo) throws Exception;
 	public int insertCareer(CareerVo careerVo) throws Exception;
 	public int insertCertificate(CertificateVo certificateVo) throws Exception;
+	public int insertRecruit(RecruitVo recruitVo) throws Exception;
+
 
 
 }

@@ -118,5 +118,9 @@ public class BoardDaoImpl implements BoardDao{
 	public int insertCertificate(CertificateVo certificateVo) throws Exception {
 		return sqlSession.insert("recruit.insertCertificate", certificateVo);
 	}
+	@Override
+	public int insertRecruit(RecruitVo recruitVo) throws Exception {
+		return sqlSession.insert("recruit.insertRecruit", recruitVo);
+	}
 	
 }
