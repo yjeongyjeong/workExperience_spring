@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="eduList"/>
+		<item key="selection" value="학교명"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="학교명"/>
+			<item value="loginAction"/>
+			<item value="학력"/>
 			<item value="eduList"/>
 			<item value="codeList"/>
 			<item value="boardList"/>
@@ -20,9 +23,6 @@
 			<item value="equestData.get(&quot;recruitVo&quot;);"/>
 			<item value="생년월일"/>
 			<item value="select"/>
-			<item value="birth"/>
-			<item value="`recruitLoginUser"/>
-			<item value="de"/>
 		</list>
 		<list key="replacehistory">
 			<item value="addRowFunc"/>

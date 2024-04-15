@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>boardLogin</title>
+<title>recruitMain</title>
 </head>
 
 <script type="text/javascript">
@@ -818,7 +818,7 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
-			<c:forEach items="${eduList}" var="eduItem">
+		<c:forEach items="${eduList}" var="eduItem">
 			
 			<tr class="trEducationContent">
 				<td align="center">
@@ -842,7 +842,9 @@ $j(document).ready(function(){
 				</td>
 				
 				<td align="center">
-					<input type="text" id="eduSchoolName" name="eduSchoolName" maxlength="100">
+					<input type="text" id="eduSchoolName" name="eduSchoolName" maxlength="100" 
+					 value="${empty eduItem.school_name ? '' : eduItem.school_name}"
+					>
 				<select id="eduSchoolArea" name="eduSchoolArea">
 					<option value="강원도" ${empty eduItem.location ? 'selected' : ''}>강원도</option>
 					<option value="경기도" ${eduItem.location eq '경기도' ? 'selected' : ''}>경기도</option>
@@ -876,7 +878,7 @@ $j(document).ready(function(){
 					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
 				</td>
 			</tr>
-			</c:forEach>
+		</c:forEach>
 			
 			</table>
 			
@@ -1003,10 +1005,7 @@ $j(document).ready(function(){
 		<button id="resumeLogout" name="resumeLogout">로그아웃</button>
 		</td>
 </tr>
-			<c:forEach items="${eduList}" var="eduItem">
-				<tr><td>${eduItem.name}
-				${eduItem.phone}</td></tr>
-			</c:forEach>
+
 		
 </table>
 </body>

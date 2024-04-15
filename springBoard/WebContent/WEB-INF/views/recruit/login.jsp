@@ -39,7 +39,7 @@
 				}
 	
 				var frm = $j('.recruitTable :input');
-				var param = frm.serialize(); 
+				var param = frm.serialize(); //name and phone
 
 				console.log("*************************");
 				console.log(frm);
@@ -54,12 +54,12 @@
 				    {
 				    	console.log(data);
 
-				    	if(data == null){ //이름과 휴대폰번호에 매칭되는 데이터가 없는 경우
+/* 				    	if(data == null){ //이름과 휴대폰번호에 매칭되는 데이터가 없는 경우
 				    		console.log(data);
 				    		alert("이름 혹은 휴대폰 번호가 일치하지 않습니다.");
 				    	}else{
 							location.href = "/recruit/main.do";
-				    	}
+				    	} */
 				    },
 				    error: function (jqXHR, textStatus, errorThrown)
 				    {

@@ -643,7 +643,7 @@ public class BoardController {
 	
 	@RequestMapping(value = "/recruit/recruitLoginAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public RecruitVo recruitLoginAction(RecruitVo recruitVo, HttpSession session, Model model, Locale locale) throws Exception {
+	public String recruitLoginAction(RecruitVo recruitVo, HttpSession session, Model model, Locale locale) throws Exception {
 		
 		System.out.println("recruitVo >>>>> " + recruitVo.getName() + " "+ recruitVo.getPhone());
 		System.out.println("recruitVo.toString >>>>> " + recruitVo.toString());
@@ -662,16 +662,16 @@ public class BoardController {
 			
 			System.out.println("eduList >>> \n" + eduList);
 			
-			model.addAttribute("eduList", eduList);
-			model.addAttribute("careerList", careerList);
-			model.addAttribute("certiList", certiList);
+			session.setAttribute("eduList", eduList);
+			session.setAttribute("careerList", careerList);
+			session.setAttribute("certiList", certiList);
 		} 
 		else { //기존 회원이 아닌 경우
 			session.setAttribute("recruitLoginUser", recruitVo);
 			System.out.println(session.getAttribute("recruitLoginUser"));
 		}
 		
-		return recruitLoginUser;
+		return "/recruit/main.do";
 	}
 	
 	@RequestMapping(value = "/recruit/main.do", method = RequestMethod.GET)
