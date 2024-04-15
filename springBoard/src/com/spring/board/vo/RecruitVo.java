@@ -13,7 +13,7 @@ public class RecruitVo {
 	WORK_TYPE	VARCHAR(255)	NULL,
 	SUBMIT	VARCHAR(255)	NULL
  * */
-	private String SEQ; //pk
+	private String seq; //pk
 	private String name;
 	private String birth;
 	private String gender; //gender?
@@ -26,17 +26,19 @@ public class RecruitVo {
 	
 	@Override
 	public String toString() {
-		return "RecruitVo [SEQ=" + SEQ + ", name=" + name + ", birth=" + birth + ", gender=" + gender + ", phone="
+		return "RecruitVo [SEQ=" + seq + ", name=" + name + ", birth=" + birth + ", gender=" + gender + ", phone="
 				+ phone + ", email=" + email + ", addr=" + addr + ", location=" + location + ", workType=" + workType
 				+ ", submit=" + submit + "]";
 	}
-	
-	public String getSEQ() {
-		return SEQ;
+
+	public String getSeq() {
+		return seq;
 	}
-	public void setSEQ(String sEQ) {
-		SEQ = sEQ;
+
+	public void setSeq(String seq) {
+		this.seq = seq;
 	}
+
 	public String getName() {
 		return name;
 	}

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="&apos;W&apos;"/>
+		<item key="selection" value="eduList"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="&apos;W&apos;"/>
+			<item value="eduList"/>
+			<item value="codeList"/>
+			<item value="boardList"/>
+			<item value="recruitEducation"/>
+			<item value="join"/>
 			<item value="recruitLoginCheck"/>
-			<item value="comp_name"/>
-			<item value="com_name"/>
-			<item value="seq"/>
-			<item value="careerPeriodFirst_array"/>
-			<item value="_array"/>
-			<item value="formattedDate"/>
-			<item value="certificateVo"/>
-			<item value="성별"/>
-			<item value="insert"/>
-			<item value="careerCheck()"/>
-			<item value="save"/>
-			<item value="submit"/>
-			<item value="end_period"/>
+			<item value="boardVo"/>
+			<item value="board"/>
+			<item value="email"/>
+			<item value="equestData.get(&quot;recruitVo&quot;);"/>
+			<item value="생년월일"/>
+			<item value="select"/>
+			<item value="birth"/>
+			<item value="`recruitLoginUser"/>
+			<item value="de"/>
 		</list>
 		<list key="replacehistory">
 			<item value="addRowFunc"/>

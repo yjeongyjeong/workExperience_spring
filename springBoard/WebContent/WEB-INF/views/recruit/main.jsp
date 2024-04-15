@@ -26,6 +26,7 @@ $j(document).ready(function(){
 	const formattedDate = currentYear +'.' +currentMonth; //2024.04
 	
 	console.log("formattedDate >>> " + formattedDate);
+	console.log("eduList >>> " + `${eduList}`);
 
 	//재로그인 유저(수정가능한사람)의 select 기본값 설정... 근데 recruitLoginUser가 없으면 그냥 빈칸으로 되어버린다... 맨위의 기본값이 먹히지 않음..
 	if(`${recruitLoginUser.location}`.length == 0) { 
@@ -117,6 +118,10 @@ $j(document).ready(function(){
 	});
 	
 	
+	$j("#resumeLogout").on("click",function(){
+		alert("로그아웃 되었습니다.");
+		location.href = '/recruit/login.do';
+	});
 	
 	
 	$j("#submitResume").on("click",function(){
@@ -138,13 +143,33 @@ $j(document).ready(function(){
 		console.log ("gender >>>>> " + gender);
 		console.log ("location >>>>> " + location);
 		console.log ("workType >>>>> " + workType); */
+		
 		var regex = /^(?=.*[a-zA-Z])(?=.*[@])(?=.*\.)[a-zA-Z0-9@.]{6,100}$/;
+		
+		//01 23 45
+		var birthYear = birth.substr(0, 2);
+		var birthMonth = birth.substr(2, 2);
+		var birthDate = birth.substr(4, 2);
 
+		console.log("생년월일 >> " +  birthYear + "birthMonth >> " + birthMonth + "birthDate >> " + birthDate);
+		
 		if(birth.length != 6){
 			alert("생년월일을 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
 		}
+		if(birthMonth < 1 || birthMonth > 12){
+			alert("생년월일을 확인해주세요.");
+			$j("input[name='birth']").focus();
+			return false;
+		}
+		if(birthDate < 1 || birthDate > 31){
+			alert("생년월일을 확인해주세요.");
+			$j("input[name='birth']").focus();
+			return false;
+		}
+		
+		
 		if(email.length == 0){
 			alert("이메일을 확인해주세요.");
 			$j("input[name='email']").focus();
@@ -229,12 +254,12 @@ $j(document).ready(function(){
 				return false;
 			};
 			//월 단위가 01~12가 아닌 경우
-			if(start_period_array[1] > 12 && start_period_array[1] < 1){
+			if(start_period_array[1] > 12 || start_period_array[1] < 1){
 				eduPeriodFirst.eq(i).focus();
 				alert("재학기간을 확인해주세요.");
 				return false;
 			};
-			if(end_period_array[1] > 12 && end_period_array[1] < 1){
+			if(end_period_array[1] > 12 || end_period_array[1] < 1){
 				eduPeriodSecond.eq(i).focus();
 				alert("재학기간을 확인해주세요.");
 				return false;
@@ -336,7 +361,7 @@ $j(document).ready(function(){
 			var qualifi_name = certiQualifi_name.eq(i).val();
 			var acqu_date = certiAcqu_date.eq(i).val();
 			var organize_name = certiOrganize_name.eq(i).val();
-		
+			
 			const certificateVo = {
 				"name": name,
 				"phone": phone,
@@ -519,13 +544,13 @@ $j(document).ready(function(){
 		        	}
 		        	
 		        	//근무기간의 월단위가 01~12가 아닌 경우
-		        	if(careerPeriodFirst_array[1] > 12 && careerPeriodFirst_array[1] < 1){
+		        	if(careerPeriodFirst_array[1] > 12 || careerPeriodFirst_array[1] < 1){
 		        		alert("근무기간을 확인해주세요");
 		        		$j(this).find('#careerPeriodFirst').focus();
 		        		return false;
 		        	}
 		        	//근무기간의 월단위가 01~12가 아닌 경우
-		        	if(careerPeriodSecond_array[1] > 12 && careerPeriodSecond_array[1] < 1){
+		        	if(careerPeriodSecond_array[1] > 12 || careerPeriodSecond_array[1] < 1){
 		        		alert("근무기간을 확인해주세요");
 		        		$j(this).find('#careerPeriodSecond').focus();
 		        		return false;
@@ -566,6 +591,12 @@ $j(document).ready(function(){
 	}//end careerCheck
 	
 	function certificateCheck(){
+		
+		var currentDate = new Date();
+		var currentYear = currentDate.getFullYear();
+		var currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0!
+		var formattedDate = currentYear +'.' +currentMonth; //2024.04
+		
 		var certificateRow = $j('.trCertificateContent');
 	    console.log(certificateRow);
 	    console.log("***");
@@ -574,6 +605,8 @@ $j(document).ready(function(){
 	        var certiName = $j(this).find('#certiName').val(); // 자격증명 input 요소의 값 가져오기
 	        var certiDate = $j(this).find('#certiDate').val(); // 취득일 input 요소의 값 가져오기
 	        var certiPublisher = $j(this).find('#certiPublisher').val(); // 발행처 input 요소의 값 가져오기
+	        
+	        var certiDate_array = certiDate.split(".");
 	        
 	        //입력된게 하나라도 있으면
 	        if(certiName.length != 0 || certiDate.length != 0 || certiPublisher.length != 0){
@@ -587,11 +620,29 @@ $j(document).ready(function(){
 	        		$j(this).find('#certiDate').focus();
 	        		return false;
 	        	}
+	        	if(certiDate.length != 7){
+	        		alert("취득일을 확인해주세요");
+	        		$j(this).find('#certiDate').focus();
+	        		return false;
+	        	}
+	        	if(certiDate_array[1] > formattedDate){
+	        		alert("취득일을 확인해주세요");
+	        		$j(this).find('#certiDate').focus();
+	        		return false;
+	        	}
+	        	if(certiDate_array[1] > 12 || certiDate_array[1] < 1){
+	        		alert("취득일을 확인해주세요.");
+	        		$j(this).find('#certiDate').focus();
+	        		return false;
+	        	}
+	        		
 	        	if(certiPublisher.length == 0){
 	        		alert("발행처를 입력해주세요");
 	        		$j(this).find('#certiPublisher').focus();
 	        		return false;
 	        	}
+	        	
+	        	
 	        }// end if(행 내에 입력된 값이 하나라도 있는 경우)
 		})//end each(행 별로 if 실행)
 	    
@@ -600,7 +651,7 @@ $j(document).ready(function(){
 </script>
 
 <body>
-<table>
+<table align="center" >
 	<tr>
 		<td align="center" style="font-size: 1.5em; font-weight: bold;" >
 			입사지원서
@@ -609,8 +660,8 @@ $j(document).ready(function(){
 	
 	
 <tr>
-<td style="border: 1px">
-<table  align="center" id="wrapTable" width="80%">
+<td style="border: 1px; ">
+<table  align="center" id="wrapTable" width="80%" >
 
 	<tr>
 		<td>
@@ -670,7 +721,7 @@ $j(document).ready(function(){
 						</c:when>
 						<c:otherwise>
 							<td>
-								<input type="text" id="email" name="email" maxlength="50" placeholder="hongGilDong@xxxx.xxx">
+								<input type="text" id="email" name="email" maxlength="100" placeholder="hongGilDong@xxxx.xxx">
 							</td>
 						</c:otherwise>
 					</c:choose>
@@ -684,7 +735,7 @@ $j(document).ready(function(){
 							${recruitLoginUser.addr}
 						</c:when>
 						<c:otherwise>
-							<input type="text" id="addr" name="addr">
+							<input type="text" id="addr" name="addr" maxlength="100">
 						</c:otherwise>
 					</c:choose>
 					</td>
@@ -767,57 +818,66 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
+			<c:forEach items="${eduList}" var="eduItem">
+			
 			<tr class="trEducationContent">
 				<td align="center">
 					<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
 				</td>
 				<td  align="center">
 					<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodFirst" name="eduPeriodFirst"
+					 value="${empty eduItem.start_period ? '' : eduItem.start_period}"
 					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 					~
 					<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodSecond" name="eduPeriodSecond"
+					 value="${empty eduItem.end_period ? '' : eduItem.end_period}"
 					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 				</td>
 				<td align="center">
 				<select id="eduStatus" name="eduStatus">
-					<option>졸업</option>
-					<option>재학</option>
-					<option>중퇴</option>
+					<option value="졸업" ${empty eduItem.division ? 'selected' : ''}>졸업</option>
+					<option value="재학" ${eduItem.division eq '재학' ? 'selected' : ''}>재학</option>
+					<option value="중퇴" ${eduItem.division eq '중퇴' ? 'selected' : ''}>중퇴</option>
 				</select>
 				</td>
 				
 				<td align="center">
-					<input type="text" id="eduSchoolName" name="eduSchoolName">
+					<input type="text" id="eduSchoolName" name="eduSchoolName" maxlength="100">
 				<select id="eduSchoolArea" name="eduSchoolArea">
-					<option value="강원도">강원도</option>
-					<option value="경기도">경기도</option>
-					<option value="경상남도">경상남도</option>
-					<option value="경상북도">경상북도</option>
-					<option value="광주광역시">광주광역시</option>
-					<option value="대구광역시">대구광역시</option>
-					<option value="대전광역시">대전광역시</option>
-					<option value="부산광역시">부산광역시</option>
-					<option value="서울특별시">서울특별시</option>
-					<option value="세종특별자치시">세종특별자치시</option>
-					<option value="울산광역시">울산광역시</option>
-					<option value="인천광역시">인천광역시</option>
-					<option value="전라남도">전라남도</option>
-					<option value="전라북도">전라북도</option>
-					<option value="제주특별자치도">제주특별자치도</option>
-					<option value="충청남도">충청남도</option>
-					<option value="충청북도">충청북도</option>
+					<option value="강원도" ${empty eduItem.location ? 'selected' : ''}>강원도</option>
+					<option value="경기도" ${eduItem.location eq '경기도' ? 'selected' : ''}>경기도</option>
+					<option value="경상남도" ${eduItem.location eq '경상남도' ? 'selected' : ''}>경상남도</option>
+					<option value="경상북도" ${eduItem.location eq '경상북도' ? 'selected' : ''}>경상북도</option>
+					<option value="광주광역시" ${eduItem.location eq '광주광역시' ? 'selected' : ''}>광주광역시</option>
+					<option value="대구광역시" ${eduItem.location eq '대구광역시' ? 'selected' : ''}>대구광역시</option>
+					<option value="대전광역시" ${eduItem.location eq '대전광역시' ? 'selected' : ''}>대전광역시</option>
+					<option value="부산광역시" ${eduItem.location eq '부산광역시' ? 'selected' : ''}>부산광역시</option>
+					<option value="서울특별시" ${eduItem.location eq '서울특별시' ? 'selected' : ''}>서울특별시</option>
+					<option value="세종특별자치시" ${eduItem.location eq '세종특별자치시' ? 'selected' : ''}>세종특별자치시</option>
+					<option value="울산광역시" ${eduItem.location eq '울산광역시' ? 'selected' : ''}>울산광역시</option>
+					<option value="인천광역시" ${eduItem.location eq '인천광역시' ? 'selected' : ''}>인천광역시</option>
+					<option value="전라남도" ${eduItem.location eq '전라남도' ? 'selected' : ''}>전라남도</option>
+					<option value="전라북도" ${eduItem.location eq '전라북도' ? 'selected' : ''}>전라북도</option>
+					<option value="제주특별자치도" ${eduItem.location eq '제주특별자치도' ? 'selected' : ''}>제주특별자치도</option>
+					<option value="충청남도" ${eduItem.location eq '충청남도' ? 'selected' : ''}>충청남도</option>
+					<option value="충청북도" ${eduItem.location eq '충청북도' ? 'selected' : ''}>충청북도</option>
 				</select>
 				</td>
 			
 				<td align="center">
-					<input type="text" id="eduMajor" name="eduMajor">
+					<input type="text" id="eduMajor" name="eduMajor" maxlength="100"
+					 value="${empty eduItem.major ? '' : eduItem.major}"
+					>
 				</td>
 
 				<td align="center">
 					<input type="text" id="eduScore" name="eduScore" maxlength="4"
+					 value="${empty eduItem.grade ? '' : eduItem.grade}"
 					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
 				</td>
 			</tr>
+			</c:forEach>
+			
 			</table>
 			
 			
@@ -866,14 +926,14 @@ $j(document).ready(function(){
 					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 				</td>
 				<td align="center">
-					<input type="text" id="careerName" name="careerName">
+					<input type="text" id="careerName" name="careerName" maxlength="100">
 				</td>
 				
 				<td align="center">
-					<input type="text" id="careerPosition" name="careerPosition">
+					<input type="text" id="careerPosition" name="careerPosition" maxlength="100">
 				</td>
 				<td align="center">
-					<input type="text" id="careerArea" name="careerArea">
+					<input type="text" id="careerArea" name="careerArea" maxlength="100">
 				</td>
 			</tr>
 		
@@ -914,16 +974,17 @@ $j(document).ready(function(){
 			
 			<tr class="trCertificateContent" >
 				<td align="center">
-					<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck">
+					<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
 				</td>
 				<td align="center">
-					<input type="text" id="certiName" name="certiName">
+					<input type="text" id="certiName" name="certiName" maxlength="100">
 				</td>
 				<td align="center">
-					<input type="text" id="certiDate" name="certiDate">
+					<input type="text" id="certiDate" name="certiDate" maxlength="7"
+					placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
 				</td>
 				<td align="center">
-					<input type="text" id="certiPublisher" name="certiPublisher">
+					<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100">
 				</td>
 			</tr>
 		
@@ -939,8 +1000,13 @@ $j(document).ready(function(){
 	<td align="center">
 		<button id="saveResume" name="saveResume">저장</button>
 		<button id="submitResume" name="submitResume">제출</button>
+		<button id="resumeLogout" name="resumeLogout">로그아웃</button>
 		</td>
 </tr>
+			<c:forEach items="${eduList}" var="eduItem">
+				<tr><td>${eduItem.name}
+				${eduItem.phone}</td></tr>
+			</c:forEach>
 		
 </table>
 </body>

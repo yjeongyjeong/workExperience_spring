@@ -132,5 +132,20 @@ public class boardServiceImpl implements boardService{
 	public int insertRecruit(RecruitVo recruitVo) throws Exception {
 		return boardDao.insertRecruit(recruitVo);
 	}
+
+	@Override
+	public List<EducationVo> selectLoginUserEducation(RecruitVo recruitVo) throws Exception {
+		return boardDao.selectLoginUserEducation(recruitVo);
+	}
+
+	@Override
+	public List<CareerVo> selectLoginUserCareer(RecruitVo recruitVo) throws Exception {
+		return boardDao.selectLoginUserCareer(recruitVo);
+	}
+
+	@Override
+	public List<CertificateVo> selectLoginUserCertificate(RecruitVo recruitVo) throws Exception {
+		return boardDao.selectLoginUserCertificate(recruitVo);
+	}
 	
 }

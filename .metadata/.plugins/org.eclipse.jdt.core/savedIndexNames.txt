@@ -66,5 +66,4 @@ INDEX VERSION 1.131+C:\Users\82104\Desktop\coding\workExperience\spring\.metadat
 1278870773.index
 3834086487.index
 4035482037.index
-3232530445.index
 713553652.index

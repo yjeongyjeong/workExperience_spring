@@ -122,5 +122,17 @@ public class BoardDaoImpl implements BoardDao{
 	public int insertRecruit(RecruitVo recruitVo) throws Exception {
 		return sqlSession.insert("recruit.insertRecruit", recruitVo);
 	}
+	@Override
+	public List<EducationVo> selectLoginUserEducation(RecruitVo recruitVo) throws Exception {
+		return sqlSession.selectList("recruit.selectLoginUserEducation", recruitVo);
+	}
+	@Override
+	public List<CareerVo> selectLoginUserCareer(RecruitVo recruitVo) throws Exception {
+		return sqlSession.selectList("recruit.selectLoginUserCareer", recruitVo);
+	}
+	@Override
+	public List<CertificateVo> selectLoginUserCertificate(RecruitVo recruitVo) throws Exception {
+		return sqlSession.selectList("recruit.selectLoginUserCertificate", recruitVo);
+	}
 	
 }

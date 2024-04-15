@@ -633,8 +633,11 @@ public class BoardController {
 
 	
 	@RequestMapping(value = "/recruit/login.do", method = RequestMethod.GET)
-	public String recruitLogin() {
+	public String recruitLogin(HttpSession session) {
 	
+		if(session.getAttribute("recruitLoginUser") != null) {
+			session.removeAttribute("recruitLoginUser");
+		}
 		return "recruit/login";
 	}
 	
@@ -652,6 +655,16 @@ public class BoardController {
 		if (recruitLoginUser != null) {
 			session.setAttribute("recruitLoginUser", recruitLoginUser);
 			System.out.println(session.getAttribute("recruitLoginUser"));
+			
+			List<EducationVo> eduList = boardService.selectLoginUserEducation(recruitVo);
+			List<CareerVo> careerList = boardService.selectLoginUserCareer(recruitVo);
+			List<CertificateVo> certiList = boardService.selectLoginUserCertificate(recruitVo);
+			
+			System.out.println("eduList >>> \n" + eduList);
+			
+			model.addAttribute("eduList", eduList);
+			model.addAttribute("careerList", careerList);
+			model.addAttribute("certiList", certiList);
 		} 
 		else { //기존 회원이 아닌 경우
 			session.setAttribute("recruitLoginUser", recruitVo);
@@ -707,8 +720,6 @@ public class BoardController {
 		List<CareerVo> careerVoList = mapper.readValue(jsonCareerList, new TypeReference<List<CareerVo>>() {});
 		List<CertificateVo> certificateVoList = mapper.readValue(jsonCertificateList, new TypeReference<List<CertificateVo>>() {});
 
-		resultCnt += boardService.insertRecruit((RecruitVo) recruitVoConverted);
-		
 		// EducationVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
 		for (RecruitVo reVo : recruitVoConverted) {
 			resultCnt += boardService.insertRecruit(reVo ); //성공하면 1

@@ -47,4 +47,8 @@ public interface BoardDao {
 	public int insertCertificate(CertificateVo certificateVo) throws Exception;
 	public int insertRecruit(RecruitVo recruitVo) throws Exception;
 	
+	public List<EducationVo> selectLoginUserEducation(RecruitVo recruitVo) throws Exception;
+	public List<CareerVo> selectLoginUserCareer(RecruitVo recruitVo) throws Exception;
+	public List<CertificateVo> selectLoginUserCertificate(RecruitVo recruitVo) throws Exception;
+	
 }
