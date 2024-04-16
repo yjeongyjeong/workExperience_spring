@@ -26,32 +26,38 @@
 	
 	<select id="selectLoginUserEducation" parameterType="com.spring.board.vo.RecruitVo"
 	resultType="com.spring.board.vo.EducationVo">
-		select * from recruit r
-		left join education e on r.seq = e.seq
+		select e.*
+		from education e
+		left join recruit r on r.seq = e.seq
 		where
-			name = #{name}
+		    r.name = #{name}
 		and
-			phone = #{phone}
+		    r.phone = #{phone}
+		order by e.start_period desc
 	</select>
 	
 	<select id="selectLoginUserCareer" parameterType="com.spring.board.vo.RecruitVo"
 	resultType="com.spring.board.vo.CareerVo">
-		select * from recruit r
-		left join career c on r.seq = c.seq
+		select c.*
+		from career c
+		left join recruit r on r.seq = c.seq
 		where
-			name = #{name}
+		    r.name = #{name}
 		and
-			phone = #{phone}
+		    r.phone = #{phone}
+		order by c.start_period desc
 	</select>
 	
 	<select id="selectLoginUserCertificate" parameterType="com.spring.board.vo.RecruitVo"
 	resultType="com.spring.board.vo.CertificateVo">
-		select * from recruit r
-		left join certificate cer on r.seq = cer.seq
+		select cer.* 
+		from certificate cer
+		left join recruit r on r.seq = cer.seq
 		where
 			name = #{name}
 		and
 			phone = #{phone}
+		order by cer.ACQU_DATE desc
 	</select>
 	
 	
@@ -79,7 +85,6 @@
 			#{workType}
 		)
 	</insert>
-	
 	
 	<insert id="insertEducation" parameterType="com.spring.board.vo.EducationVo">
 	
@@ -158,6 +163,28 @@
 		    #{organize_name}
 	    )
 	</insert>
-
+				
+	<delete id="deleteRecruit" parameterType="com.spring.board.vo.RecruitVo">
+		delete from recruit
+		where name = #{name} and phone = #{phone}
+	</delete>
+	
+	<delete id="deleteEducation" parameterType="com.spring.board.vo.RecruitVo">
+		delete from education 
+		where seq = 
+			(select seq from recruit where name = #{name} and phone = #{phone})
+	</delete>
+	
+	<delete id="deleteCareer" parameterType="com.spring.board.vo.RecruitVo">
+		delete from career
+		where seq = 
+			(select seq from recruit where name = #{name} and phone = #{phone})
+	</delete>
+	
+	<delete id="deleteCertificate" parameterType="com.spring.board.vo.RecruitVo">
+		delete from certificate
+		where seq = 
+			(select seq from recruit where name = #{name} and phone = #{phone})
+	</delete>
 
 </mapper>

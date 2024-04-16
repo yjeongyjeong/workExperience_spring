@@ -134,5 +134,22 @@ public class BoardDaoImpl implements BoardDao{
 	public List<CertificateVo> selectLoginUserCertificate(RecruitVo recruitVo) throws Exception {
 		return sqlSession.selectList("recruit.selectLoginUserCertificate", recruitVo);
 	}
+	@Override
+	public int deleteRecruit(RecruitVo recruitVo) throws Exception {
+		return sqlSession.delete("recruit.deleteRecruit", recruitVo);
+	}
+	
+	@Override
+	public int deleteEducation(RecruitVo recruitVo) throws Exception {
+		return sqlSession.delete("recruit.deleteEducation", recruitVo);
+	}
+	@Override
+	public int deleteCareer(RecruitVo recruitVo) throws Exception {
+		return sqlSession.delete("recruit.deleteCareer", recruitVo);
+	}
+	@Override
+	public int deleteCertificate(RecruitVo recruitVo) throws Exception {
+		return sqlSession.delete("recruit.deleteCertificate", recruitVo);
+	}
 	
 }

@@ -147,5 +147,25 @@ public class boardServiceImpl implements boardService{
 	public List<CertificateVo> selectLoginUserCertificate(RecruitVo recruitVo) throws Exception {
 		return boardDao.selectLoginUserCertificate(recruitVo);
 	}
+
+	@Override
+	public int deleteRecruit(RecruitVo recruitVo) throws Exception {
+		return boardDao.deleteRecruit(recruitVo);
+	}
+
+	@Override
+	public int deleteEducation(RecruitVo recruitVo) throws Exception {
+		return boardDao.deleteEducation(recruitVo);
+	}
+
+	@Override
+	public int deleteCareer(RecruitVo recruitVo) throws Exception {
+		return boardDao.deleteCareer(recruitVo);
+	}
+
+	@Override
+	public int deleteCertificate(RecruitVo recruitVo) throws Exception {
+		return boardDao.deleteCertificate(recruitVo);
+	}
 	
 }

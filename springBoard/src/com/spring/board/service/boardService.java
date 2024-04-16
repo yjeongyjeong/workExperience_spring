@@ -45,7 +45,12 @@ public interface boardService {
 	public int insertCareer(CareerVo careerVo) throws Exception;
 	public int insertCertificate(CertificateVo certificateVo) throws Exception;
 	public int insertRecruit(RecruitVo recruitVo) throws Exception;
-
+	
+	public int deleteRecruit(RecruitVo recruitVo) throws Exception;
+	public int deleteEducation(RecruitVo recruitVo) throws Exception;
+	public int deleteCareer(RecruitVo recruitVo) throws Exception;
+	public int deleteCertificate(RecruitVo recruitVo) throws Exception;
+	
 	public List<EducationVo> selectLoginUserEducation(RecruitVo recruitVo) throws Exception;
 	public List<CareerVo> selectLoginUserCareer(RecruitVo recruitVo) throws Exception;
 	public List<CertificateVo> selectLoginUserCertificate(RecruitVo recruitVo) throws Exception;

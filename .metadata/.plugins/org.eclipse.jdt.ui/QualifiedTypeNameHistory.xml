@@ -30,8 +30,9 @@
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
     <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Param"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.RecruitVo"/>
-    <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.EducationVo"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.CareerVo"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.CertificateVo"/>
+    <fullyQualifiedTypeName name="javax.websocket.Session"/>
+    <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
 </qualifiedTypeNameHistroy>

@@ -26,7 +26,7 @@ $j(document).ready(function(){
 	const formattedDate = currentYear +'.' +currentMonth; //2024.04
 	
 	console.log("formattedDate >>> " + formattedDate);
-	console.log("eduList >>> " + `${eduList}`);
+	//console.log("eduList >>> " + `${eduList}`);
 
 	//재로그인 유저(수정가능한사람)의 select 기본값 설정... 근데 recruitLoginUser가 없으면 그냥 빈칸으로 되어버린다... 맨위의 기본값이 먹히지 않음..
 	if(`${recruitLoginUser.location}`.length == 0) { 
@@ -129,20 +129,13 @@ $j(document).ready(function(){
 		var recruitData= [];
 		
 		var name = `${recruitLoginUser.name}`;
-		var birth = $j("input[name='birth']").val();
-		var gender = $j("select[name='gender']").val();
+		var birth = `${recruitLoginUser.birth}` != null ? `${recruitLoginUser.birth}` : $j("input[name='birth']").val();
+		var gender = `${recruitLoginUser.gender}` != null ? `${recruitLoginUser.gender}` : $j("select[name='gender']").val();
 		var phone = `${recruitLoginUser.phone}`;
-		var email = $j("input[name='email']").val();
-		var addr = $j("input[name='addr']").val();
-		var location = $j("select[name='location']").val();
-		var workType = $j("select[name='workType']").val();
-		
-/* 		console.log ("name >>>>> " + name);
-		console.log ("birth >>>>> " + birth);
-		console.log ("phone >>>>> " + phone);
-		console.log ("gender >>>>> " + gender);
-		console.log ("location >>>>> " + location);
-		console.log ("workType >>>>> " + workType); */
+		var email = `${recruitLoginUser.email}` != null ? `${recruitLoginUser.email}` : $j("input[name='email']").val();
+		var addr = `${recruitLoginUser.addr}` != null ? `${recruitLoginUser.addr}` : $j("input[name='addr']").val();
+		var location = `${recruitLoginUser.location}` != null ? `${recruitLoginUser.location}` : $j("select[name='location']").val();
+		var workType = `${recruitLoginUser.workType}` != null ? `${recruitLoginUser.workType}` : $j("select[name='workType']").val();
 		
 		var regex = /^(?=.*[a-zA-Z])(?=.*[@])(?=.*\.)[a-zA-Z0-9@.]{6,100}$/;
 		
@@ -151,8 +144,6 @@ $j(document).ready(function(){
 		var birthMonth = birth.substr(2, 2);
 		var birthDate = birth.substr(4, 2);
 
-		console.log("생년월일 >> " +  birthYear + "birthMonth >> " + birthMonth + "birthDate >> " + birthDate);
-		
 		if(birth.length != 6){
 			alert("생년월일을 확인해주세요.");
 			$j("input[name='birth']").focus();
@@ -916,28 +907,38 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
+		<c:forEach items="${careerList}" var="careerItem">
 			<tr class="trCareerContent">
 				<td align="center">
-					<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck" >
+					<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck">
 				</td>
 				<td align="left">
 					<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodFirst" name="careerPeriodFirst"
+					value="${empty careerItem.start_period ? '' : careerItem.start_period }"
 					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 					~
 					<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodSecond" name="careerPeriodSecond"
+					value="${empty careerItem.end_period ? '' : careerItem.end_period }"
 					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 				</td>
 				<td align="center">
-					<input type="text" id="careerName" name="careerName" maxlength="100">
+					<input type="text" id="careerName" name="careerName" maxlength="100"
+					value="${empty careerItem.comp_name ? '' : careerItem.comp_name }"
+					>
 				</td>
 				
 				<td align="center">
-					<input type="text" id="careerPosition" name="careerPosition" maxlength="100">
+					<input type="text" id="careerPosition" name="careerPosition" maxlength="100"
+					value="${empty careerItem.task ? '' : careerItem.task }"
+					>
 				</td>
 				<td align="center">
-					<input type="text" id="careerArea" name="careerArea" maxlength="100">
+					<input type="text" id="careerArea" name="careerArea" maxlength="100"
+					value="${empty careerItem.location ? '' : careerItem.location }"
+					>
 				</td>
 			</tr>
+		</c:forEach>
 		
 		</table>
 	</td>
@@ -973,23 +974,28 @@ $j(document).ready(function(){
 					<strong>발행처</strong>
 				</td>
 			</tr>
-			
+		<c:forEach items="${certiList}" var="certiItem">
 			<tr class="trCertificateContent" >
 				<td align="center">
 					<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
 				</td>
 				<td align="center">
-					<input type="text" id="certiName" name="certiName" maxlength="100">
+					<input type="text" id="certiName" name="certiName" maxlength="100"
+					 value="${empty certiItem.qualifi_name ? '수정' : certiItem.qualifi_name}"
+					>
 				</td>
 				<td align="center">
 					<input type="text" id="certiDate" name="certiDate" maxlength="7"
+					 value="${empty certiItem.acqu_date ? '수정' : certiItem.acqu_date}"
 					placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
 				</td>
 				<td align="center">
-					<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100">
+					<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100"
+					 value="${empty certiItem.organize_name ? '수정' : certiItem.organize_name}"
+					>
 				</td>
 			</tr>
-		
+		</c:forEach>
 		</table>
 	</td>
 	</tr>
