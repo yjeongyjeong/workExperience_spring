@@ -637,6 +637,9 @@ public class BoardController {
 	
 		if(session.getAttribute("recruitLoginUser") != null) {
 			session.removeAttribute("recruitLoginUser");
+			session.removeAttribute("eduList");
+			session.removeAttribute("careerList");
+			session.removeAttribute("certiList");
 		}
 		return "/recruit/login";
 	}
@@ -678,15 +681,9 @@ public class BoardController {
 	public String recruitMain(HttpSession session, Model model, Locale locale) {
 		
 		RecruitVo recruitLoginUser =  (RecruitVo) session.getAttribute("recruitLoginUser");
-		if(recruitLoginUser != null) {
-			model.addAttribute("recruitLoginUser", recruitLoginUser);
-			//System.out.println("세션에서 get했을때 != null 이라 담아준 recruitLoginUser >>> " + recruitLoginUser);
+		if(recruitLoginUser == null) {
+			return "recruit/login"; //세션이 null인 경우 (로그인이 끊긴경우)
 		}
-		else {
-			return "recruit/login";
-		}
-		//System.out.println("세션에서 get했을때 == null인 recruitLoginUser >>> " + recruitLoginUser);
-		
 		return "recruit/main";
 	}
 

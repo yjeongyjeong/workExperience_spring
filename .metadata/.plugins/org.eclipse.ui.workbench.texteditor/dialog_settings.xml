@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="Session"/>
+		<item key="selection" value="each"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="each"/>
+			<item value="utf"/>
+			<item value="phone"/>
+			<item value="formattedDate"/>
+			<item value="재학기간의 마지막날이"/>
+			<item value="submitData"/>
 			<item value="session"/>
 			<item value="경기도"/>
 			<item value="delete"/>
@@ -17,12 +23,6 @@
 			<item value="loginAction"/>
 			<item value="학력"/>
 			<item value="eduList"/>
-			<item value="codeList"/>
-			<item value="boardList"/>
-			<item value="recruitEducation"/>
-			<item value="join"/>
-			<item value="boardVo"/>
-			<item value="board"/>
 		</list>
 		<list key="replacehistory">
 			<item value="addRowFunc"/>

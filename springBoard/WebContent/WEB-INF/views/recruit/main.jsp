@@ -27,29 +27,14 @@ $j(document).ready(function(){
 	
 	console.log("formattedDate >>> " + formattedDate);
 	console.log("eduList >>> " + `${eduList}`);
+	console.log("careerList >>> " + `${careerList}`);
+	console.log("certiList >>> " + `${certiList}`);
 
-	//재로그인 유저(수정가능한사람)의 select 기본값 설정... 근데 recruitLoginUser가 없으면 그냥 빈칸으로 되어버린다... 맨위의 기본값이 먹히지 않음..
-	if(`${recruitLoginUser.location}`.length == 0) { 
-	    // null인 경우, 첫 번째 옵션을 선택하도록 설정
-	    $j('#location').val($j('#location option:first').val());
+	//학력사항 계산 함수
+	if(${eduList} != null){
+		var summaryEduList = ${eduList};
+		console.log(summaryEduList.start_period); //undefined
 	}
-	else { // if(`${recruitLoginUser.location}` !== null)인 경우.. null이 인식되지 않아서 length로 하고 분기를 나눔..
-		$j('#location').val(`${recruitLoginUser.location}`);
-	    console.log(" != null 인 경우 ");
-	} 
-	
-	if(`${recruitLoginUser.gender}`.length == 0){
-	    $j('#gender').val($j('#gender option:first').val());
-	} else {
-		$j('#gender').val(`${recruitLoginUser.gender}`);
-	}
-	if(`${recruitLoginUser.workType}`.length == 0){
-	    $j('#workType').val($j('#workType option:first').val());
-	} else {
-		$j('#workType').val(`${recruitLoginUser.workType}`);
-	}
-	
-	
 	
 	
 	
@@ -666,7 +651,7 @@ $j(document).ready(function(){
 		})//end each(행 별로 if 실행)
 	    
 	}//end certificateCheck
-		
+	
 </script>
 
 <body>
@@ -684,13 +669,14 @@ $j(document).ready(function(){
 
 	<tr>
 		<td>
-			<table align="center" id="" class="" border = "1">
+			<table align="center" id="userDetail" class="userDetail" border = "1">
 				<tr>
 					<td width="120" align="center">
 						<strong>이름</strong>
 					</td>
 					<td width="120">
-					${recruitLoginUser.name}
+					<input type="text" id="name" name="name"
+					value="${recruitLoginUser.name}" maxlength="100" readonly="readonly">
 					</td>
 					<td width="120" align="center">
 						<strong>생년월일</strong>
@@ -717,15 +703,17 @@ $j(document).ready(function(){
 					</td>
 					<td>
 						<select id="gender" name="gender">
-							<option value="M">남자</option>
-							<option value="W">여자</option>
+							<option value="M" ${recruitLoginUser.gender eq 'M' ? 'selected' : ''}>남자</option>
+							<option value="W" ${recruitLoginUser.gender eq 'W' ? 'selected' : ''}>여자</option>
 						</select>
 					</td>
 					<td align="center">
 						<strong>연락처</strong>
 					</td>
 					<td>
-					${recruitLoginUser.phone}
+					<input type="text" name="phone" id="phone" maxlength="13" placeholder="xxx-xxxx-xxxx" 
+					value="${recruitLoginUser.phone}" readonly="readonly"
+					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3');">
 					</td>
 				</tr>
 				
@@ -737,7 +725,9 @@ $j(document).ready(function(){
 					<c:choose>
 						<c:when test="${recruitLoginUser.email != null}">
 							<td>
-								${recruitLoginUser.email}
+								<input type="text" id="email" name="email" maxlength="100" placeholder="hongGilDong@xxxx.xxx"
+								value="${recruitLoginUser.email}"
+								>
 							</td>
 						</c:when>
 						<c:otherwise>
@@ -753,7 +743,9 @@ $j(document).ready(function(){
 					<td>
 					<c:choose>
 						<c:when test="${recruitLoginUser.addr != null}">
-							${recruitLoginUser.addr}
+							<input type="text" id="addr" name="addr" maxlength="100"
+							value="${recruitLoginUser.addr}"
+							>
 						</c:when>
 						<c:otherwise>
 							<input type="text" id="addr" name="addr" maxlength="100">
@@ -768,24 +760,24 @@ $j(document).ready(function(){
 					</td>
 					<td>
 						<select id="location" name="location">
-							<option value="전국">전국</option>
-							<option value="강원도">강원도</option>
-							<option value="경기도">경기도</option>
-							<option value="경상남도">경상남도</option>
-							<option value="경상북도">경상북도</option>
-							<option value="광주광역시">광주광역시</option>
-							<option value="대구광역시">대구광역시</option>
-							<option value="대전광역시">대전광역시</option>
-							<option value="부산광역시">부산광역시</option>
-							<option value="서울특별시">서울특별시</option>
-							<option value="세종특별자치시">세종특별자치시</option>
-							<option value="울산광역시">울산광역시</option>
-							<option value="인천광역시">인천광역시</option>
-							<option value="전라남도">전라남도</option>
-							<option value="전라북도">전라북도</option>
-							<option value="제주특별자치도">제주특별자치도</option>
-							<option value="충청남도">충청남도</option>
-							<option value="충청북도">충청북도</option>
+							<option value="전국" ${recruitLoginUser.location eq '강원도' ? 'selected' : ''}>전국</option>
+							<option value="강원도" ${recruitLoginUser.location eq '강원도' ? 'selected' : ''}>강원도</option>
+							<option value="경기도" ${recruitLoginUser.location eq '경기도' ? 'selected' : ''}>경기도</option>
+							<option value="경상남도" ${recruitLoginUser.location eq '경상남도' ? 'selected' : ''}>경상남도</option>
+							<option value="경상북도" ${recruitLoginUser.location eq '경상북도' ? 'selected' : ''}>경상북도</option>
+							<option value="광주광역시" ${recruitLoginUser.location eq '광주광역시' ? 'selected' : ''}>광주광역시</option>
+							<option value="대구광역시" ${recruitLoginUser.location eq '대구광역시' ? 'selected' : ''}>대구광역시</option>
+							<option value="대전광역시" ${recruitLoginUser.location eq '대전광역시' ? 'selected' : ''}>대전광역시</option>
+							<option value="부산광역시" ${recruitLoginUser.location eq '부산광역시' ? 'selected' : ''}>부산광역시</option>
+							<option value="서울특별시" ${recruitLoginUser.location eq '서울특별시' ? 'selected' : ''}>서울특별시</option>
+							<option value="세종특별자치시" ${recruitLoginUser.location eq '세종특별자치시' ? 'selected' : ''}>세종특별자치시</option>
+							<option value="울산광역시" ${recruitLoginUser.location eq '울산광역시' ? 'selected' : ''}>울산광역시</option>
+							<option value="인천광역시" ${recruitLoginUser.location eq '인천광역시' ? 'selected' : ''}>인천광역시</option>
+							<option value="전라남도" ${recruitLoginUser.location eq '전라남도' ? 'selected' : ''}>전라남도</option>
+							<option value="전라북도" ${recruitLoginUser.location eq '전라북도' ? 'selected' : ''}>전라북도</option>
+							<option value="제주특별자치도" ${recruitLoginUser.location eq '제주특별자치도' ? 'selected' : ''}>제주특별자치도</option>
+							<option value="충청남도" ${recruitLoginUser.location eq '충청남도' ? 'selected' : ''}>충청남도</option>
+							<option value="충청북도" ${recruitLoginUser.location eq '충청북도' ? 'selected' : ''}>충청북도</option>
 						</select>
 					</td>
 					<td align="center">
@@ -793,8 +785,8 @@ $j(document).ready(function(){
 					</td>
 					<td>
 						<select id="workType" name="workType">
-							<option>계약직</option>
-							<option>정규직</option>
+							<option value="계약직" ${recruitLoginUser.workType eq '계약직' ? 'selected' : ''}>계약직</option>
+							<option value="정규직" ${recruitLoginUser.workType eq '정규직' ? 'selected' : ''}>정규직</option>
 						</select>
 					</td>
 				</tr>
@@ -803,6 +795,44 @@ $j(document).ready(function(){
 			</table>
 		</td>
 	</tr>
+	
+	<tr>
+		<td>
+			<table align="center" id="userSummary" class="userSummary" border = "1">
+				<tr id="trUserSammary" class="trUserSammary">
+					<td width="180" align="center">
+						<strong>학력사항</strong>
+					</td>
+					<td width="180" align="center">
+						<strong>경력사항</strong>
+					</td>
+					<td width="180" align="center">
+						<strong>희망연봉</strong>
+					</td>
+					<td width="180" align="center">
+						<strong>희망근무지/근무형태</strong>
+					</td>
+				</tr>
+				<tr id="trUserSammaryContent" class="trUserSammaryContent">
+					<td width="180">
+					
+					</td>
+					<td width="180">
+					
+					</td>
+					<td width="180" >
+						회사내규에 따름
+					</td>
+					<td width="180">
+						${recruitLoginUser.location} <br>
+						${recruitLoginUser.workType}
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+	
 	<tr>
 		<td style="font-size: 1.5em; font-weight: bold; padding-top: 10px;">
 		학력
@@ -840,7 +870,7 @@ $j(document).ready(function(){
 			</tr>
 		
 		<c:choose>
-			<c:when test="${eduList == null}">
+			<c:when test="${empty eduList}">
 				<tr class="trEducationContent">
 					<td align="center">
 						<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
@@ -995,7 +1025,7 @@ $j(document).ready(function(){
 			</tr>
 			
 			<c:choose>
-				<c:when test="${careerList == null}">
+				<c:when test="${empty careerList}">
 					<tr class="trCareerContent">
 							<td align="center">
 								<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck">
@@ -1093,7 +1123,7 @@ $j(document).ready(function(){
 			</tr>
 			
 			<c:choose>
-			<c:when test="${certiList == null}">
+			<c:when test="${empty certiList}">
 				<tr class="trCertificateContent" >
 					<td align="center">
 						<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
