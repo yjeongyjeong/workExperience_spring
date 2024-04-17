@@ -691,9 +691,9 @@ public class BoardController {
 	}
 
 	
-	@RequestMapping(value = "/recruit/resumeSubmitAction.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/recruit/resumeSaveAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String resumeSubmitAction(@RequestBody Map<String, Object> requestData,
+	public String resumeSaveAction(@RequestBody Map<String, Object> requestData,
 									HttpSession session, Locale locale) throws Exception {
 
 		List<EducationVo> educationList = (List<EducationVo>) requestData.get("educationList");
@@ -764,6 +764,82 @@ public class BoardController {
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 		System.out.println("callbackMsg::" + callbackMsg);
 
+		return callbackMsg;
+	}
+	
+	@RequestMapping(value = "/recruit/resumeSubmitAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String resumeSubmitAction(@RequestBody Map<String, Object> requestData,
+			HttpSession session, Locale locale) throws Exception {
+		
+		List<EducationVo> educationList = (List<EducationVo>) requestData.get("educationList");
+		List<CareerVo> careerList = (List<CareerVo>) requestData.get("careerList");
+		List<CertificateVo> certificateList = (List<CertificateVo>) requestData.get("certificateList");
+		List<RecruitVo> recruitVo = (List<RecruitVo>) requestData.get("recruitVo");
+		
+		System.out.println("현재 게시글 educationList >>>>>>>>>>>>>>>>> " + educationList.toString());
+		System.out.println("현재 게시글 careerList >>>>>>>>>>>>>>>>> " + careerList.toString());
+		System.out.println("현재 게시글 certificateList >>>>>>>>>>>>>>>>> " + certificateList.toString());
+		System.out.println("현재 게시글 recruitVo >>>>>>>>>>>>>>>>> " + recruitVo.toString());
+		
+		HashMap<String, String> result = new HashMap<String, String>();
+		CommonUtil commonUtil = new CommonUtil();
+		int resultCnt = -1;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonRecruitVo = mapper.writeValueAsString(recruitVo);
+		String jsonEduList = mapper.writeValueAsString(educationList);
+		String jsonCareerList = mapper.writeValueAsString(careerList);
+		String jsonCertificateList = mapper.writeValueAsString(certificateList);
+		
+		List<RecruitVo> recruitVoConverted = mapper.readValue(jsonRecruitVo, new TypeReference<List<RecruitVo>>() {});
+		List<EducationVo> educationVoList = mapper.readValue(jsonEduList, new TypeReference<List<EducationVo>>() {});
+		List<CareerVo> careerVoList = mapper.readValue(jsonCareerList, new TypeReference<List<CareerVo>>() {});
+		List<CertificateVo> certificateVoList = mapper.readValue(jsonCertificateList, new TypeReference<List<CertificateVo>>() {});
+		
+		for (RecruitVo reVo : recruitVoConverted) { //한번만 진행됨 list로 안받으면 오류나서 일단 list사용..
+			RecruitVo returnedUser = boardService.recruitLoginCheck(reVo);
+			if(returnedUser != null) { //DB에 데이터가 있을 때
+//				//recruit에 fk가 있어서 다른 테이블 먼저 삭제하게 연산자+괄호 사용..
+//				resultCnt = (boardService.deleteEducation(reVo) * boardService.deleteCareer(reVo) * boardService.deleteCertificate(reVo))
+//						+ boardService.deleteRecruit(reVo);
+				resultCnt += boardService.deleteEducation(reVo);
+				resultCnt += boardService.deleteCareer(reVo);
+				resultCnt += boardService.deleteCertificate(reVo);
+				resultCnt += boardService.deleteRecruit(reVo);
+				
+				resultCnt += boardService.insertRecruit(reVo);
+				System.out.println("resultCnt >> " + resultCnt);
+			}
+			else { //DB에 데이터가 없을 때
+				resultCnt += boardService.insertRecruit(reVo);
+				System.out.println("resultCnt >> " + resultCnt);
+			}
+			
+			// EducationVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
+			for (EducationVo eduVo : educationVoList) {
+				resultCnt += boardService.insertEducation(eduVo); //성공하면 1
+				System.out.println("resultCnt >> " + resultCnt);
+			}
+			for (CareerVo careerVo : careerVoList) {
+				resultCnt += boardService.insertCareer(careerVo); //성공하면 1
+				System.out.println("resultCnt >> " + resultCnt);
+			}
+			for (CertificateVo certificateVo : certificateVoList) {
+				resultCnt += boardService.insertCertificate(certificateVo); //성공하면 1
+				System.out.println("resultCnt >> " + resultCnt);
+			}
+			
+			session.setAttribute("recruitLoginUser", reVo);
+			session.setAttribute("eduList", educationVoList);
+			session.setAttribute("careerList", careerVoList);
+			session.setAttribute("certiList", certificateVoList);
+		}
+		
+		result.put("success", (resultCnt > 0) ? "Y" : "N"); // for의 개수보다 크게하려면 어케할까...?
+		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
+		System.out.println("callbackMsg::" + callbackMsg);
+		
 		return callbackMsg;
 	}
 	

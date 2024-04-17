@@ -26,7 +26,7 @@ $j(document).ready(function(){
 	const formattedDate = currentYear +'.' +currentMonth; //2024.04
 	
 	console.log("formattedDate >>> " + formattedDate);
-	//console.log("eduList >>> " + `${eduList}`);
+	console.log("eduList >>> " + `${eduList}`);
 
 	//재로그인 유저(수정가능한사람)의 select 기본값 설정... 근데 recruitLoginUser가 없으면 그냥 빈칸으로 되어버린다... 맨위의 기본값이 먹히지 않음..
 	if(`${recruitLoginUser.location}`.length == 0) { 
@@ -106,25 +106,81 @@ $j(document).ready(function(){
 		deleteRowFunc(tableName, checkbox);
 	});
 	
-	
-	
-	
-	
-	$j("#saveResume").on("click",function(){
-/* 	    var targetInputs = $j('#wrapTable td input, #wrapTable td select');
-//	    var targetTDChildren = $j('#trEducationContent td').find('*');
-	    targetInputs.prop("disabled", true); */
-		
-	});
-	
-	
 	$j("#resumeLogout").on("click",function(){
 		alert("로그아웃 되었습니다.");
 		location.href = '/recruit/login.do';
 	});
 	
 	
+	$j("#saveResume").on("click",function(){
+		var data = submitData();
+		if (data) {
+			$j.ajax({
+			    url : "/recruit/resumeSaveAction.do",
+			    dataType: "json",
+			    type: "POST",
+			    contentType: "application/json; charset=utf-8", //컨트롤러에서 받아오는 타입
+			    data : JSON.stringify(data),
+			    //async : false,
+			    success: function(data, textStatus, jqXHR)
+			    {
+					alert("작성이 완료되었습니다.");
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert("실패" + textStatus + "\n" + jqXHR + "\n" + errorThrown);
+			    }
+			}); //end ajax  
+		}//end if(data)
+	}); //end submitResume
+	
+	
 	$j("#submitResume").on("click",function(){
+		/* 	    var targetInputs = $j('#wrapTable td input, #wrapTable td select');
+//			    var targetTDChildren = $j('#trEducationContent td').find('*');
+			    targetInputs.prop("disabled", true); */
+			    var data = submitData();
+				if (data) {
+					$j.ajax({
+					    url : "/recruit/resumeSubmitAction.do",
+					    dataType: "json",
+					    type: "POST",
+					    contentType: "application/json; charset=utf-8", //컨트롤러에서 받아오는 타입
+					    data : JSON.stringify(data),
+					    success: function(data, textStatus, jqXHR)
+					    {
+							alert("작성이 완료되었습니다.");
+							//input, select 전부
+							var targetInputs = $j('#wrapTable td input, #wrapTable td select');
+							//행추가삭제 button
+							var targetRowButtons = $j('#wrapTable td button');
+							var targetSaveButtons = $j('#saveResume');
+							var targetSubmitButtons = $j('#submitResume');
+							
+						    targetInputs.prop("disabled", true);
+						    targetRowButtons.prop("disabled", true);
+						    targetSaveButtons.prop("disabled", true);
+						    targetSubmitButtons.prop("disabled", true);
+					    },
+					    error: function (jqXHR, textStatus, errorThrown)
+					    {
+					    	alert("실패" + textStatus + "\n" + jqXHR + "\n" + errorThrown);
+					    }
+					}); //end ajax  
+				}//end if(data)
+					
+	});//end submitResume
+	
+}); //end entireJQuery..
+
+
+//데이터 묶어서 전송해주는 함수!
+	function submitData() {
+		var currentDate = new Date();
+		var currentYear = currentDate.getFullYear();
+		var currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0!
+		var formattedDate = currentYear +'.' +currentMonth; //2024.04
+		
 		//recruit 인적사항
 		var recruitData= [];
 		
@@ -143,7 +199,7 @@ $j(document).ready(function(){
 		var birthYear = birth.substr(0, 2);
 		var birthMonth = birth.substr(2, 2);
 		var birthDate = birth.substr(4, 2);
-
+	
 		if(birth.length != 6){
 			alert("생년월일을 확인해주세요.");
 			$j("input[name='birth']").focus();
@@ -305,7 +361,7 @@ $j(document).ready(function(){
 		
 		var name = `${recruitLoginUser.name}`;
 		var phone = `${recruitLoginUser.phone}`;
-
+	
 		var careerStart_period = $j("input[name='careerPeriodFirst']");
 		var careerEnd_period = $j("input[name='careerPeriodSecond']");
 		var careerComp_name = $j("input[name='careerName']");
@@ -336,11 +392,10 @@ $j(document).ready(function(){
 				careerData.push(careerVo);
 			
 		}//end for
-		
-		
+	
 		//자격증
 		certificateCheck();
-
+	
 		var certiData = [];
 		
 		var certiQualifi_name = $j("input[name='certiName']");
@@ -360,47 +415,20 @@ $j(document).ready(function(){
 				"acqu_date": acqu_date,
 				"organize_name": organize_name
 			}
-		
 			console.log(certificateVo);
-	
 			//아예 안쓴경우 name이랑 phone이 있어서 내용이 빈 배열이 생성됨..!! 따라서 값이 있는 경우에만 담도록 함..
 			if(qualifi_name.length != 0)
 				certiData.push(certificateVo);
-
 		}//end for
-		
-
-
-		var data = {
+		 var data = {
 				"recruitVo": recruitData,
 			    "educationList": eduData,
 			    "careerList": careerData,
 			    "certificateList": certiData
 			};
 		
-		$j.ajax({
-		    url : "/recruit/resumeSubmitAction.do",
-		    dataType: "json",
-		    type: "POST",
-		    contentType: "application/json; charset=utf-8", //컨트롤러에서 받아오는 타입
-		    data : JSON.stringify(data),
-		    //async : false,
-		    success: function(data, textStatus, jqXHR)
-		    {
-				alert("작성이 완료되었습니다.");
-		    },
-		    error: function (jqXHR, textStatus, errorThrown)
-		    {
-		    	alert("실패" + textStatus + "\n" + jqXHR + "\n" + errorThrown);
-		    }
-		}); //end ajax  
-		
-	}); //end submitResume
-	
-}); //end entireJQuery..
-
-
-
+		return data;
+	}; //end submitData
 
 	//행추가 함수...
 	function addRowFunc(targetTD, tableName){
@@ -642,7 +670,7 @@ $j(document).ready(function(){
 </script>
 
 <body>
-<table align="center" >
+<table align="center" id="resumeTable">
 	<tr>
 		<td align="center" style="font-size: 1.5em; font-weight: bold;" >
 			입사지원서
@@ -671,7 +699,9 @@ $j(document).ready(function(){
 					
 					<c:choose>
 						<c:when test="${recruitLoginUser.birth != null}">
-							${recruitLoginUser.birth}
+						<input type="text" maxlength="6" placeholder="xxxxxx" id="birth" name="birth"
+						value="${recruitLoginUser.birth}"
+							oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</c:when>
 						<c:otherwise>
 							<input type="text" maxlength="6" placeholder="xxxxxx" id="birth" name="birth"
@@ -808,69 +838,126 @@ $j(document).ready(function(){
 					<strong>학점</strong>
 				</td>
 			</tr>
-			
-		<c:forEach items="${eduList}" var="eduItem">
-			
-			<tr class="trEducationContent">
-				<td align="center">
-					<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
-				</td>
-				<td  align="center">
-					<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodFirst" name="eduPeriodFirst"
-					 value="${empty eduItem.start_period ? '' : eduItem.start_period}"
-					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
-					~
-					<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodSecond" name="eduPeriodSecond"
-					 value="${empty eduItem.end_period ? '' : eduItem.end_period}"
-					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
-				</td>
-				<td align="center">
-				<select id="eduStatus" name="eduStatus">
-					<option value="졸업" ${empty eduItem.division ? 'selected' : ''}>졸업</option>
-					<option value="재학" ${eduItem.division eq '재학' ? 'selected' : ''}>재학</option>
-					<option value="중퇴" ${eduItem.division eq '중퇴' ? 'selected' : ''}>중퇴</option>
-				</select>
-				</td>
+		
+		<c:choose>
+			<c:when test="${eduList == null}">
+				<tr class="trEducationContent">
+					<td align="center">
+						<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
+					</td>
+					<td  align="center">
+						<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodFirst" name="eduPeriodFirst"
+						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
+						~
+						<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodSecond" name="eduPeriodSecond"
+						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
+					</td>
+					<td align="center">
+					<select id="eduStatus" name="eduStatus">
+						<option value="졸업">졸업</option>
+						<option value="재학">재학</option>
+						<option value="중퇴">중퇴</option>
+					</select>
+					</td>
+					
+					<td align="center">
+						<input type="text" id="eduSchoolName" name="eduSchoolName" maxlength="100" 
+						>
+					<select id="eduSchoolArea" name="eduSchoolArea">
+						<option value="강원도">강원도</option>
+						<option value="경기도" >경기도</option>
+						<option value="경상남도" >경상남도</option>
+						<option value="경상북도" >경상북도</option>
+						<option value="광주광역시" >광주광역시</option>
+						<option value="대구광역시" >대구광역시</option>
+						<option value="대전광역시" >대전광역시</option>
+						<option value="부산광역시" >부산광역시</option>
+						<option value="서울특별시" >서울특별시</option>
+						<option value="세종특별자치시" >세종특별자치시</option>
+						<option value="울산광역시" >울산광역시</option>
+						<option value="인천광역시" >인천광역시</option>
+						<option value="전라남도" >전라남도</option>
+						<option value="전라북도" >전라북도</option>
+						<option value="제주특별자치도" >제주특별자치도</option>
+						<option value="충청남도" >충청남도</option>
+						<option value="충청북도" >충청북도</option>
+					</select>
+					</td>
 				
-				<td align="center">
-					<input type="text" id="eduSchoolName" name="eduSchoolName" maxlength="100" 
-					 value="${empty eduItem.school_name ? '' : eduItem.school_name}"
-					>
-				<select id="eduSchoolArea" name="eduSchoolArea">
-					<option value="강원도" ${empty eduItem.location ? 'selected' : ''}>강원도</option>
-					<option value="경기도" ${eduItem.location eq '경기도' ? 'selected' : ''}>경기도</option>
-					<option value="경상남도" ${eduItem.location eq '경상남도' ? 'selected' : ''}>경상남도</option>
-					<option value="경상북도" ${eduItem.location eq '경상북도' ? 'selected' : ''}>경상북도</option>
-					<option value="광주광역시" ${eduItem.location eq '광주광역시' ? 'selected' : ''}>광주광역시</option>
-					<option value="대구광역시" ${eduItem.location eq '대구광역시' ? 'selected' : ''}>대구광역시</option>
-					<option value="대전광역시" ${eduItem.location eq '대전광역시' ? 'selected' : ''}>대전광역시</option>
-					<option value="부산광역시" ${eduItem.location eq '부산광역시' ? 'selected' : ''}>부산광역시</option>
-					<option value="서울특별시" ${eduItem.location eq '서울특별시' ? 'selected' : ''}>서울특별시</option>
-					<option value="세종특별자치시" ${eduItem.location eq '세종특별자치시' ? 'selected' : ''}>세종특별자치시</option>
-					<option value="울산광역시" ${eduItem.location eq '울산광역시' ? 'selected' : ''}>울산광역시</option>
-					<option value="인천광역시" ${eduItem.location eq '인천광역시' ? 'selected' : ''}>인천광역시</option>
-					<option value="전라남도" ${eduItem.location eq '전라남도' ? 'selected' : ''}>전라남도</option>
-					<option value="전라북도" ${eduItem.location eq '전라북도' ? 'selected' : ''}>전라북도</option>
-					<option value="제주특별자치도" ${eduItem.location eq '제주특별자치도' ? 'selected' : ''}>제주특별자치도</option>
-					<option value="충청남도" ${eduItem.location eq '충청남도' ? 'selected' : ''}>충청남도</option>
-					<option value="충청북도" ${eduItem.location eq '충청북도' ? 'selected' : ''}>충청북도</option>
-				</select>
-				</td>
-			
-				<td align="center">
-					<input type="text" id="eduMajor" name="eduMajor" maxlength="100"
-					 value="${empty eduItem.major ? '' : eduItem.major}"
-					>
-				</td>
-
-				<td align="center">
-					<input type="text" id="eduScore" name="eduScore" maxlength="4"
-					 value="${empty eduItem.grade ? '' : eduItem.grade}"
-					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
-				</td>
-			</tr>
-		</c:forEach>
-			
+					<td align="center">
+						<input type="text" id="eduMajor" name="eduMajor" maxlength="100"
+						>
+					</td>
+	
+					<td align="center">
+						<input type="text" id="eduScore" name="eduScore" maxlength="4"
+						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
+					</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:forEach items="${eduList}" var="eduItem">
+					<tr class="trEducationContent">
+						<td align="center">
+							<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
+						</td>
+						<td  align="center">
+							<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodFirst" name="eduPeriodFirst"
+							 value="${eduItem.start_period}"
+							oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
+							~
+							<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodSecond" name="eduPeriodSecond"
+							 value="${eduItem.end_period}"
+							oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
+						</td>
+						<td align="center">
+						<select id="eduStatus" name="eduStatus">
+							<option value="졸업" ${eduItem.division eq '졸업' ? 'selected' : ''}>졸업</option>
+							<option value="재학" ${eduItem.division eq '재학' ? 'selected' : ''}>재학</option>
+							<option value="중퇴" ${eduItem.division eq '중퇴' ? 'selected' : ''}>중퇴</option>
+						</select>
+						</td>
+						
+						<td align="center">
+							<input type="text" id="eduSchoolName" name="eduSchoolName" maxlength="100" 
+							 value="${eduItem.school_name}"
+							>
+						<select id="eduSchoolArea" name="eduSchoolArea">
+							<option value="강원도" ${eduItem.location eq '강원도' ? 'selected' : ''}>강원도</option>
+							<option value="경기도" ${eduItem.location eq '경기도' ? 'selected' : ''}>경기도</option>
+							<option value="경상남도" ${eduItem.location eq '경상남도' ? 'selected' : ''}>경상남도</option>
+							<option value="경상북도" ${eduItem.location eq '경상북도' ? 'selected' : ''}>경상북도</option>
+							<option value="광주광역시" ${eduItem.location eq '광주광역시' ? 'selected' : ''}>광주광역시</option>
+							<option value="대구광역시" ${eduItem.location eq '대구광역시' ? 'selected' : ''}>대구광역시</option>
+							<option value="대전광역시" ${eduItem.location eq '대전광역시' ? 'selected' : ''}>대전광역시</option>
+							<option value="부산광역시" ${eduItem.location eq '부산광역시' ? 'selected' : ''}>부산광역시</option>
+							<option value="서울특별시" ${eduItem.location eq '서울특별시' ? 'selected' : ''}>서울특별시</option>
+							<option value="세종특별자치시" ${eduItem.location eq '세종특별자치시' ? 'selected' : ''}>세종특별자치시</option>
+							<option value="울산광역시" ${eduItem.location eq '울산광역시' ? 'selected' : ''}>울산광역시</option>
+							<option value="인천광역시" ${eduItem.location eq '인천광역시' ? 'selected' : ''}>인천광역시</option>
+							<option value="전라남도" ${eduItem.location eq '전라남도' ? 'selected' : ''}>전라남도</option>
+							<option value="전라북도" ${eduItem.location eq '전라북도' ? 'selected' : ''}>전라북도</option>
+							<option value="제주특별자치도" ${eduItem.location eq '제주특별자치도' ? 'selected' : ''}>제주특별자치도</option>
+							<option value="충청남도" ${eduItem.location eq '충청남도' ? 'selected' : ''}>충청남도</option>
+							<option value="충청북도" ${eduItem.location eq '충청북도' ? 'selected' : ''}>충청북도</option>
+						</select>
+						</td>
+					
+						<td align="center">
+							<input type="text" id="eduMajor" name="eduMajor" maxlength="100"
+							 value="${eduItem.major}"
+							>
+						</td>
+		
+						<td align="center">
+							<input type="text" id="eduScore" name="eduScore" maxlength="4"
+							 value="${eduItem.grade}"
+							oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
+						</td>
+					</tr>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
 			</table>
 			
 			
@@ -907,39 +994,69 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			
-		<c:forEach items="${careerList}" var="careerItem">
-			<tr class="trCareerContent">
-				<td align="center">
-					<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck">
-				</td>
-				<td align="left">
-					<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodFirst" name="careerPeriodFirst"
-					value="${empty careerItem.start_period ? '' : careerItem.start_period }"
-					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
-					~
-					<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodSecond" name="careerPeriodSecond"
-					value="${empty careerItem.end_period ? '' : careerItem.end_period }"
-					oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
-				</td>
-				<td align="center">
-					<input type="text" id="careerName" name="careerName" maxlength="100"
-					value="${empty careerItem.comp_name ? '' : careerItem.comp_name }"
-					>
-				</td>
-				
-				<td align="center">
-					<input type="text" id="careerPosition" name="careerPosition" maxlength="100"
-					value="${empty careerItem.task ? '' : careerItem.task }"
-					>
-				</td>
-				<td align="center">
-					<input type="text" id="careerArea" name="careerArea" maxlength="100"
-					value="${empty careerItem.location ? '' : careerItem.location }"
-					>
-				</td>
-			</tr>
-		</c:forEach>
-		
+			<c:choose>
+				<c:when test="${careerList == null}">
+					<tr class="trCareerContent">
+							<td align="center">
+								<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck">
+							</td>
+							<td align="left">
+								<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodFirst" name="careerPeriodFirst"
+								oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
+								~
+								<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodSecond" name="careerPeriodSecond"
+								oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
+							</td>
+							<td align="center">
+								<input type="text" id="careerName" name="careerName" maxlength="100"
+								>
+							</td>
+							
+							<td align="center">
+								<input type="text" id="careerPosition" name="careerPosition" maxlength="100"
+								>
+							</td>
+							<td align="center">
+								<input type="text" id="careerArea" name="careerArea" maxlength="100"
+								>
+							</td>
+						</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${careerList}" var="careerItem">
+						<tr class="trCareerContent">
+							<td align="center">
+								<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck">
+							</td>
+							<td align="left">
+								<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodFirst" name="careerPeriodFirst"
+								value="${empty careerItem.start_period ? '' : careerItem.start_period }"
+								oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
+								~
+								<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodSecond" name="careerPeriodSecond"
+								value="${empty careerItem.end_period ? '' : careerItem.end_period }"
+								oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
+							</td>
+							<td align="center">
+								<input type="text" id="careerName" name="careerName" maxlength="100"
+								value="${empty careerItem.comp_name ? '' : careerItem.comp_name }"
+								>
+							</td>
+							
+							<td align="center">
+								<input type="text" id="careerPosition" name="careerPosition" maxlength="100"
+								value="${empty careerItem.task ? '' : careerItem.task }"
+								>
+							</td>
+							<td align="center">
+								<input type="text" id="careerArea" name="careerArea" maxlength="100"
+								value="${empty careerItem.location ? '' : careerItem.location }"
+								>
+							</td>
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
 		</table>
 	</td>
 	</tr>
@@ -974,28 +1091,52 @@ $j(document).ready(function(){
 					<strong>발행처</strong>
 				</td>
 			</tr>
-		<c:forEach items="${certiList}" var="certiItem">
-			<tr class="trCertificateContent" >
-				<td align="center">
-					<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
-				</td>
-				<td align="center">
-					<input type="text" id="certiName" name="certiName" maxlength="100"
-					 value="${empty certiItem.qualifi_name ? '수정' : certiItem.qualifi_name}"
-					>
-				</td>
-				<td align="center">
-					<input type="text" id="certiDate" name="certiDate" maxlength="7"
-					 value="${empty certiItem.acqu_date ? '수정' : certiItem.acqu_date}"
-					placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
-				</td>
-				<td align="center">
-					<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100"
-					 value="${empty certiItem.organize_name ? '수정' : certiItem.organize_name}"
-					>
-				</td>
-			</tr>
-		</c:forEach>
+			
+			<c:choose>
+			<c:when test="${certiList == null}">
+				<tr class="trCertificateContent" >
+					<td align="center">
+						<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
+					</td>
+					<td align="center">
+						<input type="text" id="certiName" name="certiName" maxlength="100"
+						>
+					</td>
+					<td align="center">
+						<input type="text" id="certiDate" name="certiDate" maxlength="7"
+						placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
+					</td>
+					<td align="center">
+						<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100"
+						>
+					</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:forEach items="${certiList}" var="certiItem">
+					<tr class="trCertificateContent" >
+						<td align="center">
+							<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
+						</td>
+						<td align="center">
+							<input type="text" id="certiName" name="certiName" maxlength="100"
+							 value="${empty certiItem.qualifi_name ? '수정' : certiItem.qualifi_name}"
+							>
+						</td>
+						<td align="center">
+							<input type="text" id="certiDate" name="certiDate" maxlength="7"
+							 value="${empty certiItem.acqu_date ? '수정' : certiItem.acqu_date}"
+							placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
+						</td>
+						<td align="center">
+							<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100"
+							 value="${empty certiItem.organize_name ? '수정' : certiItem.organize_name}"
+							>
+						</td>
+					</tr>
+				</c:forEach>
+			</c:otherwise>
+			</c:choose>
 		</table>
 	</td>
 	</tr>
