@@ -30,14 +30,6 @@ $j(document).ready(function(){
 	console.log("careerList >>> " + `${careerList}`);
 	console.log("certiList >>> " + `${certiList}`);
 
-	//학력사항 계산 함수
-	if(${eduList} != null){
-		var summaryEduList = ${eduList};
-		console.log(summaryEduList.start_period); //undefined
-	}
-	
-	
-	
 	//학력 행추가함수
 	$j("#addEducation").on("click",function(){
 		console.log("학력행추가함수"); //보인다!
@@ -99,6 +91,8 @@ $j(document).ready(function(){
 	
 	$j("#saveResume").on("click",function(){
 		var data = submitData();
+		console.log("data >>>>>  " + data);
+		
 		if (data) {
 			$j.ajax({
 			    url : "/recruit/resumeSaveAction.do",
@@ -110,6 +104,7 @@ $j(document).ready(function(){
 			    success: function(data, textStatus, jqXHR)
 			    {
 					alert("작성이 완료되었습니다.");
+					location.href='/recruit/main.do';
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
@@ -815,10 +810,10 @@ $j(document).ready(function(){
 				</tr>
 				<tr id="trUserSammaryContent" class="trUserSammaryContent">
 					<td width="180">
-					
+					${calEdu }
 					</td>
 					<td width="180">
-					
+					${calCareer }
 					</td>
 					<td width="180" >
 						회사내규에 따름
