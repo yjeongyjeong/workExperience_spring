@@ -689,7 +689,7 @@ public class BoardController {
 		List<CareerVo> careerList =  (List<CareerVo>) session.getAttribute("careerList");
 		
 		//학력사항 계산 => desc를 통해서 재학기간 제일 최신이 첫번째값으로 오게 함
-		if(eduList.size() != 0) {
+		if(eduList != null && eduList.size() != 0) {
 			double eduStart =  eduList.get(0).getStart_period() ; //2020.01
 			String[] edustartArray = String.valueOf(eduStart).split("\\."); // 정규식에서 "."은 "\\."이여야 인식됨
 			double eduEnd = eduList.get(0).getEnd_period() ;
@@ -713,7 +713,7 @@ public class BoardController {
 			model.addAttribute("calEdu", "없음");
 		}
 		
-		if( careerList.size() != 0) {
+		if(careerList != null && careerList.size() != 0) {
 			//경력사항 계산 => desc를 통해서 재학기간 제일 최신이 첫번째값으로 오게 함
 			String careerStart =  careerList.get(0).getStart_period() ; //2020.01
 			String[] careerStartArray = String.valueOf(careerStart).split("\\.");

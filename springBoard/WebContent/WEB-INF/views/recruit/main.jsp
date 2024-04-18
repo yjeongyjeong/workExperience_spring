@@ -164,14 +164,21 @@ $j(document).ready(function(){
 		//recruit 인적사항
 		var recruitData= [];
 		
+		var birthData = `${recruitLoginUser.birth}`;
+		var genderData = `${recruitLoginUser.gender}`;
+		var emailData = `${recruitLoginUser.email}`;
+		var addrData = `${recruitLoginUser.addr}`;
+		var locationData = `${recruitLoginUser.location}`;
+		var workTypeData = `${recruitLoginUser.workType}`;
+		
 		var name = `${recruitLoginUser.name}`;
-		var birth = `${recruitLoginUser.birth}` != null ? `${recruitLoginUser.birth}` : $j("input[name='birth']").val();
-		var gender = `${recruitLoginUser.gender}` != null ? `${recruitLoginUser.gender}` : $j("select[name='gender']").val();
+		var birth = birthData.length != 0 ? birthData : $j("input[name='birth']").val();
+		var gender = genderData.length != 0 ? genderData : $j("select[name='gender']").val();
 		var phone = `${recruitLoginUser.phone}`;
-		var email = `${recruitLoginUser.email}` != null ? `${recruitLoginUser.email}` : $j("input[name='email']").val();
-		var addr = `${recruitLoginUser.addr}` != null ? `${recruitLoginUser.addr}` : $j("input[name='addr']").val();
-		var location = `${recruitLoginUser.location}` != null ? `${recruitLoginUser.location}` : $j("select[name='location']").val();
-		var workType = `${recruitLoginUser.workType}` != null ? `${recruitLoginUser.workType}` : $j("select[name='workType']").val();
+		var email = emailData.length != 0 ? emailData : $j("input[name='email']").val();
+		var addr = addrData.length != 0 ? addrData : $j("input[name='addr']").val();
+		var location = locationData.length != 0 ? locationData : $j("select[name='location']").val();
+		var workType = workTypeData.length != 0 ? workTypeData : $j("select[name='workType']").val();
 		
 		var regex = /^(?=.*[a-zA-Z])(?=.*[@])(?=.*\.)[a-zA-Z0-9@.]{6,100}$/;
 		
@@ -181,17 +188,21 @@ $j(document).ready(function(){
 		var birthDate = birth.substr(4, 2);
 	
 		if(birth.length != 6){
-			alert("생년월일을 확인해주세요.");
+			alert("생년월일을 확인해주세요.1");
+			console.log(birth.length);
+			console.log(birth);
+			console.log(gender);
+			console.log(email);
 			$j("input[name='birth']").focus();
 			return false;
 		}
 		if(birthMonth < 1 || birthMonth > 12){
-			alert("생년월일을 확인해주세요.");
+			alert("생년월일을 확인해주세요.2");
 			$j("input[name='birth']").focus();
 			return false;
 		}
 		if(birthDate < 1 || birthDate > 31){
-			alert("생년월일을 확인해주세요.");
+			alert("생년월일을 확인해주세요.3");
 			$j("input[name='birth']").focus();
 			return false;
 		}
@@ -791,7 +802,9 @@ $j(document).ready(function(){
 		</td>
 	</tr>
 	
-	<tr>
+	<c:choose>
+	<c:when test="${recruitLoginUser.birth != null}">
+		<tr>
 		<td>
 			<table align="center" id="userSummary" class="userSummary" border = "1">
 				<tr id="trUserSammary" class="trUserSammary">
@@ -827,6 +840,8 @@ $j(document).ready(function(){
 		</td>
 	</tr>
 
+	</c:when>
+	</c:choose>
 	
 	<tr>
 		<td style="font-size: 1.5em; font-weight: bold; padding-top: 10px;">
