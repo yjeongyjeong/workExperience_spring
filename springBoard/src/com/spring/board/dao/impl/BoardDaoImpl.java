@@ -159,5 +159,9 @@ public class BoardDaoImpl implements BoardDao{
 	public List<Integer> CalCarPeriod(RecruitVo recruitVo) throws Exception {
 		return sqlSession.selectOne("recruit.CalCarPeriod", recruitVo);
 	}
+	@Override
+	public int updateSubmit(RecruitVo recruitVo) throws Exception {
+		return sqlSession.update("recruit.updateSubmit", recruitVo);
+	}
 	
 }

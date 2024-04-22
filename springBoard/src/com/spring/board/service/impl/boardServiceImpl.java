@@ -177,5 +177,10 @@ public class boardServiceImpl implements boardService{
 	public List<Integer> CalCarPeriod(RecruitVo recruitVo) throws Exception {
 		return boardDao.CalCarPeriod(recruitVo);
 	}
+
+	@Override
+	public int updateSubmit(RecruitVo recruitVo) throws Exception {
+		return boardDao.updateSubmit(recruitVo);
+	}
 	
 }

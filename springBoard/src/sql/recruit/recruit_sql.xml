@@ -71,7 +71,8 @@
 			email,
 			addr,
 			location,
-			work_Type
+			work_Type,
+			submit
 		)
 		values(
 			( select NVL((select MAX(TO_NUMBER(seq)) + 1 from recruit), 1) as seq from dual ),
@@ -82,7 +83,8 @@
 			#{email},
 			#{addr},
 			#{location},
-			#{workType}
+			#{workType},
+			'N'
 		)
 	</insert>
 	
@@ -197,4 +199,10 @@
 		FROM career where career.seq = #{seq};
 	</select>
 
+	<update id="updateSubmit" parameterType="com.spring.board.vo.RecruitVo" >
+		update recruit set submit = 'Y' where seq = #{seq}
+	</update>
+	
+	
+	
 </mapper>

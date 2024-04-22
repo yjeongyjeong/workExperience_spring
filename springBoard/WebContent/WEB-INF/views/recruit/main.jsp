@@ -10,6 +10,13 @@
 
 <script type="text/javascript">
 $j(document).ready(function(){
+	var submitCheck = `${recruitLoginUser.submit}`;
+	console.log("submitCheck >> "+submitCheck);
+	
+	if(submitCheck == 'Y'){
+		submitDisable();
+	}
+	
 	const tableEducation = document.getElementById('tableEducation');
 	
 /* 	//학교명(소재지)
@@ -26,9 +33,7 @@ $j(document).ready(function(){
 	const formattedDate = currentYear +'.' +currentMonth; //2024.04
 	
 	console.log("formattedDate >>> " + formattedDate);
-	console.log("eduList >>> " + `${eduList}`);
-	console.log("careerList >>> " + `${careerList}`);
-	console.log("certiList >>> " + `${certiList}`);
+	console.log("recruitLoginUser >>> " + `${recruitLoginUser}`);
 
 	//학력 행추가함수
 	$j("#addEducation").on("click",function(){
@@ -129,18 +134,9 @@ $j(document).ready(function(){
 					    data : JSON.stringify(data),
 					    success: function(data, textStatus, jqXHR)
 					    {
-							alert("작성이 완료되었습니다.");
-							//input, select 전부
-							var targetInputs = $j('#wrapTable td input, #wrapTable td select');
-							//행추가삭제 button
-							var targetRowButtons = $j('#wrapTable td button');
-							var targetSaveButtons = $j('#saveResume');
-							var targetSubmitButtons = $j('#submitResume');
-							
-						    targetInputs.prop("disabled", true);
-						    targetRowButtons.prop("disabled", true);
-						    targetSaveButtons.prop("disabled", true);
-						    targetSubmitButtons.prop("disabled", true);
+							alert("제출이 완료되었습니다.");
+							//submitDisable();
+							location.href='/recruit/main.do';
 					    },
 					    error: function (jqXHR, textStatus, errorThrown)
 					    {
@@ -153,6 +149,21 @@ $j(document).ready(function(){
 	
 }); //end entireJQuery..
 
+
+//제출 시 disable
+	function submitDisable(){
+		//input, select 전부
+		var targetInputs = $j('#wrapTable td input, #wrapTable td select');
+		//행추가삭제 button
+		var targetRowButtons = $j('#wrapTable td button');
+		var targetSaveButtons = $j('#saveResume');
+		var targetSubmitButtons = $j('#submitResume');
+		
+	    targetInputs.prop("disabled", true);
+	    targetRowButtons.prop("disabled", true);
+	    targetSaveButtons.prop("disabled", true);
+	    targetSubmitButtons.prop("disabled", true);
+	}
 
 //데이터 묶어서 전송해주는 함수!
 	function submitData() {
@@ -524,8 +535,8 @@ $j(document).ready(function(){
 		var formattedDate = currentYear +'.' +currentMonth; //2024.04
 
 		var careerRow = $j('.trCareerContent');
-		    console.log(careerRow);
-		    console.log("***");
+		    //console.log(careerRow);
+		   //console.log("***");
 		    
 		    careerRow.each(function() {
 		        var careerPeriodFirst = $j(this).find('#careerPeriodFirst').val(); // 자격증명 input 요소의 값 가져오기

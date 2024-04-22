@@ -679,12 +679,15 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/recruit/main.do", method = RequestMethod.GET)
-	public String recruitMain(HttpSession session, Model model, Locale locale) {
+	public String recruitMain(HttpSession session, Model model, Locale locale) throws Exception {
 		
 		RecruitVo recruitLoginUser =  (RecruitVo) session.getAttribute("recruitLoginUser");
+		System.out.println("recruitLoginUser(recruitMain) >>>>> " + recruitLoginUser);
+		
 		if(recruitLoginUser == null) {
 			return "recruit/login"; //세션이 null인 경우 (로그인이 끊긴경우)
 		}
+		
 		//학력사항 경력사항 계산
 		List<EducationVo> eduList =  (List<EducationVo>) session.getAttribute("eduList");
 		List<CareerVo> careerList =  (List<CareerVo>) session.getAttribute("careerList");
@@ -700,7 +703,7 @@ public class BoardController {
 			int eduYear = Integer.valueOf(eduendArray[0]) - Integer.valueOf(edustartArray[0]);
 			int edumonth = ( (Integer.valueOf(eduendArray[1])) - (Integer.valueOf(edustartArray[1])) )*(-1);
 			
-			String calEdu ;
+			String calEdu;
 			
 			//1년 미만이라면
 			if(eduYear < 1)
@@ -746,6 +749,16 @@ public class BoardController {
 		} else {
 			model.addAttribute("calCareer", "없음");
 		}
+		
+		//order by desc 년도로 정리된 list를 세션에 담아줌
+		List<EducationVo> eduOrderedList = boardService.selectLoginUserEducation(recruitLoginUser);
+		List<CareerVo> careerOrderedList = boardService.selectLoginUserCareer(recruitLoginUser);
+		List<CertificateVo> certiOrderedList = boardService.selectLoginUserCertificate(recruitLoginUser);
+		
+		session.setAttribute("eduList", eduOrderedList);
+		session.setAttribute("careerList", careerOrderedList);
+		session.setAttribute("certiList", certiOrderedList);
+		
 		return "recruit/main";
 	}
 
@@ -814,15 +827,6 @@ public class BoardController {
 			}
 			
 			session.setAttribute("recruitLoginUser", reVo);
-
-			//order by desc 년도로 정리된 list를 세션에 담아줌
-			List<EducationVo> eduOrderedList = boardService.selectLoginUserEducation(reVo);
-			List<CareerVo> careerOrderedList = boardService.selectLoginUserCareer(reVo);
-			List<CertificateVo> certiOrderedList = boardService.selectLoginUserCertificate(reVo);
-			
-			session.setAttribute("eduList", eduOrderedList);
-			session.setAttribute("careerList", careerOrderedList);
-			session.setAttribute("certiList", certiOrderedList);
 			
 			resultCnt = 1;
 		}
@@ -867,49 +871,51 @@ public class BoardController {
 		
 		for (RecruitVo reVo : recruitVoConverted) { //한번만 진행됨 list로 안받으면 오류나서 일단 list사용..
 			RecruitVo returnedUser = boardService.recruitLoginCheck(reVo);
+			System.out.println("reVo =========> " + reVo); //seq, submit = null....
+			System.out.println("returnedUser =========> " + returnedUser);
 			
 			if(returnedUser != null) { //DB에 데이터가 있을 때
-//				//recruit에 fk가 있어서 다른 테이블 먼저 삭제하게 연산자+괄호 사용..
-//				resultCnt = (boardService.deleteEducation(reVo) * boardService.deleteCareer(reVo) * boardService.deleteCertificate(reVo))
-//						+ boardService.deleteRecruit(reVo);
-				resultCnt += boardService.deleteEducation(reVo);
-				resultCnt += boardService.deleteCareer(reVo);
-				resultCnt += boardService.deleteCertificate(reVo);
-				resultCnt += boardService.deleteRecruit(reVo);
 				
-				resultCnt += boardService.insertRecruit(reVo);
-				System.out.println("resultCnt >> " + resultCnt);
+				boardService.deleteEducation(returnedUser);
+				boardService.deleteCareer(returnedUser);
+				boardService.deleteCertificate(returnedUser);
+				
+				boardService.deleteRecruit(returnedUser);
+
+				boardService.insertRecruit(returnedUser);
+				System.out.println("if(returnedUser != null) resultCnt >> " + resultCnt);
 			}
 			else { //DB에 데이터가 없을 때
-				resultCnt += boardService.insertRecruit(reVo);
-				System.out.println("resultCnt >> " + resultCnt);
+				boardService.insertRecruit(returnedUser);
+				System.out.println("if(returnedUser != null)의 else resultCnt >> " + resultCnt);
 			}
-			
+
 			// EducationVo라는 객체에 전부 데이터를 담아줌(알아서 맵핑)
 			for (EducationVo eduVo : educationVoList) {
-				resultCnt += boardService.insertEducation(eduVo); //성공하면 1
-				System.out.println("resultCnt >> " + resultCnt);
+				boardService.insertEducation(eduVo); //성공하면 1
+				System.out.println("for (EducationVo eduVo : educationVoList)  resultCnt >> " + resultCnt);
 			}
 			for (CareerVo careerVo : careerVoList) {
-				resultCnt += boardService.insertCareer(careerVo); //성공하면 1
+				boardService.insertCareer(careerVo); //성공하면 1
 				System.out.println("resultCnt >> " + resultCnt);
 			}
 			for (CertificateVo certificateVo : certificateVoList) {
-				resultCnt += boardService.insertCertificate(certificateVo); //성공하면 1
+				boardService.insertCertificate(certificateVo); //성공하면 1
 				System.out.println("resultCnt >> " + resultCnt);
 			}
+
+
+			boardService.updateSubmit(returnedUser);
 			
-			session.setAttribute("recruitLoginUser", reVo);
+			RecruitVo updatedUser = boardService.recruitLoginCheck(returnedUser);
+			System.out.println("submit 여부 >> " + returnedUser.getSubmit());
+			System.out.println("submit 여부 >> " + updatedUser .getSubmit());
 			
-			//order by desc 년도로 정리된 list를 세션에 담아줌
-			List<EducationVo> eduOrderedList = boardService.selectLoginUserEducation(reVo);
-			List<CareerVo> careerOrderedList = boardService.selectLoginUserCareer(reVo);
-			List<CertificateVo> certiOrderedList = boardService.selectLoginUserCertificate(reVo);
-			
-			session.setAttribute("eduList", eduOrderedList);
-			session.setAttribute("careerList", careerOrderedList);
-			session.setAttribute("certiList", certiOrderedList);
-		}
+			session.setAttribute("recruitLoginUser", updatedUser);
+			System.out.println("submit에서 담는 User Session >>>>>>>>>>>>> " + updatedUser);
+
+			resultCnt = 1;
+		}// end for(recruitVo)
 		
 		result.put("success", (resultCnt > 0) ? "Y" : "N"); // for의 개수보다 크게하려면 어케할까...?
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);

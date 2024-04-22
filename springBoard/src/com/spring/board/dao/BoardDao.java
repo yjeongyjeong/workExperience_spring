@@ -59,4 +59,6 @@ public interface BoardDao {
 	public List<Integer> CalEduPeriod(RecruitVo recruitVo) throws Exception;
 	public List<Integer> CalCarPeriod(RecruitVo recruitVo) throws Exception;
 	
+	public int updateSubmit(RecruitVo recruitVo) throws Exception;
+	
 }
