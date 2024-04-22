@@ -199,7 +199,7 @@ $j(document).ready(function(){
 		var birthDate = birth.substr(4, 2);
 	
 		if(birth.length != 6){
-			alert("생년월일을 확인해주세요.1");
+			alert("생년월일을 확인해주세요.");
 			console.log(birth.length);
 			console.log(birth);
 			console.log(gender);
@@ -208,12 +208,12 @@ $j(document).ready(function(){
 			return false;
 		}
 		if(birthMonth < 1 || birthMonth > 12){
-			alert("생년월일을 확인해주세요.2");
+			alert("생년월일을 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
 		}
 		if(birthDate < 1 || birthDate > 31){
-			alert("생년월일을 확인해주세요.3");
+			alert("생년월일을 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
 		}
@@ -313,6 +313,12 @@ $j(document).ready(function(){
 				alert("재학기간을 확인해주세요.");
 				return false;
 			};
+			//end_period랑 formattedDate가 다른데 division이 '재학'인경우
+			if(end_period == formattedDate && division == '재학'){
+				eduPeriodSecond.eq(i).focus();
+				alert("재학기간을 확인해주세요.");
+				return false;
+			}
 			
 			//학력 필수체크확인 => 재학기간이랑 학점은 각각 7이아닐때와 4가 아닐때로 들어가서 제외
 			if(eduSchoolName.length == 0){
@@ -743,13 +749,14 @@ $j(document).ready(function(){
 						<c:when test="${recruitLoginUser.email != null}">
 							<td>
 								<input type="text" id="email" name="email" maxlength="100" placeholder="hongGilDong@xxxx.xxx"
-								value="${recruitLoginUser.email}"
+ 								oninput="this.value = this.value.replace(/[^a-zA-Z0-9@.]/g, '');"								value="${recruitLoginUser.email}"
 								>
 							</td>
 						</c:when>
 						<c:otherwise>
 							<td>
-								<input type="text" id="email" name="email" maxlength="100" placeholder="hongGilDong@xxxx.xxx">
+								<input type="text" id="email" name="email" maxlength="100" placeholder="hongGilDong@xxxx.xxx"
+								oninput="this.value = this.value.replace(/[^a-zA-Z0-9@.]/g, '');"								>
 							</td>
 						</c:otherwise>
 					</c:choose>
