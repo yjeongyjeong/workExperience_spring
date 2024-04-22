@@ -1,5 +1,6 @@
 package com.spring.board.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -695,11 +696,13 @@ public class BoardController {
 			double eduEnd = eduList.get(0).getEnd_period() ;
 			String[] eduendArray = String.valueOf(eduEnd).split("\\.");
 			
+			// 0또는 0보다 큰 값
 			int eduYear = Integer.valueOf(eduendArray[0]) - Integer.valueOf(edustartArray[0]);
-			
-			int edumonth = ( (Integer.valueOf(eduendArray[1]))*12 - (Integer.valueOf(edustartArray[1]))*12 )/(-12);
+			int edumonth = ( (Integer.valueOf(eduendArray[1])) - (Integer.valueOf(edustartArray[1])) )*(-1);
 			
 			String calEdu ;
+			
+			//1년 미만이라면
 			if(eduYear < 1)
 				calEdu= eduList.get(0).getSchool_name() + "(" + edumonth + "개월) " + eduList.get(0).getDivision();
 			//대학교(4년) 졸업
@@ -707,31 +710,39 @@ public class BoardController {
 				calEdu= eduList.get(0).getSchool_name() + "(" + eduYear + "년) " + eduList.get(0).getDivision();
 			
 			model.addAttribute("calEdu", calEdu);
-			System.out.println("calEdu >>>>>>>>>>>>>>> " + calEdu);
-			System.out.println("careerList >>>>>>>>>>>>>>> " + careerList);
 		} else {
 			model.addAttribute("calEdu", "없음");
 		}
 		
+		//경력사항 계산 => desc를 통해서 재학기간 제일 최신이 첫번째값으로 오게 함
 		if(careerList != null && careerList.size() != 0) {
-			//경력사항 계산 => desc를 통해서 재학기간 제일 최신이 첫번째값으로 오게 함
-			String careerStart =  careerList.get(0).getStart_period() ; //2020.01
-			String[] careerStartArray = String.valueOf(careerStart).split("\\.");
-			String careerEnd = careerList.get(0).getEnd_period() ;
-			String[] careerEndArray = String.valueOf(careerEnd).split("\\.");
 			
-			int careerYear = Integer.valueOf(careerEndArray[0]) - Integer.valueOf(careerStartArray[0]);
-			int careerMonth = (Integer.valueOf(careerEndArray[1]) - Integer.valueOf(careerStartArray[1])) / 12;
+			int totalCarMonth = 0;
 			
-			if(careerMonth < 0) {
-				careerYear = careerYear - 1;
-				careerMonth = careerMonth * -1;
-			}
+			//개월로 받아서 누적시킨다음에 12로 자르자..
+			for(int i = 0; i< careerList.size(); i++) {
+				
+				String careerStart =  careerList.get(i).getStart_period() ; //2020.01
+				String[] careerStartArray = String.valueOf(careerStart).split("\\.");
+				String careerEnd = careerList.get(i).getEnd_period() ;
+				String[] careerEndArray = String.valueOf(careerEnd).split("\\.");
+				
+				//0 혹은 1 이상의 값
+				int careerYear = Integer.valueOf(careerEndArray[0]) - Integer.valueOf(careerStartArray[0]);
+				// 음수=> 년도가 1이상 , 0, 양수
+				int careerMonth = (Integer.valueOf(careerEndArray[1]) - Integer.valueOf(careerStartArray[1])) ;
+				
+				if(careerMonth < 0) {
+					careerYear = careerYear - 1;
+					careerMonth = 12 + careerMonth;
+				}
+				
+				totalCarMonth += (careerYear*12) + careerMonth;
+			}//end for
 			
-			String calCareer = "경력 " + careerYear+ "년 " + careerMonth + "개월";
-			
+			String calCareer = "경력 " + (totalCarMonth / 12) + "년 " + (totalCarMonth % 12) + "개월";
 			model.addAttribute("calCareer", calCareer);
-			System.out.println("calCareer >>>>>>>>>>>>>>> " + calCareer);
+
 		} else {
 			model.addAttribute("calCareer", "없음");
 		}

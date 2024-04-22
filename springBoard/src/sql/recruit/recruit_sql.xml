@@ -74,7 +74,7 @@
 			work_Type
 		)
 		values(
-			( select NVL((select MAX(seq) + 1 from recruit), 1) as seq from dual ),
+			( select NVL((select MAX(TO_NUMBER(seq)) + 1 from recruit), 1) as seq from dual ),
 			#{name},
 			#{birth},
 			#{gender},
@@ -104,7 +104,7 @@
 		    location)
 	values(
 	    	#{seq},
-	     	(SELECT NVL(MAX(edu_seq) + 1, 1) AS EDU_SEQ FROM education WHERE seq = #{seq}),
+	     	(SELECT NVL(MAX(TO_NUMBER(edu_seq)) + 1, 1) AS EDU_SEQ FROM education WHERE seq = #{seq}),
 		    #{school_name},
 		    #{division},
 		    #{start_period},
@@ -133,7 +133,7 @@
 		    )
 	values(
 	    	#{seq},
-	     	(SELECT NVL(MAX(car_seq) + 1, 1) AS CAR_SEQ FROM career WHERE seq = #{seq}),
+	     	(SELECT NVL(MAX(TO_NUMBER(car_seq)) + 1, 1) AS CAR_SEQ FROM career WHERE seq = #{seq}),
 		    #{comp_name},
 		    #{location},
 		    #{start_period},
@@ -157,7 +157,7 @@
 		    )
 	values(
 	    	#{seq},
-	     	(SELECT NVL(MAX(cert_seq) + 1, 1) AS CERT_SEQ FROM certificate WHERE seq = #{seq}),
+	     	(SELECT NVL(MAX(TO_NUMBER(cert_seq)) + 1, 1) AS CERT_SEQ FROM certificate WHERE seq = #{seq}),
 		    #{qualifi_name},
 		    #{acqu_date},
 		    #{organize_name}
@@ -186,5 +186,15 @@
 		where seq = 
 			(select seq from recruit where name = #{name} and phone = #{phone})
 	</delete>
+	
+	<select id="CalEduPeriod" parameterType="com.spring.board.vo.RecruitVo" resultType="Integer">
+		SELECT TO_DATE(end_period, 'YYYY.MM') - TO_DATE(start_period, 'YYYY.MM') AS total_EduPeriod
+		FROM education where education.seq = #{seq};
+	</select>
+
+	<select id="CalCarPeriod" parameterType="com.spring.board.vo.RecruitVo" resultType="Integer">
+		SELECT TO_DATE(end_period, 'YYYY.MM') - TO_DATE(start_period, 'YYYY.MM') AS total_CarPeriod
+		FROM career where career.seq = #{seq};
+	</select>
 
 </mapper>

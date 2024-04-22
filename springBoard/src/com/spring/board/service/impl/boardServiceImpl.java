@@ -167,5 +167,15 @@ public class boardServiceImpl implements boardService{
 	public int deleteCertificate(RecruitVo recruitVo) throws Exception {
 		return boardDao.deleteCertificate(recruitVo);
 	}
+
+	@Override
+	public List<Integer> CalEduPeriod(RecruitVo recruitVo) throws Exception {
+		return boardDao.CalEduPeriod(recruitVo);
+	}
+
+	@Override
+	public List<Integer> CalCarPeriod(RecruitVo recruitVo) throws Exception {
+		return boardDao.CalCarPeriod(recruitVo);
+	}
 	
 }

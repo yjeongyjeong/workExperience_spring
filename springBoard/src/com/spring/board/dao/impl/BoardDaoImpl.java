@@ -151,5 +151,13 @@ public class BoardDaoImpl implements BoardDao{
 	public int deleteCertificate(RecruitVo recruitVo) throws Exception {
 		return sqlSession.delete("recruit.deleteCertificate", recruitVo);
 	}
+	@Override
+	public List<Integer> CalEduPeriod(RecruitVo recruitVo) throws Exception {
+		return sqlSession.selectList("recruit.CalEduPeriod", recruitVo);
+	}
+	@Override
+	public List<Integer> CalCarPeriod(RecruitVo recruitVo) throws Exception {
+		return sqlSession.selectOne("recruit.CalCarPeriod", recruitVo);
+	}
 	
 }

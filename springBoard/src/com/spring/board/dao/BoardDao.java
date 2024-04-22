@@ -56,4 +56,7 @@ public interface BoardDao {
 	public List<CareerVo> selectLoginUserCareer(RecruitVo recruitVo) throws Exception;
 	public List<CertificateVo> selectLoginUserCertificate(RecruitVo recruitVo) throws Exception;
 	
+	public List<Integer> CalEduPeriod(RecruitVo recruitVo) throws Exception;
+	public List<Integer> CalCarPeriod(RecruitVo recruitVo) throws Exception;
+	
 }
