@@ -314,7 +314,7 @@ $j(document).ready(function(){
 				return false;
 			};
 			//end_period랑 formattedDate가 다른데 division이 '재학'인경우
-			if(end_period == formattedDate && division == '재학'){
+			if(end_period != formattedDate && division == '재학'){
 				eduPeriodSecond.eq(i).focus();
 				alert("재학기간을 확인해주세요.");
 				return false;
