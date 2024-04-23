@@ -688,15 +688,15 @@ public class BoardController {
 			return "recruit/login"; //세션이 null인 경우 (로그인이 끊긴경우)
 		}
 		
-		//학력사항 경력사항 계산
-		List<EducationVo> eduList =  (List<EducationVo>) session.getAttribute("eduList");
-		List<CareerVo> careerList =  (List<CareerVo>) session.getAttribute("careerList");
+		//학력사항 경력사항 계산용... DB에서 하려다 복잡해져서 컨트롤러에서 진행...
+		List<EducationVo> eduList =  boardService.selectLoginUserEducation(recruitLoginUser);
+		List<CareerVo> careerList =  boardService.selectLoginUserCareer(recruitLoginUser);
 		
 		//학력사항 계산 => desc를 통해서 재학기간 제일 최신이 첫번째값으로 오게 함
 		if(eduList != null && eduList.size() != 0) {
-			double eduStart =  eduList.get(0).getStart_period() ; //2020.01
+			String eduStart =  eduList.get(0).getStart_period() ; //2020.01
 			String[] edustartArray = String.valueOf(eduStart).split("\\."); // 정규식에서 "."은 "\\."이여야 인식됨
-			double eduEnd = eduList.get(0).getEnd_period() ;
+			String eduEnd = eduList.get(0).getEnd_period() ;
 			String[] eduendArray = String.valueOf(eduEnd).split("\\.");
 			
 			// 0또는 0보다 큰 값
@@ -713,6 +713,7 @@ public class BoardController {
 				calEdu= eduList.get(0).getSchool_name() + "(" + eduYear + "년) " + eduList.get(0).getDivision();
 			
 			model.addAttribute("calEdu", calEdu);
+			System.out.println("++++++++++++++++++++++++++++++++++++++"+calEdu);
 		} else {
 			model.addAttribute("calEdu", "없음");
 		}
@@ -745,6 +746,7 @@ public class BoardController {
 			
 			String calCareer = "경력 " + (totalCarMonth / 12) + "년 " + (totalCarMonth % 12) + "개월";
 			model.addAttribute("calCareer", calCareer);
+			System.out.println("++++++++++++++++++++++++++++++++++++++"+calCareer);
 
 		} else {
 			model.addAttribute("calCareer", "없음");
@@ -759,7 +761,7 @@ public class BoardController {
 		session.setAttribute("careerList", careerOrderedList);
 		session.setAttribute("certiList", certiOrderedList);
 		
-		return "recruit/main";
+		return "/recruit/main";
 	}
 
 	

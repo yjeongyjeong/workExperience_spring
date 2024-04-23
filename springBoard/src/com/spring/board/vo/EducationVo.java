@@ -21,10 +21,10 @@ public class EducationVo {
 	
 	private String school_name;
 	private String division;
-	private double start_period;
-	private double end_period;
+	private String start_period;
+	private String end_period;
 	private String major;
-	private double grade;
+	private String grade;
 	private String location;
 	
 	@Override
@@ -71,16 +71,16 @@ public class EducationVo {
 	public void setDivision(String division) {
 		this.division = division;
 	}
-	public double getStart_period() {
+	public String getStart_period() {
 		return start_period;
 	}
-	public void setStart_period(double start_period) {
+	public void setStart_period(String start_period) {
 		this.start_period = start_period;
 	}
-	public double getEnd_period() {
+	public String getEnd_period() {
 		return end_period;
 	}
-	public void setEnd_period(double end_period) {
+	public void setEnd_period(String end_period) {
 		this.end_period = end_period;
 	}
 	public String getMajor() {
@@ -89,10 +89,10 @@ public class EducationVo {
 	public void setMajor(String major) {
 		this.major = major;
 	}
-	public double getGrade() {
+	public String getGrade() {
 		return grade;
 	}
-	public void setGrade(double grade) {
+	public void setGrade(String grade) {
 		this.grade = grade;
 	}
 	public String getLocation() {

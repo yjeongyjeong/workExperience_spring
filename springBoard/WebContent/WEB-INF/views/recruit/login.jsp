@@ -77,7 +77,7 @@
 						<strong>이름</strong>
 					</td>
 					<td width="300">
-					<input type="text" name="name" id="name" maxlength="4" placeholder="홍길동"
+					<input type="text" name="name" id="name" maxlength="10" placeholder="홍길동"
  					oninput="this.value = this.value.replace(/[^ㄱ-힣]/ig, '')">
 					</td>
 				</tr>

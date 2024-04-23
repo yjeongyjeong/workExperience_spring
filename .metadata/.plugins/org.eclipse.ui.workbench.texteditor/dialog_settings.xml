@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="생년월일"/>
+		<item key="selection" value="@"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="@"/>
+			<item value="주세요.1"/>
+			<item value="reVo"/>
+			<item value="submit에서 담는"/>
+			<item value="selectLoginUserEducation"/>
+			<item value="update"/>
+			<item value="setattri"/>
+			<item value="***"/>
+			<item value="현재"/>
+			<item value="학력사항"/>
+			<item value="forEach"/>
+			<item value="calCareer"/>
+			<item value="insertRecruit"/>
 			<item value="생년월일"/>
 			<item value="000000000000000"/>
-			<item value="#####"/>
-			<item value="delete from education"/>
-			<item value="insertCareer"/>
-			<item value="insert"/>
-			<item value="insertcareer"/>
-			<item value="selectLoginUserCareer"/>
-			<item value="AJAX"/>
-			<item value="desc"/>
-			<item value="eq(i)"/>
-			<item value="each"/>
-			<item value="utf"/>
-			<item value="phone"/>
-			<item value="formattedDate"/>
 		</list>
 		<list key="replacehistory">
 			<item value="addRowFunc"/>
