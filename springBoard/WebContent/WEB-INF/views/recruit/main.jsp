@@ -192,7 +192,9 @@ $j(document).ready(function(){
 		var birthYear = birth.substr(0, 2);
 		var birthMonth = birth.substr(2, 2);
 		var birthDate = birth.substr(4, 2);
-	
+		
+		var birtFullYear = birthYear < 50 ? '20'+birthYear : '19'+birthYear;
+		
 		if(birth.length != 6){
 			alert("생년월일(YYMMDD)을 확인해주세요.");
 			$j("input[name='birth']").focus();
@@ -207,6 +209,9 @@ $j(document).ready(function(){
 			alert("생년월일(YYMMDD)을 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
+		}
+		if(birthMonth = '02' && birtFullYear % 4 == 0 && birtFullYear % 100 != 0 || birtFullYear % 400 == 0){
+			
 		}
 		
 		

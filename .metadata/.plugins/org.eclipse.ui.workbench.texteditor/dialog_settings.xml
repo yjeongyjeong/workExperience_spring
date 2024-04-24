@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="deleteCareer"/>
+		<item key="selection" value="array"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="array"/>
+			<item value="개월"/>
+			<item value=";"/>
 			<item value="deleteCareer"/>
 			<item value="@@"/>
 			<item value="insert"/>
@@ -20,9 +23,6 @@
 			<item value="@"/>
 			<item value="이메일"/>
 			<item value="생년월일"/>
-			<item value="개월"/>
-			<item value="경력"/>
-			<item value="main"/>
 		</list>
 		<list key="replacehistory">
 			<item value="addRowFunc"/>
