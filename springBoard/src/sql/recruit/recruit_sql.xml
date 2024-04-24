@@ -104,7 +104,7 @@
 		    major,
 		    grade,
 		    location)
-	values(
+		SELECT 
 	    	#{seq},
 	     	(SELECT NVL(MAX(TO_NUMBER(edu_seq)) + 1, 1) AS EDU_SEQ FROM education WHERE seq = #{seq}),
 		    #{school_name},
@@ -114,8 +114,18 @@
 		    #{major},
 		    #{grade},
 		    #{location}
-	    )
-	
+	    from dual
+		where not exists(
+			select * from education 
+			where seq = #{seq}
+			and school_name = #{school_name}
+		    and division = #{division}
+		    and start_period = #{start_period}
+		    and end_period = #{end_period}
+		    and major = #{major}
+		    and grade = #{grade}
+		    and location = #{location}
+		)
 	</insert>
 	
 	<insert id="insertCareer" parameterType="com.spring.board.vo.CareerVo">
@@ -133,7 +143,7 @@
 		    end_period,
 		    task
 		    )
-	values(
+		select
 	    	#{seq},
 	     	(SELECT NVL(MAX(TO_NUMBER(car_seq)) + 1, 1) AS CAR_SEQ FROM career WHERE seq = #{seq}),
 		    #{comp_name},
@@ -141,6 +151,15 @@
 		    #{start_period},
 		    #{end_period},
 		    #{task}
+	    from dual
+	    where not exists(
+	    	select * from career
+	    	where seq = #{seq}
+	    	and comp_name = #{comp_name}
+		    and location = #{location}
+		    and start_period = #{start_period}
+		    and end_period = #{end_period}
+		    and task = #{task}
 	    )
 	</insert>
 	
@@ -157,13 +176,20 @@
 		    acqu_date,
 		    organize_name
 		    )
-	values(
+		select
 	    	#{seq},
 	     	(SELECT NVL(MAX(TO_NUMBER(cert_seq)) + 1, 1) AS CERT_SEQ FROM certificate WHERE seq = #{seq}),
 		    #{qualifi_name},
 		    #{acqu_date},
 		    #{organize_name}
-	    )
+		from dual
+		where not exists(
+			select * from certificate 
+			where seq = #{seq}
+			and qualifi_name = #{qualifi_name}
+		    and acqu_date = #{acqu_date}
+		    and organize_name = #{organize_name}
+		)
 	</insert>
 				
 	<delete id="deleteRecruit" parameterType="com.spring.board.vo.RecruitVo">
@@ -191,12 +217,12 @@
 	
 	<select id="CalEduPeriod" parameterType="com.spring.board.vo.RecruitVo" resultType="Integer">
 		SELECT TO_DATE(end_period, 'YYYY.MM') - TO_DATE(start_period, 'YYYY.MM') AS total_EduPeriod
-		FROM education where education.seq = #{seq};
+		FROM education where education.seq = #{seq}
 	</select>
 
 	<select id="CalCarPeriod" parameterType="com.spring.board.vo.RecruitVo" resultType="Integer">
 		SELECT TO_DATE(end_period, 'YYYY.MM') - TO_DATE(start_period, 'YYYY.MM') AS total_CarPeriod
-		FROM career where career.seq = #{seq};
+		FROM career where career.seq = #{seq}
 	</select>
 
 	<update id="updateSubmit" parameterType="com.spring.board.vo.RecruitVo" >

@@ -688,80 +688,84 @@ public class BoardController {
 		}
 		
 		//sessionUser보다 위에 있으면 ERROR 1. PreparedStatement.setNull(1, 1111) 부적합한 열 유형
+		//기존유저가 아닌경우 null이 반환..
 		RecruitVo recruitLoginUser =  boardService.recruitLoginCheck(sessionUser);
 		
-		//학력사항 경력사항 계산용... DB에서 하려다 복잡해져서 컨트롤러에서 진행...
-		List<EducationVo> eduList =  boardService.selectLoginUserEducation(recruitLoginUser);
-		List<CareerVo> careerList =  boardService.selectLoginUserCareer(recruitLoginUser);
-		
-		//학력사항 계산 => desc를 통해서 재학기간 제일 최신이 첫번째값으로 오게 함
-		if(eduList != null && eduList.size() != 0) {
-			String eduStart =  eduList.get(0).getStart_period() ; //2020.01
-			String[] edustartArray = String.valueOf(eduStart).split("\\."); // 정규식에서 "."은 "\\."이여야 인식됨
-			String eduEnd = eduList.get(0).getEnd_period() ;
-			String[] eduendArray = String.valueOf(eduEnd).split("\\.");
+		//기존유저인경우 학력경력사항 계산 후 model에 값을 담아줌
+		if(recruitLoginUser != null) {
+			//학력사항 경력사항 계산용... DB에서 하려다 복잡해져서 컨트롤러에서 진행...
+			List<EducationVo> eduList =  boardService.selectLoginUserEducation(recruitLoginUser);
+			List<CareerVo> careerList =  boardService.selectLoginUserCareer(recruitLoginUser);
 			
-			// 0또는 0보다 큰 값
-			int eduYear = Integer.valueOf(eduendArray[0]) - Integer.valueOf(edustartArray[0]);
-			int edumonth = ( (Integer.valueOf(eduendArray[1])) - (Integer.valueOf(edustartArray[1])) )*(-1);
-			
-			String calEdu;
-			
-			//1년 미만이라면
-			if(eduYear < 1)
-				calEdu= eduList.get(0).getSchool_name() + "(" + edumonth + "개월) " + eduList.get(0).getDivision();
-			//대학교(4년) 졸업
-			else
-				calEdu= eduList.get(0).getSchool_name() + "(" + eduYear + "년) " + eduList.get(0).getDivision();
-			
-			model.addAttribute("calEdu", calEdu);
-			System.out.println("++++++++++++++++++++++++++++++++++++++"+calEdu);
-		} else {
-			model.addAttribute("calEdu", "없음");
-		}
-		
-		//경력사항 계산 => desc를 통해서 재학기간 제일 최신이 첫번째값으로 오게 함
-		if(careerList != null && careerList.size() != 0) {
-			
-			int totalCarMonth = 0;
-			
-			//개월로 받아서 누적시킨다음에 12로 자르자..
-			for(int i = 0; i< careerList.size(); i++) {
+			//학력사항 계산 => desc를 통해서 재학기간 제일 최신이 첫번째값으로 오게 함
+			if(eduList != null && eduList.size() != 0) {
+				String eduStart =  eduList.get(0).getStart_period() ; //2020.01
+				String[] edustartArray = String.valueOf(eduStart).split("\\."); // 정규식에서 "."은 "\\."이여야 인식됨
+				String eduEnd = eduList.get(0).getEnd_period() ;
+				String[] eduendArray = String.valueOf(eduEnd).split("\\.");
 				
-				String careerStart =  careerList.get(i).getStart_period() ; //2020.01
-				String[] careerStartArray = String.valueOf(careerStart).split("\\.");
-				String careerEnd = careerList.get(i).getEnd_period() ;
-				String[] careerEndArray = String.valueOf(careerEnd).split("\\.");
+				// 0또는 0보다 큰 값
+				int eduYear = Integer.valueOf(eduendArray[0]) - Integer.valueOf(edustartArray[0]);
+				int edumonth = ( (Integer.valueOf(eduendArray[1])) - (Integer.valueOf(edustartArray[1])) );
 				
-				//0 혹은 1 이상의 값
-				int careerYear = Integer.valueOf(careerEndArray[0]) - Integer.valueOf(careerStartArray[0]);
-				// 음수=> 년도가 1이상 , 0, 양수
-				int careerMonth = (Integer.valueOf(careerEndArray[1]) - Integer.valueOf(careerStartArray[1])) ;
+				String calEdu;
 				
-				if(careerMonth < 0) {
-					careerYear = careerYear - 1;
-					careerMonth = 12 + careerMonth;
-				}
+				//1년 미만이라면
+				if(eduYear < 1)
+					calEdu= eduList.get(0).getSchool_name() + "(" + edumonth + "개월) " + eduList.get(0).getDivision();
+				//대학교(4년) 졸업
+				else
+					calEdu= eduList.get(0).getSchool_name() + "(" + eduYear + "년) " + eduList.get(0).getDivision();
 				
-				totalCarMonth += (careerYear*12) + careerMonth;
-			}//end for
+				model.addAttribute("calEdu", calEdu);
+				System.out.println("++++++++++++++++++++++++++++++++++++++"+calEdu);
+			} else {
+				model.addAttribute("calEdu", "없음");
+			}
 			
-			String calCareer = "경력 " + (totalCarMonth / 12) + "년 " + (totalCarMonth % 12) + "개월";
-			model.addAttribute("calCareer", calCareer);
-			System.out.println("++++++++++++++++++++++++++++++++++++++"+calCareer);
-
-		} else {
-			model.addAttribute("calCareer", "없음");
-		}
-		
-		//order by desc 년도로 정리된 list를 세션에 담아줌
-		List<EducationVo> eduOrderedList = boardService.selectLoginUserEducation(recruitLoginUser);
-		List<CareerVo> careerOrderedList = boardService.selectLoginUserCareer(recruitLoginUser);
-		List<CertificateVo> certiOrderedList = boardService.selectLoginUserCertificate(recruitLoginUser);
-		
-		session.setAttribute("eduList", eduOrderedList);
-		session.setAttribute("careerList", careerOrderedList);
-		session.setAttribute("certiList", certiOrderedList);
+			//경력사항 계산 => desc를 통해서 재학기간 제일 최신이 첫번째값으로 오게 함
+			if(careerList != null && careerList.size() != 0) {
+				
+				int totalCarMonth = 0;
+				
+				//개월로 받아서 누적시킨다음에 12로 자르자..
+				for(int i = 0; i< careerList.size(); i++) {
+					
+					String careerStart =  careerList.get(i).getStart_period() ; //2020.01
+					String[] careerStartArray = String.valueOf(careerStart).split("\\.");
+					String careerEnd = careerList.get(i).getEnd_period() ;
+					String[] careerEndArray = String.valueOf(careerEnd).split("\\.");
+					
+					//0 혹은 1 이상의 값
+					int careerYear = Integer.valueOf(careerEndArray[0]) - Integer.valueOf(careerStartArray[0]);
+					// 음수=> 년도가 1이상 , 0, 양수
+					int careerMonth = (Integer.valueOf(careerEndArray[1]) - Integer.valueOf(careerStartArray[1])) ;
+					
+					if(careerMonth < 0) {
+						careerYear = careerYear - 1;
+						careerMonth = 12 + careerMonth;
+					}
+					
+					totalCarMonth += (careerYear*12) + careerMonth;
+				}//end for
+				
+				String calCareer = "경력 " + (totalCarMonth / 12) + "년 " + (totalCarMonth % 12) + "개월";
+				model.addAttribute("calCareer", calCareer);
+				System.out.println("++++++++++++++++++++++++++++++++++++++"+calCareer);
+	
+			} else {
+				model.addAttribute("calCareer", "없음");
+			}
+			
+			//order by desc 년도로 정리된 list를 세션에 담아줌
+			List<EducationVo> eduOrderedList = boardService.selectLoginUserEducation(recruitLoginUser);
+			List<CareerVo> careerOrderedList = boardService.selectLoginUserCareer(recruitLoginUser);
+			List<CertificateVo> certiOrderedList = boardService.selectLoginUserCertificate(recruitLoginUser);
+			
+			session.setAttribute("eduList", eduOrderedList);
+			session.setAttribute("careerList", careerOrderedList);
+			session.setAttribute("certiList", certiOrderedList);
+		}//end if(recruitLoginUser != null)
 		
 		return "/recruit/main";
 	}
@@ -799,14 +803,21 @@ public class BoardController {
 		List<CertificateVo> certificateVoList = mapper.readValue(jsonCertificateList, new TypeReference<List<CertificateVo>>() {});
 
 		for (RecruitVo reVo : recruitVoConverted) { //한번만 진행됨 list로 안받으면 오류나서 일단 list사용..
+			
 			RecruitVo returnedUser = boardService.recruitLoginCheck(reVo);
+			System.out.println("@@@@@@@@@@@@@@@returnedUser >> " + returnedUser);
+			
 			if(returnedUser != null) { //DB에 데이터가 있을 때
 				
 				boardService.deleteEducation(reVo);
+				System.out.println("@@@@@@@@@@@@@@@deleteEdu");
 				boardService.deleteCareer(reVo);
+				System.out.println("@@@@@@@@@@@@@@@deleteCareer");
 				boardService.deleteCertificate(reVo);
+				System.out.println("@@@@@@@@@@@@@@@deleteCertificate");
 				
 				boardService.deleteRecruit(reVo);
+				System.out.println("@@@@@@@@@@@@@@@deleteRecruit");
 
 				boardService.insertRecruit(reVo);
 				System.out.println("if(returnedUser != null) resultCnt >> " + resultCnt);

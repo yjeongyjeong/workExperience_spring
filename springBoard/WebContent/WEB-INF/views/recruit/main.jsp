@@ -185,7 +185,8 @@ $j(document).ready(function(){
 		var location = locationData.length != 0 ? locationData : $j("select[name='location']").val();
 		var workType = workTypeData.length != 0 ? workTypeData : $j("select[name='workType']").val();
 		
-		var regex = /^(?=.*[a-zA-Z])(?=.*[@])(?=.*\.)[a-zA-Z0-9@.]{6,100}$/;
+		//var regex = /^(?=.*[a-zA-Z])(?=.*[@])(?=.*\.)[a-zA-Z0-9@.]{6,100}$/;
+		var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		
 		//01 23 45
 		var birthYear = birth.substr(0, 2);
@@ -215,7 +216,7 @@ $j(document).ready(function(){
 			return false;
 		}
 		if( !regex.test(email) ){
-			alert("이메일을 확인해주세요.");
+			alert("이메일을 확인해주세요.\n(입력형식 : hongGilDong@xxxx.xxx)");
 			$j("input[name='email']").focus();
 			return false;
 		}
@@ -330,7 +331,7 @@ $j(document).ready(function(){
 			//학점이 x.xx가 아닌 경우
 			if(grade.length != 4){
 				eduScore.eq(i).focus();
-				alert("학점을 확인해주세요.");
+				alert("학점을 확인해주세요.\n(입력형식 : x.xx)");
 				return false;
 			}
 			
@@ -725,12 +726,12 @@ $j(document).ready(function(){
 					
 					<c:choose>
 						<c:when test="${recruitLoginUser.birth != null}">
-						<input type="text" maxlength="6" placeholder="xxxxxx" id="birth" name="birth"
+						<input type="text" maxlength="6" placeholder="YYMMDD" id="birth" name="birth"
 						value="${recruitLoginUser.birth}"
 							oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</c:when>
 						<c:otherwise>
-							<input type="text" maxlength="6" placeholder="xxxxxx" id="birth" name="birth"
+							<input type="text" maxlength="6" placeholder="YYMMDD" id="birth" name="birth"
 							oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</c:otherwise>
 					</c:choose>
@@ -965,7 +966,7 @@ $j(document).ready(function(){
 					</td>
 	
 					<td align="center">
-						<input type="text" id="eduScore" name="eduScore" maxlength="4"
+						<input type="text" id="eduScore" name="eduScore" maxlength="4" placeholder="xx.x" 
 						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
 					</td>
 				</tr>
