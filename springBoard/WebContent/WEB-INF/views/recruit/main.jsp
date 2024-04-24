@@ -193,17 +193,17 @@ $j(document).ready(function(){
 		var birthDate = birth.substr(4, 2);
 	
 		if(birth.length != 6){
-			alert("생년월일을 확인해주세요.");
+			alert("생년월일(YYMMDD)을 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
 		}
 		if(birthMonth < 1 || birthMonth > 12){
-			alert("생년월일을 확인해주세요.");
+			alert("생년월일(YYMMDD)을 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
 		}
 		if(birthDate < 1 || birthDate > 31){
-			alert("생년월일을 확인해주세요.");
+			alert("생년월일(YYMMDD)을 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
 		}

@@ -681,12 +681,14 @@ public class BoardController {
 	@RequestMapping(value = "/recruit/main.do", method = RequestMethod.GET)
 	public String recruitMain(HttpSession session, Model model, Locale locale) throws Exception {
 		
-		RecruitVo recruitLoginUser =  (RecruitVo) session.getAttribute("recruitLoginUser");
-		System.out.println("recruitLoginUser(recruitMain) >>>>> " + recruitLoginUser);
+		RecruitVo sessionUser =  (RecruitVo) session.getAttribute("recruitLoginUser");
 		
-		if(recruitLoginUser == null) {
-			return "recruit/login"; //세션이 null인 경우 (로그인이 끊긴경우)
+		if(sessionUser == null) {
+			return "/recruit/login"; //세션이 null인 경우 (로그인이 끊긴경우)
 		}
+		
+		//sessionUser보다 위에 있으면 ERROR 1. PreparedStatement.setNull(1, 1111) 부적합한 열 유형
+		RecruitVo recruitLoginUser =  boardService.recruitLoginCheck(sessionUser);
 		
 		//학력사항 경력사항 계산용... DB에서 하려다 복잡해져서 컨트롤러에서 진행...
 		List<EducationVo> eduList =  boardService.selectLoginUserEducation(recruitLoginUser);
