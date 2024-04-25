@@ -415,6 +415,8 @@ $j(document).ready(function(){
 			
 		}//end for
 	
+		var periodCheckResult = periodDuplicateCheck();
+		
 		//자격증
 		var certificateCheckResult = certificateCheck();
 	
@@ -444,7 +446,7 @@ $j(document).ready(function(){
 				certiData.push(certificateVo);
 			}
 		}//end for
-
+		
 	    var data = {
 	        "recruitVo": recruitData,
 	        "educationList": eduData,
@@ -452,8 +454,10 @@ $j(document).ready(function(){
 	        "certificateList": certiData
 	    };
 
+		
 	    // 경력 및 자격증 유효성 검사를 모두 통과한 경우 데이터 반환
-	    if(careerCheckResult  == true && certificateCheckResult == true){
+	    // 근데 굳이 여기까지 오지 않아도 위에서 return false가 날 수 있다면 좋을 것 같음
+	    if(careerCheckResult  == true && certificateCheckResult == true && periodCheckResult == true){
 	    	return data;
 	    } else {
 	    	return false;
@@ -719,6 +723,41 @@ $j(document).ready(function(){
 	    return isValid;
 	}//end certificateCheck
 	
+	function periodDuplicateCheck(){
+
+		var eduPeriodFirst = $j("input[name='eduPeriodFirst']");
+		var eduPeriodSecond = $j("input[name='eduPeriodSecond']");
+		var careerPeriodFirst = $j("input[name='careerPeriodFirst']");
+		var careerPeriodSecond = $j("input[name='careerPeriodSecond']");
+		var isValid = true; // 기본적으로 유효한 값으로 설정
+		
+		for(var i= 0; i < eduPeriodFirst.length; i++ ){
+			var eduStart_period = eduPeriodFirst.eq(i).val();
+			var eduEnd_period = eduPeriodSecond.eq(i).val();
+			
+			for(var j = 0; j < careerPeriodFirst.length; j++){
+				var careerStart_period = careerPeriodFirst.eq(j).val();
+				var careerEnd_period = careerPeriodSecond.eq(j).val();
+				//재학기간(학력) 내에 근무기간(경력)이 있는 경우
+				if(eduStart_period <= careerStart_period && careerStart_period <= eduEnd_period){
+	        		alert("근무기간을 확인해주세요.\n재학기간과 근무기간이 중복됩니다.");
+	        		careerStart_period.eq(j).focus();
+	        		isValid = false; // 유효하지 않은 값으로 설정
+	        		return isValid;
+				}
+				if(eduStart_period < careerEnd_period && careerEnd_period < eduEnd_period){
+	        		alert("근무기간을 확인해주세요.\n재학기간과 근무기간이 중복됩니다.");
+	        		careerEnd_period.eq(j).focus();
+	        		isValid = false; // 유효하지 않은 값으로 설정
+	        		return isValid;
+				}
+			}//end for career
+			
+		}// end for edu
+		
+		return isValid;
+	}// end function periodDuplicateCheck
+	
 </script>
 
 <body>
@@ -964,6 +1003,7 @@ $j(document).ready(function(){
 					
 					<td align="center">
 						<input type="text" id="eduSchoolName" name="eduSchoolName" maxlength="100" 
+						placeholder="학교명"
 						>
 					<select id="eduSchoolArea" name="eduSchoolArea">
 						<option value="강원도">강원도</option>
@@ -987,7 +1027,7 @@ $j(document).ready(function(){
 					</td>
 				
 					<td align="center">
-						<input type="text" id="eduMajor" name="eduMajor" maxlength="100"
+						<input type="text" id="eduMajor" name="eduMajor" maxlength="100" placeholder="전공"
 						>
 					</td>
 	
@@ -1022,7 +1062,7 @@ $j(document).ready(function(){
 						
 						<td align="center">
 							<input type="text" id="eduSchoolName" name="eduSchoolName" maxlength="100" 
-							 value="${eduItem.school_name}"
+							 value="${eduItem.school_name}" placeholder="학교명"
 							>
 						<select id="eduSchoolArea" name="eduSchoolArea">
 							<option value="강원도" ${eduItem.location eq '강원도' ? 'selected' : ''}>강원도</option>
@@ -1047,7 +1087,7 @@ $j(document).ready(function(){
 					
 						<td align="center">
 							<input type="text" id="eduMajor" name="eduMajor" maxlength="100"
-							 value="${eduItem.major}"
+							 value="${eduItem.major}" placeholder="전공"
 							>
 						</td>
 		
@@ -1110,16 +1150,16 @@ $j(document).ready(function(){
 								oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 							</td>
 							<td align="center">
-								<input type="text" id="careerName" name="careerName" maxlength="100"
+								<input type="text" id="careerName" name="careerName" maxlength="100" placeholder="회사명"
 								>
 							</td>
 							
 							<td align="center">
-								<input type="text" id="careerPosition" name="careerPosition" maxlength="100"
+								<input type="text" id="careerPosition" name="careerPosition" maxlength="100" placeholder="부서/직급/직책"
 								>
 							</td>
 							<td align="center">
-								<input type="text" id="careerArea" name="careerArea" maxlength="100"
+								<input type="text" id="careerArea" name="careerArea" maxlength="100" placeholder="지역"
 								>
 							</td>
 						</tr>
@@ -1142,17 +1182,20 @@ $j(document).ready(function(){
 							<td align="center">
 								<input type="text" id="careerName" name="careerName" maxlength="100"
 								value="${empty careerItem.comp_name ? '' : careerItem.comp_name }"
+								placeholder="회사명"
 								>
 							</td>
 							
 							<td align="center">
 								<input type="text" id="careerPosition" name="careerPosition" maxlength="100"
 								value="${empty careerItem.task ? '' : careerItem.task }"
+								placeholder="부서/직급/직책"
 								>
 							</td>
 							<td align="center">
 								<input type="text" id="careerArea" name="careerArea" maxlength="100"
 								value="${empty careerItem.location ? '' : careerItem.location }"
+								placeholder="지역"
 								>
 							</td>
 						</tr>
@@ -1198,18 +1241,19 @@ $j(document).ready(function(){
 			<c:when test="${empty certiList}">
 				<tr class="trCertificateContent" >
 					<td align="center">
-						<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
+						<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" placeholder="자격증명" 
+						>
 					</td>
 					<td align="center">
 						<input type="text" id="certiName" name="certiName" maxlength="100"
 						>
 					</td>
 					<td align="center">
-						<input type="text" id="certiDate" name="certiDate" maxlength="7"
+						<input type="text" id="certiDate" name="certiDate" maxlength="7" 
 						placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
 					</td>
 					<td align="center">
-						<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100"
+						<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100" placeholder="발행처"
 						>
 					</td>
 				</tr>
@@ -1221,7 +1265,7 @@ $j(document).ready(function(){
 							<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
 						</td>
 						<td align="center">
-							<input type="text" id="certiName" name="certiName" maxlength="100"
+							<input type="text" id="certiName" name="certiName" maxlength="100" placeholder="자격증명"
 							 value="${empty certiItem.qualifi_name ? '' : certiItem.qualifi_name}"
 							>
 						</td>
@@ -1231,7 +1275,7 @@ $j(document).ready(function(){
 							placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
 						</td>
 						<td align="center">
-							<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100"
+							<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100" placeholder="발행처"
 							 value="${empty certiItem.organize_name ? '' : certiItem.organize_name}"
 							>
 						</td>
