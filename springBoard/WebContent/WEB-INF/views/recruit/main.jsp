@@ -202,25 +202,34 @@ $j(document).ready(function(){
 			return false;
 		}
 		if(birthMonth < 1 || birthMonth > 12){
-			alert("생년월일(YYMMDD)을 확인해주세요.");
+			alert("생년월일(YYMMDD)을 월을 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
 		}
+		//birthDate는 1에서 31일의 값을 가질 수 있음
 		if(birthDate < 1 || birthDate > 31){
-			alert("생년월일(YYMMDD)을 확인해주세요.");
+			alert("생년월일(YYMMDD)의 일자를 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
+		}
+		//4월, 6월, 9월, 11월은 30일까지 존재
+		if(birthMonth == 4 || birthMonth == 6 || birthMonth == 9 || birthMonth == 11){
+			if(birthDate < 1 || birthDate > 30){
+				alert("생년월일(YYMMDD)의 일자를 확인해주세요.");
+				$j("input[name='birth']").focus();
+				return false;
+			}
 		}
 		if(birthMonth = '02' ){
 			if(birthDate > 29 && birthFullYear % 4 == 0 && birthFullYear % 100 != 0 || birthFullYear % 400 == 0){
 				//console.log("윤년");
-				alert("생년월일(YYMMDD)을 확인해주세요.");
+				alert("생년월일(YYMMDD)의 일자를 확인해주세요.");
 				$j("input[name='birth']").focus();
 				return false;
 			}
 			else if(birthDate > 28) {
 				//console.log("2월 28일 이상");
-				alert("생년월일(YYMMDD)을 확인해주세요.");
+				alert("생년월일(YYMMDD)의 일자를 확인해주세요.");
 				$j("input[name='birth']").focus();
 				return false;
 			}
