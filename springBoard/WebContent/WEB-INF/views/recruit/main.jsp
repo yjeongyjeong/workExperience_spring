@@ -193,7 +193,8 @@ $j(document).ready(function(){
 		var birthMonth = birth.substr(2, 2);
 		var birthDate = birth.substr(4, 2);
 		
-		var birtFullYear = birthYear < 50 ? '20'+birthYear : '19'+birthYear;
+		//###################수정이 필요한 부분...
+		var birthFullYear = birthYear < 50 ? '20'+birthYear : '19'+birthYear;
 		
 		if(birth.length != 6){
 			alert("생년월일(YYMMDD)을 확인해주세요.");
@@ -210,8 +211,19 @@ $j(document).ready(function(){
 			$j("input[name='birth']").focus();
 			return false;
 		}
-		if(birthMonth = '02' && birtFullYear % 4 == 0 && birtFullYear % 100 != 0 || birtFullYear % 400 == 0){
-			
+		if(birthMonth = '02' ){
+			if(birthDate > 29 && birthFullYear % 4 == 0 && birthFullYear % 100 != 0 || birthFullYear % 400 == 0){
+				//console.log("윤년");
+				alert("생년월일(YYMMDD)을 확인해주세요.");
+				$j("input[name='birth']").focus();
+				return false;
+			}
+			else if(birthDate > 28) {
+				//console.log("2월 28일 이상");
+				alert("생년월일(YYMMDD)을 확인해주세요.");
+				$j("input[name='birth']").focus();
+				return false;
+			}
 		}
 		
 		
@@ -731,13 +743,13 @@ $j(document).ready(function(){
 					
 					<c:choose>
 						<c:when test="${recruitLoginUser.birth != null}">
-						<input type="text" maxlength="6" placeholder="YYMMDD" id="birth" name="birth"
-						value="${recruitLoginUser.birth}"
+							<input type="text" maxlength="6" placeholder="YYMMDD" id="birth" name="birth" readonly="readonly"
+							value="${recruitLoginUser.birth}"
 							oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</c:when>
 						<c:otherwise>
 							<input type="text" maxlength="6" placeholder="YYMMDD" id="birth" name="birth"
-							oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							oninput="this.value = this.value.replace(/[^0-9]/g, '');" >
 						</c:otherwise>
 					</c:choose>
 					</td>
@@ -1201,17 +1213,17 @@ $j(document).ready(function(){
 						</td>
 						<td align="center">
 							<input type="text" id="certiName" name="certiName" maxlength="100"
-							 value="${empty certiItem.qualifi_name ? '수정' : certiItem.qualifi_name}"
+							 value="${empty certiItem.qualifi_name ? '' : certiItem.qualifi_name}"
 							>
 						</td>
 						<td align="center">
 							<input type="text" id="certiDate" name="certiDate" maxlength="7"
-							 value="${empty certiItem.acqu_date ? '수정' : certiItem.acqu_date}"
+							 value="${empty certiItem.acqu_date ? '' : certiItem.acqu_date}"
 							placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
 						</td>
 						<td align="center">
 							<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100"
-							 value="${empty certiItem.organize_name ? '수정' : certiItem.organize_name}"
+							 value="${empty certiItem.organize_name ? '' : certiItem.organize_name}"
 							>
 						</td>
 					</tr>
