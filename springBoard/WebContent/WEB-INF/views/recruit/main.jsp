@@ -1239,12 +1239,12 @@ $j(document).ready(function(){
 			
 			<c:choose>
 			<c:when test="${empty certiList}">
-				<tr class="trCertificateContent" >
+				<tr class="trCertificateContent">
 					<td align="center">
-						<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" placeholder="자격증명">
+						<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
 					</td>
 					<td align="center">
-						<input type="text" id="certiName" name="certiName" maxlength="100"
+						<input type="text" id="certiName" name="certiName" maxlength="100" placeholder="자격증명"
 						>
 					</td>
 					<td align="center">
@@ -1263,8 +1263,8 @@ $j(document).ready(function(){
 							<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" >
 						</td>
 						<td align="center">
-							<input type="text" id="certiName" name="certiName" maxlength="100" placeholder="자격증명"
-							 value="${empty certiItem.qualifi_name ? '' : certiItem.qualifi_name}">
+							<input type="text" id="certiName" name="certiName" maxlength="100"
+							 value="${empty certiItem.qualifi_name ? '' : certiItem.qualifi_name}" placeholder="자격증명">
 						</td>
 						<td align="center">
 							<input type="text" id="certiDate" name="certiDate" maxlength="7"
