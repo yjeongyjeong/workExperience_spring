@@ -850,12 +850,12 @@ $j(document).ready(function(){
 					<td>
 					<c:choose>
 						<c:when test="${recruitLoginUser.addr != null}">
-							<input type="text" id="addr" name="addr" maxlength="100"
+							<input type="text" id="addr" name="addr" maxlength="100" placeholder="주소"
 							value="${recruitLoginUser.addr}"
 							>
 						</c:when>
 						<c:otherwise>
-							<input type="text" id="addr" name="addr" maxlength="100">
+							<input type="text" id="addr" name="addr" maxlength="100" placeholder="주소">
 						</c:otherwise>
 					</c:choose>
 					</td>
@@ -1032,7 +1032,7 @@ $j(document).ready(function(){
 					</td>
 	
 					<td align="center">
-						<input type="text" id="eduScore" name="eduScore" maxlength="4" placeholder="xx.x"
+						<input type="text" id="eduScore" name="eduScore" maxlength="4" placeholder="x.xx"
 						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
 					</td>
 				</tr>
@@ -1092,7 +1092,7 @@ $j(document).ready(function(){
 						</td>
 		
 						<td align="center">
-							<input type="text" id="eduScore" name="eduScore" maxlength="4"
+							<input type="text" id="eduScore" name="eduScore" maxlength="4" placeholder="x.xx"
 							 value="${eduItem.grade}"
 							oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
 						</td>
