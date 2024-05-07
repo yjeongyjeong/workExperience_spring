@@ -197,12 +197,12 @@ $j(document).ready(function(){
 		var birthFullYear = birthYear < 50 ? '20'+birthYear : '19'+birthYear;
 		
 		if(birth.length != 6){
-			alert("생년월일(YYMMDD)을 확인해주세요.");
+			alert("생년월일(YYMMDD)을 확인해주세요. \n6자리를 입력해주시기 바랍니다.");
 			$j("input[name='birth']").focus();
 			return false;
 		}
 		if(birthMonth < 1 || birthMonth > 12){
-			alert("생년월일(YYMMDD)을 월을 확인해주세요.");
+			alert("생년월일(YYMMDD)의 월을 확인해주세요.");
 			$j("input[name='birth']").focus();
 			return false;
 		}
@@ -215,21 +215,21 @@ $j(document).ready(function(){
 		//4월, 6월, 9월, 11월은 30일까지 존재
 		if(birthMonth == 4 || birthMonth == 6 || birthMonth == 9 || birthMonth == 11){
 			if(birthDate < 1 || birthDate > 30){
-				alert("생년월일(YYMMDD)의 일자를 확인해주세요.");
+				alert("생년월일(YYMMDD)의 일자를 확인해주세요.31");
 				$j("input[name='birth']").focus();
 				return false;
 			}
 		}
-		if(birthMonth = '02' ){
+		if(birthMonth == '02' ){
 			if(birthDate > 29 && birthFullYear % 4 == 0 && birthFullYear % 100 != 0 || birthFullYear % 400 == 0){
 				//console.log("윤년");
-				alert("생년월일(YYMMDD)의 일자를 확인해주세요.");
+				alert("생년월일(YYMMDD)의 일자를 확인해주세요.29초과");
 				$j("input[name='birth']").focus();
 				return false;
 			}
 			else if(birthDate > 28) {
 				//console.log("2월 28일 이상");
-				alert("생년월일(YYMMDD)의 일자를 확인해주세요.");
+				alert("생년월일(YYMMDD)의 일자를 확인해주세요.28초과");
 				$j("input[name='birth']").focus();
 				return false;
 			}
@@ -303,7 +303,7 @@ $j(document).ready(function(){
 			//재학기간의 형식이 올바르지 않은 경우 false
 			if(start_period.length != 7 ){
 				eduPeriodFirst.eq(i).focus();
-				alert("재학기간을 확인해주세요.");
+				alert("재학기간을 확인해주세요. \n ");
 				return false;
 			};
 			if(end_period.length != 7 ){
@@ -987,10 +987,10 @@ $j(document).ready(function(){
 						<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
 					</td>
 					<td  align="center">
-						<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodFirst" name="eduPeriodFirst"
+						<input type="text" maxlength="7" placeholder="YYYY.MM" id="eduPeriodFirst" name="eduPeriodFirst"
 						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 						~
-						<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodSecond" name="eduPeriodSecond"
+						<input type="text" maxlength="7" placeholder="YYYY.MM" id="eduPeriodSecond" name="eduPeriodSecond"
 						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 					</td>
 					<td align="center">
@@ -1032,7 +1032,7 @@ $j(document).ready(function(){
 					</td>
 	
 					<td align="center">
-						<input type="text" id="eduScore" name="eduScore" maxlength="4" placeholder="xx.x" 
+						<input type="text" id="eduScore" name="eduScore" maxlength="4" placeholder="xx.x"
 						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{1})(\d{2})$/, '$1.$2');">
 					</td>
 				</tr>
@@ -1044,11 +1044,11 @@ $j(document).ready(function(){
 							<input type="checkbox" id="eduDeleteCheck" name="eduDeleteCheck">
 						</td>
 						<td  align="center">
-							<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodFirst" name="eduPeriodFirst"
+							<input type="text" maxlength="7" placeholder="YYYY.MM" id="eduPeriodFirst" name="eduPeriodFirst"
 							 value="${eduItem.start_period}"
 							oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 							~
-							<input type="text" maxlength="7" placeholder="xxxx.xx" id="eduPeriodSecond" name="eduPeriodSecond"
+							<input type="text" maxlength="7" placeholder="YYYY.MM" id="eduPeriodSecond" name="eduPeriodSecond"
 							 value="${eduItem.end_period}"
 							oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 						</td>
@@ -1143,10 +1143,10 @@ $j(document).ready(function(){
 								<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck">
 							</td>
 							<td align="left">
-								<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodFirst" name="careerPeriodFirst"
+								<input type="text" maxlength="7" placeholder="YYYY.MM" id="careerPeriodFirst" name="careerPeriodFirst"
 								oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 								~
-								<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodSecond" name="careerPeriodSecond"
+								<input type="text" maxlength="7" placeholder="YYYY.MM" id="careerPeriodSecond" name="careerPeriodSecond"
 								oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 							</td>
 							<td align="center">
@@ -1171,11 +1171,11 @@ $j(document).ready(function(){
 								<input type="checkbox" id="careerDeleteCheck" name="careerDeleteCheck">
 							</td>
 							<td align="left">
-								<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodFirst" name="careerPeriodFirst"
+								<input type="text" maxlength="7" placeholder="YYYY.MM" id="careerPeriodFirst" name="careerPeriodFirst"
 								value="${empty careerItem.start_period ? '' : careerItem.start_period }"
 								oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 								~
-								<input type="text" maxlength="7" placeholder="xxxx.xx" id="careerPeriodSecond" name="careerPeriodSecond"
+								<input type="text" maxlength="7" placeholder="YYYY.MM" id="careerPeriodSecond" name="careerPeriodSecond"
 								value="${empty careerItem.end_period ? '' : careerItem.end_period }"
 								oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');">
 							</td>
@@ -1241,8 +1241,7 @@ $j(document).ready(function(){
 			<c:when test="${empty certiList}">
 				<tr class="trCertificateContent" >
 					<td align="center">
-						<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" placeholder="자격증명" 
-						>
+						<input type="checkbox" id="certiDeleteCheck" name="certiDeleteCheck" placeholder="자격증명">
 					</td>
 					<td align="center">
 						<input type="text" id="certiName" name="certiName" maxlength="100"
@@ -1250,11 +1249,10 @@ $j(document).ready(function(){
 					</td>
 					<td align="center">
 						<input type="text" id="certiDate" name="certiDate" maxlength="7" 
-						placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
+						placeholder="YYYY.MM" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
 					</td>
 					<td align="center">
-						<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100" placeholder="발행처"
-						>
+						<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100" placeholder="발행처">
 					</td>
 				</tr>
 			</c:when>
@@ -1266,13 +1264,12 @@ $j(document).ready(function(){
 						</td>
 						<td align="center">
 							<input type="text" id="certiName" name="certiName" maxlength="100" placeholder="자격증명"
-							 value="${empty certiItem.qualifi_name ? '' : certiItem.qualifi_name}"
-							>
+							 value="${empty certiItem.qualifi_name ? '' : certiItem.qualifi_name}">
 						</td>
 						<td align="center">
 							<input type="text" id="certiDate" name="certiDate" maxlength="7"
 							 value="${empty certiItem.acqu_date ? '' : certiItem.acqu_date}"
-							placeholder="xxxx.xx" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
+							placeholder="YYYY.MM" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^(\d{4})(\d{2})$/, '$1.$2');" >
 						</td>
 						<td align="center">
 							<input type="text" id="certiPublisher" name="certiPublisher" maxlength="100" placeholder="발행처"
