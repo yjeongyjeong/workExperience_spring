@@ -38,7 +38,7 @@
 		if ($j('#userId').val().length == 0) {
 			alert("아이디를 입력해주세요.");
 			console.log(1);
-			$j('#userId').focus;
+			$j('#userId').focus();
 			return false;
 		} else if (!regId.test($j('#userId').val())) { //아이디 영어 대소문자 확인
 			alert("6~15자 영문 대소문자를 입력해주세요.")
@@ -67,6 +67,7 @@
 						checkIdResult = true;
 			    	} else{ //0이 아닌경우(중복일 때)
 				    	alert("중복된 아이디입니다.");
+				    	$j('#userId').focus();
 				    	checkIdResult = false;
 			    	}
 					
