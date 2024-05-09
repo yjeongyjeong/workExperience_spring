@@ -260,6 +260,42 @@
 		</td>
 	</tr>
 	
+	
+	<tr class="container">
+	 <td align="center">
+			<ul class="pagination">
+					<c:choose>
+						<c:when test="${page.cri.pageNo <= 1}"> 
+							<li class="page-item"><a class="page-link">Previous</a><li>
+						</c:when>
+					<c:otherwise>
+							<li class="page-item"><a class="page-link" href="?pageNo=${page.cri.pageNo-1}&amount=${page.cri.amount}">Previous</a>&nbsp;<li>
+						</c:otherwise>
+					</c:choose> 
+					
+					<c:forEach var="a" begin="${page.startPage}" end="${page.endPage}" step="1">
+						<c:choose>
+							<c:when test="${a == page.cri.pageNo}"> 
+								<li class="page-item active"><a class="page-link" >${a}</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link"  href="?pageNo=${a}&amount=${page.cri.amount}">${a}</a>&nbsp;</li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach> 
+						
+					<c:choose>
+						<c:when test="${page.cri.pageNo>=page.realEnd}"> 
+							<li class="page-item"><a class="page-link">Next</a><li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link" href="?pageNo=${page.cri.pageNo+1}&amount=${page.cri.amount}">Next</a></li>
+						</c:otherwise>
+					</c:choose>
+			</ul>
+		</td>	
+		</tr>
+	
 	<tr>
 		<td align="right">
 			<a href ="/board/boardWrite.do">글쓰기</a>

@@ -7,7 +7,7 @@ import com.spring.board.vo.CareerVo;
 import com.spring.board.vo.CertificateVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.EducationVo;
-import com.spring.board.vo.PageVo;
+import com.spring.board.vo.Criteria;
 import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
 
@@ -15,7 +15,7 @@ public interface BoardDao {
 
 	public String selectTest() throws Exception;
 
-	public List<BoardVo> selectBoardList(PageVo pageVo) throws Exception;
+	public List<BoardVo> selectBoardList(Criteria pageVo) throws Exception;
 
 	public BoardVo selectBoard(BoardVo boardVo) throws Exception;
 
@@ -37,7 +37,7 @@ public interface BoardDao {
 	public int userLoginCheck(UserInfoVo userVo) throws Exception;
 	public UserInfoVo selectUser(UserInfoVo userVo) throws Exception;
 //	============================================
-	public List<BoardVo> selectMbtiList(PageVo pageVo) throws Exception;
+	public List<BoardVo> selectMbtiList(Criteria pageVo) throws Exception;
 	public String selectMbtiName(String codeId) throws Exception;
 	public List<String> mbtiTypeList() throws Exception;
 //	============================================

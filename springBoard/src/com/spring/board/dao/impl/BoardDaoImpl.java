@@ -12,7 +12,7 @@ import com.spring.board.vo.CareerVo;
 import com.spring.board.vo.CertificateVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.EducationVo;
-import com.spring.board.vo.PageVo;
+import com.spring.board.vo.Criteria;
 import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
 
@@ -34,7 +34,7 @@ public class BoardDaoImpl implements BoardDao{
 	 * 
 	 * */
 	@Override
-	public List<BoardVo> selectBoardList(PageVo pageVo) throws Exception {
+	public List<BoardVo> selectBoardList(Criteria pageVo) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("board.boardList",pageVo);
 	}
@@ -91,7 +91,7 @@ public class BoardDaoImpl implements BoardDao{
 		return sqlSession.selectOne("user.selectUser", userVo);
 	}
 	@Override
-	public List<BoardVo> selectMbtiList(PageVo pageVo) throws Exception {
+	public List<BoardVo> selectMbtiList(Criteria pageVo) throws Exception {
 		return sqlSession.selectList("mbti.mbtiList", pageVo);
 	}
 	@Override

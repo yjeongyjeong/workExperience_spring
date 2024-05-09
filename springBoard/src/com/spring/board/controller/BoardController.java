@@ -34,6 +34,7 @@ import com.spring.board.vo.CertificateVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.EducationVo;
 import com.spring.board.vo.PageVo;
+import com.spring.board.vo.Criteria;
 import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
 import com.spring.common.CommonUtil;
@@ -47,23 +48,22 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
-	public String boardList(Locale locale, Model model, PageVo pageVo, HttpSession session) throws Exception {
+	public String boardList(Locale locale, Model model, Criteria cri, HttpSession session) throws Exception {
 
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
 
 		int page = 1;
-		int totalCnt = 0;
 
-		if (pageVo.getPageNo() == 0) {
-			pageVo.setPageNo(page);
+		if (cri.getPageNo() == 0) {
+			cri.setPageNo(page);
 			;
 		}
 
 		ComCodeVo codeVo = new ComCodeVo();
 		codeVo.setCodeType("menu");
 
-		totalCnt = boardService.selectBoardCnt();
+		int totalCnt = boardService.selectBoardCnt();
 		codeList = boardService.selectCodeList(codeVo);
 //		System.out.println("codeList>>>>>>>>>>>" + codeList);
 		/*
@@ -75,12 +75,13 @@ public class BoardController {
 		 */
 
 		List<String> codeIdList = new ArrayList<>();
+		
 		for (ComCodeVo comCode : codeList) {
 			codeIdList.add(comCode.getCodeId());
 		}
-		;
-		pageVo.setCodeId(codeIdList);
-		boardList = boardService.SelectBoardList(pageVo);
+		
+		cri.setCodeId(codeIdList);
+		boardList = boardService.SelectBoardList(cri);
 
 		UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
 		System.out.println("session에서 가져온 userVo >>> " + loginUser);
@@ -89,6 +90,9 @@ public class BoardController {
 		model.addAttribute("codeList", codeList);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);
+		
+		model.addAttribute("page", new PageVo(cri, totalCnt));
+		
 		model.addAttribute("loginUser", loginUser);
 
 		return "board/boardList";
@@ -289,18 +293,18 @@ public class BoardController {
 	@ResponseBody
 	public List<BoardVo> boardSearchAction(@RequestBody List<String> boardList, Model model, Locale locale)
 			throws Exception {
-		PageVo pageVo = new PageVo();
+		Criteria cri = new Criteria();
 
 		int page = 1;
 		int totalCnt = 0;
-		if (pageVo.getPageNo() == 0) {
-			pageVo.setPageNo(page);
+		if (cri.getPageNo() == 0) {
+			cri.setPageNo(page);
 		}
 
 		List<BoardVo> searchBoardList = new ArrayList<BoardVo>();
 		// codeId로 찾음
-		pageVo.setCodeId(boardList);
-		searchBoardList.addAll(boardService.SelectBoardList(pageVo));
+		cri.setCodeId(boardList);
+		searchBoardList.addAll(boardService.SelectBoardList(cri));
 
 		System.out.println(searchBoardList.toString());
 		return searchBoardList;
@@ -437,15 +441,15 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/mbti/mbtiTest.do", method = RequestMethod.GET)
-	public String mbtiTest(Locale locale, Model model, PageVo pageVo) throws Exception {
+	public String mbtiTest(Locale locale, Model model, Criteria cri) throws Exception {
 
 		List<BoardVo> mbtiList = new ArrayList<BoardVo>();
 		List<ComCodeVo> codeList = new ArrayList<ComCodeVo>();
 
 		int page = 1;
 
-		if (pageVo.getPageNo() == 0) {
-			pageVo.setPageNo(page);
+		if (cri.getPageNo() == 0) {
+			cri.setPageNo(page);
 			;
 		}
 
@@ -461,9 +465,9 @@ public class BoardController {
 			codeIdList.add(comCode.getCodeId());
 		};
 
-		pageVo.setCodeId(codeIdList);
-		pageVo.setCodeType("mbti");
-		mbtiList = boardService.SelectMbtiList(pageVo);
+		cri.setCodeId(codeIdList);
+		cri.setCodeType("mbti");
+		mbtiList = boardService.SelectMbtiList(cri);
 
 		model.addAttribute("mbtiList", mbtiList);
 		model.addAttribute("codeList", codeList);

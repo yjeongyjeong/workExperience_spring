@@ -64,10 +64,9 @@
 	</select>
 
 	<select id="boardTotal" parameterType="Integer" resultType="Integer">
-		SELECT
-		COUNT(*) AS TOTAL_CNT
-		FROM
-		BOARD
+		select count(*) as total_cnt 
+		from board b, com_code c
+		where b.board_type = c.code_id and c.code_type = 'menu'
 	</select>
 
 	<select id="boardView"

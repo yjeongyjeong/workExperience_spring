@@ -7,7 +7,7 @@ import com.spring.board.vo.CareerVo;
 import com.spring.board.vo.CertificateVo;
 import com.spring.board.vo.ComCodeVo;
 import com.spring.board.vo.EducationVo;
-import com.spring.board.vo.PageVo;
+import com.spring.board.vo.Criteria;
 import com.spring.board.vo.RecruitVo;
 import com.spring.board.vo.UserInfoVo;
 
@@ -15,7 +15,7 @@ public interface boardService {
 
 	public String selectTest() throws Exception;
 
-	public List<BoardVo> SelectBoardList(PageVo pageVo) throws Exception;
+	public List<BoardVo> SelectBoardList(Criteria pageVo) throws Exception;
 
 	public BoardVo selectBoard(String boardType, int boardNum) throws Exception;
 
@@ -35,7 +35,7 @@ public interface boardService {
 	public UserInfoVo selectUser(UserInfoVo userVo) throws Exception;
 
 	//==============================================================
-	public List<BoardVo> SelectMbtiList(PageVo pageVo) throws Exception;
+	public List<BoardVo> SelectMbtiList(Criteria pageVo) throws Exception;
 	public String SelectMbtiName(String codeId) throws Exception;
 	public List<String> mbtiTypeList() throws Exception;
 	
