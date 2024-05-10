@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="주소"/>
+		<item key="selection" value="COUNT"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="count"/>
+			<item value="page"/>
+			<item value="&#x09;&lt;c:forEach items=&quot;${codeList}&quot; var=&quot;codeList&quot;&gt;"/>
+			<item value="codeList"/>
+			<item value="codeId"/>
+			<item value="pageNo"/>
+			<item value="cri"/>
+			<item value="pageVo"/>
+			<item value="idChk"/>
+			<item value="onkeyupCheckIdResult"/>
+			<item value="checkIdResult"/>
+			<item value="중복된"/>
 			<item value="주소"/>
 			<item value="x.xx"/>
 			<item value="자격증명"/>
-			<item value="학점"/>
-			<item value="YY"/>
-			<item value="xxxx"/>
-			<item value="재학"/>
-			<item value="29"/>
-			<item value="###"/>
-			<item value="50"/>
-			<item value="생년월일"/>
-			<item value="periodDuplicateCheck"/>
-			<item value="전공"/>
-			<item value="부서/"/>
-			<item value="isvalid"/>
 		</list>
 		<list key="replacehistory">
+			<item value="cri"/>
+			<item value="ㅊ"/>
 			<item value="addRowFunc"/>
 			<item value="areaSelect"/>
 			<item value="trEducation"/>

@@ -40,9 +40,9 @@ public class BoardDaoImpl implements BoardDao{
 	}
 	
 	@Override
-	public int selectBoardCnt() throws Exception {
+	public int selectBoardCnt(Criteria pageVo) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("board.boardTotal");
+		return sqlSession.selectOne("board.boardTotal",pageVo);
 	}
 	
 	@Override

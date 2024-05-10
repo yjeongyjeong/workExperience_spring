@@ -64,9 +64,15 @@
 	</select>
 
 	<select id="boardTotal" parameterType="Integer" resultType="Integer">
-		select count(*) as total_cnt 
-		from board b, com_code c
-		where b.board_type = c.code_id and c.code_type = 'menu'
+        select count(*) as total_cnt 
+        from board b
+        left join com_code c
+        on b.board_type = c.code_id
+        where c.code_type= 'menu' and b.board_type in 
+	    <foreach collection="codeId" item="item" open="(" separator="," close=")">
+	 		#{item}
+		</foreach>
+        
 	</select>
 
 	<select id="boardView"

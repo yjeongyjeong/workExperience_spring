@@ -19,7 +19,7 @@ public interface BoardDao {
 
 	public BoardVo selectBoard(BoardVo boardVo) throws Exception;
 
-	public int selectBoardCnt() throws Exception;
+	public int selectBoardCnt(Criteria pageVo) throws Exception;
 
 	public int boardInsert(BoardVo boardVo) throws Exception;
 	

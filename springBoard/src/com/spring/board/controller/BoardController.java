@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,21 +58,19 @@ public class BoardController {
 
 		if (cri.getPageNo() == 0) {
 			cri.setPageNo(page);
-			;
 		}
 
 		ComCodeVo codeVo = new ComCodeVo();
 		codeVo.setCodeType("menu");
 
-		int totalCnt = boardService.selectBoardCnt();
 		codeList = boardService.selectCodeList(codeVo);
 //		System.out.println("codeList>>>>>>>>>>>" + codeList);
 		/*
-		 * codeList>>>>>>>>>>> [ComCodeVo [codeType=menu, codeId=a01, codeName=일반,
-		 * creator=null, modifier=null], ComCodeVo [codeType=menu, codeId=a02,
-		 * codeName=Q&A, creator=null, modifier=null], ComCodeVo [codeType=menu,
-		 * codeId=a03, codeName=익명, creator=null, modifier=null], ComCodeVo
-		 * [codeType=menu, codeId=a04, codeName=자유, creator=null, modifier=null]]
+		 * codeList>>>>>>>>>>> 
+		 * [ComCodeVo [codeType=menu, codeId=a01, codeName=일반, creator=null, modifier=null], 
+		 * ComCodeVo [codeType=menu, codeId=a02, codeName=Q&A, creator=null, modifier=null], 
+		 * ComCodeVo [codeType=menu, codeId=a03, codeName=익명, creator=null, modifier=null], 
+		 * ComCodeVo [codeType=menu, codeId=a04, codeName=자유, creator=null, modifier=null]]
 		 */
 
 		List<String> codeIdList = new ArrayList<>();
@@ -81,7 +80,10 @@ public class BoardController {
 		}
 		
 		cri.setCodeId(codeIdList);
-		boardList = boardService.SelectBoardList(cri);
+
+		System.out.println("codeId==========================\n"+ cri.getCodeId());
+		int totalCnt = boardService.selectBoardCnt(cri);
+		boardList = boardService.SelectBoardList(cri); //'a01', 'a02' ... 
 
 		UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
 		System.out.println("session에서 가져온 userVo >>> " + loginUser);
@@ -89,7 +91,7 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("codeList", codeList);
 		model.addAttribute("totalCnt", totalCnt);
-		model.addAttribute("pageNo", page);
+		//model.addAttribute("pageNo", page);
 		
 		model.addAttribute("page", new PageVo(cri, totalCnt));
 		
@@ -100,7 +102,8 @@ public class BoardController {
 
 	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardView.do", method = RequestMethod.GET)
 	public String boardView(Locale locale, Model model, HttpSession session,
-			@PathVariable("boardType") String boardType, @PathVariable("boardNum") int boardNum) throws Exception {
+			@PathVariable("boardType") String boardType, @PathVariable("boardNum") int boardNum,
+			@ModelAttribute("cri") Criteria cri) throws Exception {
 
 		BoardVo boardVo = new BoardVo();
 
@@ -111,6 +114,7 @@ public class BoardController {
 		model.addAttribute("boardType", boardType);
 		model.addAttribute("boardNum", boardNum);
 		model.addAttribute("board", boardVo);
+		
 		model.addAttribute("loginUser", userVo);
 
 		return "board/boardView";

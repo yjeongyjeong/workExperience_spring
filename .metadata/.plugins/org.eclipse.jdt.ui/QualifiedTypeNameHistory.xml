@@ -6,7 +6,6 @@
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.Com_CodeVo"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
-    <fullyQualifiedTypeName name="com.spring.board.vo.PageVo"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.ComCodeVo"/>
     <fullyQualifiedTypeName name="java.util.stream.Collectors"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.UserInfoVo"/>
@@ -38,4 +37,5 @@
     <fullyQualifiedTypeName name="java.lang.Exception"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.RecruitVo"/>
     <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="com.spring.board.vo.PageVo"/>
 </qualifiedTypeNameHistroy>

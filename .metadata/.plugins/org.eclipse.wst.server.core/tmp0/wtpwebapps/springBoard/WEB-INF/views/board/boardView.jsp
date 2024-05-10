@@ -84,7 +84,7 @@
 			<%-- <button onclick="location.href='/board/${boardType}/${boardNum}/boardModify.do'">수정</button> --%>
 			<input name="boardType" type="hidden" value="${board.boardType}">
 			<input name="boardNum" type="hidden" value="${board.boardNum}">
-				<a href="/board/boardList.do">List</a>
+				<a href="/board/boardList.do?pageNo=${cri.pageNo}&amount=${cri.amount}">List</a>
 			</td>
 		</tr>
 	</table>	

@@ -242,7 +242,7 @@
 							${list.boardNum}
 						</td>
 						<td>
-							<a href = "/board/${list.boardType}/${list.boardNum}/boardView.do?pageNo=${pageNo}">${list.boardTitle}</a>
+							<a href = "/board/${list.boardType}/${list.boardNum}/boardView.do?pageNo=${page.cri.pageNo}&amount=${page.cri.amount}">${list.boardTitle}</a>
 						</td>
 					</tr>	
 				</c:forEach>
