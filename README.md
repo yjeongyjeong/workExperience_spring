@@ -6,7 +6,7 @@
 ### 목차
 * [개요](#-개요)
 * [개발 환경](#-개발-환경)
-* [ppt](#-ppt)
+* [화면 구현](#-화면-구현)
 * [기능 명세서](#-기능-명세서)
 * [diagram](#-diagram)
 * [기능 시연](#-기능-시연)
@@ -37,13 +37,7 @@
 
 ***
 
-### 📂 PPT
-<details>
-  <summary>
-   개발환경
-  </summary>
-
-</details>
+### 📂 화면 구현
 
 <details>
   <summary>
@@ -54,7 +48,7 @@
 
 <details>
   <summary>
-   화면구현
+   화면 구현
   </summary>
 
 </details>
@@ -126,6 +120,13 @@ spring Board 게시판
 <details>
   <summary>
 MBTI 테스트
+  </summary>
+
+</details>
+
+<details>
+  <summary>
+입사지원서
   </summary>
 
 </details>
