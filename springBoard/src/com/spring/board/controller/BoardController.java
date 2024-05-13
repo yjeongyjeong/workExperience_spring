@@ -295,23 +295,30 @@ public class BoardController {
 
 	@RequestMapping(value = "/board/boardSearchAction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public List<BoardVo> boardSearchAction(@RequestBody List<String> boardList, Model model, Locale locale)
+	public Map<String, Object> boardSearchAction(@RequestBody List<String> boardList, Model model, Locale locale)
 			throws Exception {
+		
 		Criteria cri = new Criteria();
 
 		int page = 1;
-		int totalCnt = 0;
+		
 		if (cri.getPageNo() == 0) {
 			cri.setPageNo(page);
 		}
 
 		List<BoardVo> searchBoardList = new ArrayList<BoardVo>();
-		// codeId로 찾음
+		// codeId로 찾음(a01, a02 ... )
 		cri.setCodeId(boardList);
+		
 		searchBoardList.addAll(boardService.SelectBoardList(cri));
-
-		System.out.println(searchBoardList.toString());
-		return searchBoardList;
+		int totalCnt = boardService.selectBoardCnt(cri);
+		
+	    // 검색 결과와 페이징 정보를 Map에 담아 반환
+	    Map<String, Object> resultMap = new HashMap<>();
+	    resultMap.put("boardList", searchBoardList);
+	    resultMap.put("page", new PageVo(cri, totalCnt));
+		
+		return resultMap;
 	}
 
 	@RequestMapping(value = "/board/boardJoin.do", method = RequestMethod.GET)
@@ -849,7 +856,8 @@ public class BoardController {
 				System.out.println("resultCnt >> " + resultCnt);
 			}
 			
-			session.setAttribute("recruitLoginUser", reVo);
+			RecruitVo recruitLoginUser = boardService.recruitLoginCheck(reVo);
+			session.setAttribute("recruitLoginUser", recruitLoginUser);
 			
 			resultCnt = 1;
 		}

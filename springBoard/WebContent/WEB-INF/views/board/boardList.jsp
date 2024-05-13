@@ -42,9 +42,16 @@
 				    data : JSON.stringify(param),
 				    success: function(data, textStatus, jqXHR)
 				    {
-						console.log(data);
-						changeList(data);
-										    },
+			    	/* 
+				    resultMap.put("searchBoardList", searchBoardList);
+				    resultMap.put("page", new PageVo(cri, totalCnt));
+			    	*/
+			        var boardList = data.boardList;
+			        var page = data.page;
+			        console.log("boardList >>>>>>>>>>>>>> \n" + boardList);
+			        console.log("page >>>>>>>>>>>>>> \n" + page);
+						//changeList(boardList);
+					},
 				    error: function (jqXHR, textStatus, errorThrown)
 				    {
 				    	alert("실패");
@@ -254,7 +261,7 @@
 		<td align="center">
 			<input type="checkbox" id="select_all" name="selectall" onclick="selectAll(this)" >전체
 	<c:forEach items="${codeList}" var="codeList">
-			<input type="checkbox" id="${codeList}.codeId" name="menu" onclick="return checkSelectAll()" value="${codeList.codeId }">${codeList.codeName }
+			<input type="checkbox" id="${codeList}.codeId" name="menu" onclick="return checkSelectAll()" value="${codeList.codeId}">${codeList.codeName}
 	</c:forEach>
 			<input id="search" type="button" value="조회"  >
 		</td>
@@ -268,8 +275,13 @@
 						<c:when test="${page.cri.pageNo <= 1}"> 
 							<li class="page-item"><a class="page-link">Previous</a><li>
 						</c:when>
-					<c:otherwise>
+						<c:otherwise>
+							<c:if test="${!empty page.cri.codeId}">
+							<li class="page-item"><a class="page-link" href="?pageNo=${page.cri.pageNo-1}&codeType=${page.cri.codeType}&codeId=${page.cri.codeId}&amount=${page.cri.amount}">Previous</a>&nbsp;<li>
+							</c:if>
+							<c:if test="${empty page.cri.codeId}">
 							<li class="page-item"><a class="page-link" href="?pageNo=${page.cri.pageNo-1}&amount=${page.cri.amount}">Previous</a>&nbsp;<li>
+							</c:if>
 						</c:otherwise>
 					</c:choose> 
 					
@@ -279,7 +291,12 @@
 								<li class="page-item active"><a class="page-link" >${a}</a></li>
 							</c:when>
 							<c:otherwise>
-								<li class="page-item"><a class="page-link"  href="?pageNo=${a}&amount=${page.cri.amount}">${a}</a>&nbsp;</li>
+								<c:if test="${!empty page.cri.codeId}">
+									<li class="page-item"><a class="page-link"  href="?pageNo=${a}&codeType=${page.cri.codeType}&codeId=${page.cri.codeId}&amount=${page.cri.amount}">${a}</a>&nbsp;</li>
+								</c:if>
+								<c:if test="${empty page.cri.codeId}">
+									<li class="page-item"><a class="page-link"  href="?pageNo=${a}&amount=${page.cri.amount}">${a}</a>&nbsp;</li>
+								</c:if>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach> 
@@ -289,7 +306,12 @@
 							<li class="page-item"><a class="page-link">Next</a><li>
 						</c:when>
 						<c:otherwise>
-							<li class="page-item"><a class="page-link" href="?pageNo=${page.cri.pageNo+1}&amount=${page.cri.amount}">Next</a></li>
+							<c:if test="${!empty page.cri.codeId}">
+								<li class="page-item"><a class="page-link" href="?pageNo=${page.cri.pageNo+1}&codeType=${page.cri.codeType}&codeId=${page.cri.codeId}&amount=${page.cri.amount}">Next</a></li>
+							</c:if>
+							<c:if test="${empty page.cri.codeId}">
+								<li class="page-item"><a class="page-link" href="?pageNo=${page.cri.pageNo+1}&amount=${page.cri.amount}">Next</a></li>
+							</c:if>
 						</c:otherwise>
 					</c:choose>
 			</ul>

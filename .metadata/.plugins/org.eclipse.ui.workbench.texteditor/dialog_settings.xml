@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="COUNT"/>
+		<item key="selection" value="mbti"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="count"/>
-			<item value="page"/>
-			<item value="&#x09;&lt;c:forEach items=&quot;${codeList}&quot; var=&quot;codeList&quot;&gt;"/>
-			<item value="codeList"/>
-			<item value="codeId"/>
-			<item value="pageNo"/>
-			<item value="cri"/>
-			<item value="pageVo"/>
-			<item value="idChk"/>
-			<item value="onkeyupCheckIdResult"/>
-			<item value="checkIdResult"/>
-			<item value="중복된"/>
-			<item value="주소"/>
-			<item value="x.xx"/>
-			<item value="자격증명"/>
+			<item value="mbti"/>
+			<item value="changeList"/>
+			<item value="search"/>
+			<item value="조회"/>
+			<item value="item"/>
+			<item value="item.boardNum"/>
+			<item value="a"/>
+			<item value="boardSearch"/>
+			<item value="selectBoardCnt"/>
+			<item value="selectBoardList"/>
+			<item value="selectList"/>
+			<item value="cnt"/>
+			<item value="boardList"/>
+			<item value="SelectBoardList"/>
+			<item value="boardSearchAction"/>
 		</list>
 		<list key="replacehistory">
 			<item value="cri"/>

@@ -16,6 +16,10 @@ $j(document).ready(function(){
 	if(submitCheck == 'Y'){
 		submitDisable();
 	}
+	if(submitCheck == 'N'){
+		var targetSubmitButtons = $j('#submitResume');
+		targetSubmitButtons.prop("disabled", false);
+	}
 	
 	const tableEducation = document.getElementById('tableEducation');
 	
@@ -111,7 +115,7 @@ $j(document).ready(function(){
 			    }
 			}); //end ajax  
 		}//end if(data)
-	}); //end submitResume
+	}); //end saveResume
 	
 	
 	$j("#submitResume").on("click",function(){
@@ -1291,7 +1295,7 @@ $j(document).ready(function(){
 <tr>
 	<td align="center">
 		<button id="saveResume" name="saveResume">저장</button>
-		<button id="submitResume" name="submitResume">제출</button>
+		<button id="submitResume" name="submitResume" disabled="disabled">제출</button>
 		<button id="resumeLogout" name="resumeLogout">로그아웃</button>
 		</td>
 </tr>
