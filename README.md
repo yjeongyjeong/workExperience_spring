@@ -37,31 +37,6 @@
 
 ***
 
-### 📂 화면 구현
-
-<details>
-  <summary>
-   주요기능
-  </summary>
-
-![슬라이드10](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/3abc1b3e-e743-4937-9061-8baf2f96acb5)
-![슬라이드13](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/fa84bfdb-7742-4fa0-9118-28a48b6975c1)
-</details>
-
-<details>
-  <summary>
-   화면 구현
-  </summary>
-  
-![슬라이드11](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/f3c059db-2b17-44d3-b7e1-bd519c2724aa)
-![슬라이드12](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/97ce4c38-3251-4f12-915b-b3c4b61c4337)
-![슬라이드14](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/59a21002-4e1b-4113-8b85-b481b6b05600)
-![슬라이드15](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/d13bef20-be96-4b7a-875c-036fc03ee2e2)
-![슬라이드16](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/13d58a11-408b-437b-89c2-82d923d77a03)
-
-</details>
-
-***
 
 ### 📑 기능 명세서
 <details>
@@ -111,6 +86,33 @@
   </summary>
 
   ![입사지원서](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/6bef0b7d-abc2-4b6c-bd21-6d1a248ed893)
+
+</details>
+
+***
+
+
+### 📂 화면 구현
+
+<details>
+  <summary>
+   주요기능
+  </summary>
+
+![슬라이드10](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/3abc1b3e-e743-4937-9061-8baf2f96acb5)
+![슬라이드13](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/fa84bfdb-7742-4fa0-9118-28a48b6975c1)
+</details>
+
+<details>
+  <summary>
+   화면 구현
+  </summary>
+  
+![슬라이드11](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/f3c059db-2b17-44d3-b7e1-bd519c2724aa)
+![슬라이드12](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/97ce4c38-3251-4f12-915b-b3c4b61c4337)
+![슬라이드14](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/59a21002-4e1b-4113-8b85-b481b6b05600)
+![슬라이드15](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/d13bef20-be96-4b7a-875c-036fc03ee2e2)
+![슬라이드16](https://github.com/yjeongyjeong/workExperience_spring/assets/147116001/13d58a11-408b-437b-89c2-82d923d77a03)
 
 </details>
 
