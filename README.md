@@ -1,5 +1,4 @@
-# spring
- etrees_일경험
+# etrees 일경험 프로젝트
 
 ***
 
@@ -9,7 +8,7 @@
 * [화면 구현](#-화면-구현)
 * [기능 명세서](#-기능-명세서)
 * [diagram](#-diagram)
-* [기능 시연](#-기능-시연)
+
 
 ***
 
@@ -116,27 +115,4 @@
 
 </details>
 
-***
 
-### 📽 기능 시연
-
-<details>
-  <summary>
-spring Board 게시판
-  </summary>
-
-</details>
-
-<details>
-  <summary>
-MBTI 테스트
-  </summary>
-
-</details>
-
-<details>
-  <summary>
-입사지원서
-  </summary>
-
-</details>
