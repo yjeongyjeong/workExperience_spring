@@ -60,8 +60,57 @@
   				 </foreach>
   			)
 		)	
-		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
+		WHERE NUMROW BETWEEN (#{pageNo}-1)*#{amount} + 1 AND (#{pageNo})*#{amount}
 	</select>
+
+
+	<select id="getListWithPaging" parameterType="com.spring.board.vo.Criteria" resultMap="boardVo">
+	    <![CDATA[
+				select 
+						BOARD_TYPE
+						,BOARD_NUM
+						,BOARD_TITLE
+						,BOARD_COMMENT
+						,TOTAL_CNT
+						,BOARD_CREATOR
+				from
+				(
+				SELECT
+					code.code_name as BOARD_TYPE
+					,bd.BOARD_NUM
+					,bd.BOARD_TITLE
+					,bd.BOARD_COMMENT
+					,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
+					,COUNT(*) OVER() AS TOTAL_CNT
+					,bd.creator as BOARD_CREATOR
+				FROM
+					BOARD bd
+				left JOIN
+			         com_code code ON bd.BOARD_TYPE = code.code_id
+				where
+				]]>
+	    <trim prefix="(" suffix=")" prefixOverrides="OR">
+	        <foreach collection="codeId" item="type" separator=" OR ">
+	            <if test="type=='a01'.toString()">
+					code.code_id = 'a01'
+	            </if>   
+	            <if test="type=='a02'.toString()">
+					code.code_id = 'a02'
+	            </if>   
+	            <if test="type=='a03'.toString()">
+					code.code_id = 'a03'
+	            </if>  
+	            <if test="type=='a04'.toString()">
+					code.code_id = 'a04'
+	            </if> 
+	        </foreach>
+	    </trim>
+	    <![CDATA[
+		)
+		WHERE NUMROW BETWEEN (#{pageNo}-1)*#{amount} + 1 AND (#{pageNo})*#{amount}
+		]]>
+	</select> 
+
 
 	<select id="boardTotal" parameterType="Integer" resultType="Integer">
         select count(*) as total_cnt 

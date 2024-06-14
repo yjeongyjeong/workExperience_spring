@@ -163,5 +163,9 @@ public class BoardDaoImpl implements BoardDao{
 	public int updateSubmit(RecruitVo recruitVo) throws Exception {
 		return sqlSession.update("recruit.updateSubmit", recruitVo);
 	}
+	@Override
+	public List<BoardVo> getListWithPaging(Criteria cri) throws Exception {
+		return sqlSession.selectList("board.getListWithPaging", cri);
+	}
 	
 }

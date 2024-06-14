@@ -22,11 +22,7 @@
 
 			 boardTypes.each(function(){
 				 var type = $j(this).val();
-				 
-                 const pageVo = {
-	   					 "boardType": type
-	   				 };
-	   				 
+				 	   				 
                  boardList.push(type);
 				 console.log(boardList);
 					 
@@ -48,9 +44,9 @@
 			    	*/
 			        var boardList = data.boardList;
 			        var page = data.page;
-			        console.log("boardList >>>>>>>>>>>>>> \n" + boardList);
-			        console.log("page >>>>>>>>>>>>>> \n" + page);
-						//changeList(boardList);
+			       // console.log("boardList >>>>>>>>>>>>>> \n" + boardList);
+			       // console.log("page >>>>>>>>>>>>>> \n" + page);
+						changeList(boardList);
 					},
 				    error: function (jqXHR, textStatus, errorThrown)
 				    {
@@ -122,7 +118,7 @@
 	    numCell.textContent = item.boardNum;
 	    row.appendChild(numCell);
 
-//	    console.log(item);
+	    console.log(item);
 
 		// boardTitle 추가하기
 	    const titleCell = document.createElement('td');
@@ -130,7 +126,7 @@
 
 	    const hrefLink = '/board/'+item.boardType + '/' + item.boardNum + '/boardView.do?pageNo=' + item.pageNo;
 	    //console.log(hrefLink);
-//	    아래대로 하면 값이 안들어옴...
+//	    아래대로 하면 값이 안들어옴... 백틱이 링크에는 안먹히는듯?
 //	    link.href = `/board/${item.boardType}/${item.boardNum}/boardView.do?pageNo=${item.pageNo}`;
 	    link.href = hrefLink;
 	    link.textContent = item.boardTitle;
@@ -261,7 +257,7 @@
 		<td align="center">
 			<input type="checkbox" id="select_all" name="selectall" onclick="selectAll(this)" >전체
 	<c:forEach items="${codeList}" var="codeList">
-			<input type="checkbox" id="${codeList}.codeId" name="menu" onclick="return checkSelectAll()" value="${codeList.codeId}">${codeList.codeName}
+			<input type="checkbox" id="${codeList.codeId}" name="menu" onclick="return checkSelectAll()" value="${codeList.codeId}">${codeList.codeName}
 	</c:forEach>
 			<input id="search" type="button" value="조회"  >
 		</td>
@@ -269,8 +265,8 @@
 	
 	
 	<tr class="container">
-	 <td align="center">
-			<ul class="pagination">
+	 <td align="center" >
+				<ul class="pagination" style="list-style-type : none; display: flex; justify-content: center; padding: 0;">
 					<c:choose>
 						<c:when test="${page.cri.pageNo <= 1}"> 
 							<li class="page-item"><a class="page-link">Previous</a><li>

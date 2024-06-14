@@ -4,8 +4,9 @@ import java.util.List;
 
 public class Criteria {
 	
-	private int pageNo = 0;
-	private int amount; //page 당 데이터 개수
+	private int pageNo = 1;
+	private int amount = 10; //page 당 데이터 개수
+	private String type; // a01, a02 ...
 	
 	private String codeType = "menu"; //기본값
 	private List<String> codeId; //a01, a02.. 
@@ -19,6 +20,11 @@ public class Criteria {
 		if(pageNo <= 1) {this.pageNo = 0;}
 		this.amount = amount;
 	}
+	
+	/*
+	 * public String[] getTypeArr() { return type == null ? new String[] {} :
+	 * type.split(","); }
+	 */
 
 	
 	
@@ -53,6 +59,14 @@ public class Criteria {
 
 	public void setCodeId(List<String> codeId) {
 		this.codeId = codeId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 

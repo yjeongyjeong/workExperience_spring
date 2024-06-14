@@ -182,5 +182,10 @@ public class boardServiceImpl implements boardService{
 	public int updateSubmit(RecruitVo recruitVo) throws Exception {
 		return boardDao.updateSubmit(recruitVo);
 	}
+
+	@Override
+	public List<BoardVo> getListWithPaging(Criteria cri) throws Exception {
+		return boardDao.getListWithPaging(cri);
+	}
 	
 }

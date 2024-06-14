@@ -298,6 +298,8 @@ public class BoardController {
 	public Map<String, Object> boardSearchAction(@RequestBody List<String> boardList, Model model, Locale locale)
 			throws Exception {
 		
+		System.out.println("jsp에서 넘어온 boardList >>>> " + boardList);
+		
 		Criteria cri = new Criteria();
 
 		int page = 1;
@@ -306,11 +308,13 @@ public class BoardController {
 			cri.setPageNo(page);
 		}
 
-		List<BoardVo> searchBoardList = new ArrayList<BoardVo>();
-		// codeId로 찾음(a01, a02 ... )
 		cri.setCodeId(boardList);
+		List<BoardVo> searchBoardList = boardService.getListWithPaging(cri);
 		
-		searchBoardList.addAll(boardService.SelectBoardList(cri));
+		for(BoardVo sbList : searchBoardList) {
+			sbList.setPageNo(cri.getPageNo());
+		}
+		
 		int totalCnt = boardService.selectBoardCnt(cri);
 		
 	    // 검색 결과와 페이징 정보를 Map에 담아 반환
