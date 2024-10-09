@@ -70,7 +70,7 @@
 <body>
 <table  align="center" id="wrapTable">
 	<tr>
-		<td>
+		<td colspan="2">
 			<table id="recruitTable" class="recruitTable" border = "1">
 				<tr>
 					<td width="120" align="center">
@@ -97,6 +97,9 @@
 	</tr>
 	
 	<tr>
+		<td align="left">
+			<button type="button" id="home" name="home" onclick="location.href='/'">HOME</button>
+		</td>
 		<td align="right">
 			<button id="formSubmit" name="formSubmit">입사지원</button>
 		</td>

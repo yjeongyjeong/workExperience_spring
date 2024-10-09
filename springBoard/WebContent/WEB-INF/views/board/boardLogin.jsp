@@ -32,9 +32,6 @@
 				var frm = $j('.boardTable :input');
 				var param = frm.serialize(); 
 
-				console.log("*************************");
-				console.log(frm);
-				console.log(param);
 				$j.ajax({
 				    url : "/board/boardUserLoginAction.do",
 				    dataType: "json",
@@ -43,18 +40,16 @@
 				    data : param,
 				    success: function(data, textStatus, jqXHR)
 				    {
-				    	console.log(data);
-
-				    	if(data == null){ //select 검색 결과가 0인 경우
-				    		console.log(data);
-				    		alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
-				    	}else{
-							location.href = "/board/boardList.do?pageNo=1";
-				    	}
+				    	console.log("data >>> "+data);
+						location.href = "/board/boardList.do?pageNo=1";
 				    },
-				    error: function (jqXHR, textStatus, errorThrown)
+				    error: function (jqXHR, textStatus, errorThrown, data)
 				    {
-				    	console.log("실패~~~ㅜㅜ");
+				    	// select 검색 결과가 0인경우 error 로직을 타게 됨..
+				    	console.log(jqXHR);
+				    	console.log(textStatus);
+				    	console.log(errorThrown);
+			    		alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
 				    }
 				});
 				//ajax end

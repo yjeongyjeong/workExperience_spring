@@ -46,7 +46,12 @@ public class BoardController {
 	@Autowired
 	boardService boardService;
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String boardHome() throws Exception {
+		return "home";
+	}
 
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
 	public String boardList(Locale locale, Model model, Criteria cri, HttpSession session) throws Exception {
@@ -246,15 +251,14 @@ public class BoardController {
 
 		System.out.println("=========================post=======================");
 		System.out.println("boardVo >>> " + boardVo.toString());
-		// boardType에서 null값 에러 발생.. 왜냐면 쿼리스트링에서 가져오지도 않았고 hidden으로 가져오지도 않았기 때문
-		// 쿼리스트링 귀찮아서 그냥 hidden으로 가져옴
+		// boardType에서 null값 에러 발생.. 왜냐면 쿼리스트링에서 가져오지도 않았고 hidden으로 가져오지도 않았기 때문 -> hidden으로 가져옴
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 
 		int resultCnt = boardService.boardUpdate(boardVo);
 		System.out.println("resultCnt >>>>>>>>>>>>>>>>>> " + resultCnt);
-		// 영향받은 행의 개수이므로 양수면 성공인건가?
+		// 영향받은 행의 개수이므로 양수면 성공
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
 
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
@@ -265,14 +269,11 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/boardRemoveAction.do", method = RequestMethod.POST)
-	@ResponseBody // 없으면 json데이터를 인식못하는 것 같음...? callbackMsg 반환이 안됨
+	@ResponseBody 
 	public String boardRemove(Locale locale, BoardVo boardVo, Model model) throws Exception {
 
 		System.out.println("boardRemoveAction~~~~~");
 		System.out.println("delete 할 board >>>>>>>>>>>>>>>>>>>>>> \n" + boardVo);
-//		
-//		boardVo = boardService.selectBoard(boardVo.getBoardType(), boardVo.getBoardNum());
-//		System.out.println("delete 할 board >>>>>>>>>>>>>>>>>>>>>> \n" + boardVo);
 		System.out.println("boardType >> " + boardVo.getBoardType());
 		System.out.println("boardNum >> " + boardVo.getBoardNum());
 
@@ -369,7 +370,7 @@ public class BoardController {
 
 		System.out.println("pwdcheck >> " + userPw + " " + userPwChk);
 		if (userPw.equals(userPwChk)) {
-			// userPw == userPwChk는 같은 값이여도 오류나는 걸로 봐서 주소값 비교
+			// userPw == userPwChk는 같은 값이여도 오류나기 때문에(주소값 비교)
 			// ==> 직접 문자열 비교하도록 equals 사용
 			userPwdCnt = 1;
 		} else {
@@ -383,13 +384,10 @@ public class BoardController {
 	@ResponseBody
 	public String boardUserjoinAction(UserInfoVo userVo, Model model, Locale locale) throws Exception {
 
-		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo); // 주소값나옴...
-
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 
 		int resultCnt = boardService.userInsert(userVo);
-		// ORA-00947: not enough values 발생!
 
 		System.out.println("resultCnt >>>>>>>>>>>>>>>>>> " + resultCnt);
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
@@ -412,8 +410,6 @@ public class BoardController {
 	public UserInfoVo boardUserLoginAction(UserInfoVo userVo, HttpServletRequest request, Model model, Locale locale)
 			throws Exception {
 
-		System.out.println(">>>>>>>>>>>>>>>>>>>> " + userVo.toString()); // 주소값나옴...
-
 		UserInfoVo loginUser = boardService.selectUser(userVo);
 
 		if (loginUser != null) {
@@ -424,6 +420,9 @@ public class BoardController {
 			// UserInfoVo [userId=whffu1, userPw=whffu1!, userName=null, userPhone1=null,
 			// userPhone2=null, userPhone3=null, userAddr1=null, userAddr2=none,
 			// userCompany=none, creator=null, modifier=null]
+		} else {
+			System.out.println(loginUser);
+			loginUser = null;
 		}
 		return loginUser;
 	}
@@ -465,7 +464,6 @@ public class BoardController {
 
 		if (cri.getPageNo() == 0) {
 			cri.setPageNo(page);
-			;
 		}
 
 		ComCodeVo codeVo = new ComCodeVo();
@@ -569,7 +567,6 @@ public class BoardController {
 
 		System.out.println("pageNumberpageNumber >>>> " + pageNumber);
 		
-		//컨트롤러가 이렇게 길고 복잡해도 되는걸까?
 		if(pageNumber < 4) {
 			return String.valueOf(pageNumber+1);
 		} else {// 5문항씩 4페이지 테스트가 다 끝난경우

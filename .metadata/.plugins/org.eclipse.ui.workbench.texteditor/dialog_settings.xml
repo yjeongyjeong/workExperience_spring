@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="boardSear"/>
+		<item key="selection" value="[][]"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="[][]"/>
+			<item value="hidden"/>
+			<item value="page"/>
+			<item value="change"/>
+			<item value="list"/>
+			<item value="changeList"/>
+			<item value="boardList"/>
+			<item value="getlist"/>
+			<item value="boardVo"/>
+			<item value="sea"/>
 			<item value="boardsear"/>
 			<item value="boardse"/>
 			<item value="boardlist"/>
 			<item value="pagination"/>
-			<item value="changeList"/>
 			<item value="SelectBoardList"/>
-			<item value="boardSearchAction"/>
-			<item value="search"/>
-			<item value="calEdu"/>
-			<item value="희망연봉"/>
-			<item value="saveresume"/>
-			<item value="savemitresume"/>
-			<item value="submitresume"/>
-			<item value="submit"/>
-			<item value="submitButton"/>
 		</list>
 		<list key="replacehistory">
 			<item value="cri"/>
@@ -36,8 +36,8 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="27"/>
-		<item key="DIALOG_Y_ORIGIN" value="54"/>
+		<item key="DIALOG_X_ORIGIN" value="23"/>
+		<item key="DIALOG_Y_ORIGIN" value="115"/>
 		<item key="DIALOG_WIDTH" value="340"/>
 		<item key="DIALOG_HEIGHT" value="481"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>

@@ -93,15 +93,9 @@
 	  console.log(table);
 	  console.log(tbody);
 	  
-	  //음 테이블에서 맨처음 tr빼고 나머지 행은 삭제하고 데이터 만들어서 그 밑에 끼워넣어도 될 것 같기두...
-      //var boardListTr = $('#boardTable tr:nth-child(2)'); //boardTable의 tr중에 두번째 tr을 선택
-	  //tbody.innerHTML = ''; tbody내의 모든걸 초기화시키는데 스타일까지 날아므로.. 조금 귀찮음
- 		$j('#boardTable tr:not(:first-child)').remove(); //첫번째 빼고 전부 제거
+	  $j('#boardTable tr:not(:first-child)').remove(); //첫번째 빼고 전부 제거
 
- 		
- 		
- 		
- 		// 데이터를 forEach로 순회하며 테이블에 추가
+	  // 데이터를 forEach로 순회하며 테이블에 추가
  	  data.forEach(function(item) {
 	    const row = document.createElement('tr'); // 새로운 행 생성
 
@@ -223,7 +217,7 @@
 			</td>
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			<table id="boardTable" border = "1">
 				<tr id="boardListName">
 					<td width="80" align="center">
@@ -254,7 +248,7 @@
 	</tr>
 	
 	<tr>
-		<td align="center">
+		<td align="center" colspan="2">
 			<input type="checkbox" id="select_all" name="selectall" onclick="selectAll(this)" >전체
 	<c:forEach items="${codeList}" var="codeList">
 			<input type="checkbox" id="${codeList.codeId}" name="menu" onclick="return checkSelectAll()" value="${codeList.codeId}">${codeList.codeName}
@@ -265,7 +259,7 @@
 	
 	
 	<tr class="container">
-	 <td align="center" >
+	 <td align="center" colspan="2">
 				<ul class="pagination" style="list-style-type : none; display: flex; justify-content: center; padding: 0;">
 					<c:choose>
 						<c:when test="${page.cri.pageNo <= 1}"> 
@@ -315,6 +309,9 @@
 		</tr>
 	
 	<tr>
+		<td align="left">
+			<button type="button" id="home" name="home" onclick="location.href='/'">HOME</button>
+		</td>
 		<td align="right">
 			<a href ="/board/boardWrite.do">글쓰기</a>
 		<c:if test="${loginUser != null}" var="loginUser" >

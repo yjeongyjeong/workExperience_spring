@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>boardLogin</title>
+<title>mbtiTest</title>
 </head>
 
 <script type="text/javascript">
@@ -43,11 +43,11 @@
 			    	console.log(data);
 					
 			    	if(data <= 4){ //pageNo=4까지
-			    		location.href = 'http://localhost:8081/mbti/mbtiTest.do?pageNo='+data;
+			    		location.replace('http://localhost:8081/mbti/mbtiTest.do?pageNo='+data);
 					}
 			    	else { //pageNo=5 되는 순간
                         console.log(data);		
-                        location.href = "/mbti/mbtiResult.do"
+                        location.replace("/mbti/mbtiResult.do");
 					}
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
@@ -84,7 +84,9 @@
 	
 	<tr>
 		<td align="center">
+			<button type="button" id="home" name="home" onclick="location.href='/'">HOME</button>
 			<button type="button" id="next" name="next">다음 →</button>
+			<!-- TODO : 이전버튼 -->
 		</td>
 	</tr>
 </table>

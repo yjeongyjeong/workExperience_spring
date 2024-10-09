@@ -87,7 +87,7 @@ $j(document).ready(function(){
 	
 	$j("#resumeLogout").on("click",function(){
 		alert("로그아웃 되었습니다.");
-		location.href = '/recruit/login.do';
+		location.replace('/recruit/login.do');
 	});
 	
 	

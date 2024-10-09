@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="com.spring.board.vo.BoardVo"/>
     <fullyQualifiedTypeName name="com.sun.tools.javac.util.List"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="com.spring.board.vo.Com_CodeVo"/>
@@ -38,6 +37,7 @@
     <fullyQualifiedTypeName name="com.spring.board.vo.PageVo"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ModelAttribute"/>
-    <fullyQualifiedTypeName name="com.spring.board.service.boardService"/>
     <fullyQualifiedTypeName name="java.lang.Exception"/>
+    <fullyQualifiedTypeName name="com.spring.board.vo.BoardVo"/>
+    <fullyQualifiedTypeName name="com.spring.board.service.boardService"/>
 </qualifiedTypeNameHistroy>
